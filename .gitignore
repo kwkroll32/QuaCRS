@@ -9,3 +9,4 @@ QC_Database/read/constant/error.pyc
 QC_Database/read/constant/warning.pyc
 QC_Database/read/db/__init__.pyc
 QC_Database/read/db/database.pyc
+*.pyc
