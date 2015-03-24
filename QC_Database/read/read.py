@@ -264,7 +264,7 @@ def create(exitIfError=True):
 			db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
 			#copying the qc table stucture to the server
-			mFrom = CURDIR+"/constant/"+QC_TABLE_DEFINITION 
+			mFrom = mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
 			mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
 
 			copyFile(mFrom , mTo)
@@ -850,7 +850,8 @@ def copyFile(_from, _to):
 
 	#print "FROM : ", _from
 	#print "TO   : ", _to
-
+	if not os.path.exists(_to):
+		os.makedirs('/'.join(_to.split('/')[:-1]))
 	copyfile(_from, _to)
 
 
@@ -877,7 +878,7 @@ def clear_item(uniqueID):
 
 
 	
-def clear_project():
+def clear_project(exitIfError=True):
 	"""
 	This function will erease the tables and views that were created
 	The name of the table that is going to be deleted, are all in the config
@@ -903,7 +904,10 @@ def clear_project():
 		print "removing : ",WEB_APP_PATH+"assets/img/"+img_folder
 		rmtree(WEB_APP_PATH+"assets/img/"+img_folder)
 
-	files = os.listdir(WEB_APP_PATH+"assets/reports/")
+	if os.path.exists(WEB_APP_PATH+"assets/reports/"):
+		files = os.listdir(WEB_APP_PATH+"assets/reports/")
+	else:
+		files = [] 
 	for report in files:
 		print "removing : ",WEB_APP_PATH+"assets/reports/"+report
 		os.remove(WEB_APP_PATH+"assets/reports/"+report)
@@ -912,11 +916,12 @@ def clear_project():
 	Re-create the table
 	"""
 	try:
+		pdb.set_trace()
 		# Table does not exist
 		db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
 		#copying the qc table stucture to the server
-		mFrom = CURDIR+"/constant/"+QC_TABLE_DEFINITION 
+		mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml'])) 
 		mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
 
 		copyFile(mFrom , mTo)
