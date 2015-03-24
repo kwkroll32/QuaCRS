@@ -1,0 +1,8 @@
+STANDARDS:
+
+input file name conventions:
+<Study Type>_<Study Name>_*.*
+Study Type:
+	T : Total Transcrptome
+	R : POLY A
+	M : MRNA

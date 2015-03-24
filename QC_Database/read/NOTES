@@ -1,0 +1,4 @@
+#Some of the things that I think we need to do to prepare for this:
+
+1) have a script that create the database with the corresponding tables (first checking to see if the database exists)
+

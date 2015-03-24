@@ -1,0 +1,294 @@
+The stuff that were not used but written:
+
+def update_or_insert_content(inFile, header):
+	"""
+	This function will take each row and if the Sample ID exists, it will try to update that row, and 
+	if the sample ID does not exist, it will try to insert it to the table. All the questions about
+	overwriting should be asked before this function is called!
+	"""
+
+	for line in inFile:
+		line = line.strip('\n')
+		data = split(DELIMITER, line)
+
+		sample = data[header[SAMPLE_COLUMN]]
+		
+		sampleID = sample_exist(sample)
+
+		# if this is a totally new sample.
+		if sampleID == False:
+			insert_data_to_db(data, header)
+
+		else:
+			update_line(data, header)
+
+
+
+def update_db(inFile, header):
+	"""
+	In this file, we check to see if the data that the user is trying to add already exist!
+	If so, we warn the user about it, and if they agree to overwrite the stuff, then we will
+	do so. Otherwise, we only insert the rows that are new!
+	"""
+	
+	answer = None
+	printable = True
+	for line in inFile:
+		line = line.strip('\n')
+		data = split(DELIMITER, line)
+
+		sample = data[header[SAMPLE_COLUMN]]
+		
+		if sample_exist(sample):
+			#do further checking
+			# we need to check and see if the columns that are being added have any value in the
+			# table or not. if so, we need to warn the user. if they are null, they will be updated
+			# with the new stuff.
+			if will_overwrite(data,header,printable):
+				if answer is None:
+					answer = ask_to_overwrite()
+
+				if answer.lower() == "yta":
+					update_line(data,header)
+					printable = False
+
+				elif answer.lower() == "y":
+					update_line(data,header)
+					answer = None
+
+				elif answer.lower() == "q":
+					print "Exiting the program now!"
+					exit(0)
+				else:
+					print_error(ERR_INVALID_RESPONSE)
+					exit(1)
+			else:
+				update_line(data,header)
+
+		else:
+			insert_data_to_db(data, header)
+
+
+def insert_data_to_db(data, header):
+	"""
+	This fucntion is very similar to `insert_content_to_db`. It does the same thing except
+	for a line -- the line has to be already split into an array -- instead of an entire document.
+
+	in order to split a line to a compatible format for this function you can do the following:
+
+	def prep_data(line):
+		line = line.strip('\n')
+		data = split(DELIMITER, line)
+		return data
+
+	"""
+
+	columns = []
+	values = []
+
+	for key in header.keys():
+
+		columns.append('`'+str(key)+'`')
+		values.append(prep_value_for_db(data[header[key]]))
+	
+
+	db.insert(QC_TABLE_NAME,columns,values)
+
+
+def process_input_file(in_file_path):
+	"""
+	In this function, the input file path will be process and the study type and the study name 
+	will be returned to the caller!
+
+	the input file name should follow the format of <STUDY TYPE>_<STUDY NAME>_*.*
+	"""
+	if in_file_path is None:
+		return None
+
+	studyInfo = {"name":None,"type":None}
+	filename=in_file_path.split(os.path.sep)[-1]
+	info=filename.split('_')
+	if len(info) < 3:
+		print_error(ERR_INPUT_FILE_NAME_FORMAT)
+		exit(1)
+
+	if info[0] != "T" and info[0] != "S" and info[0] != "M" and info[0] != "R":
+		print_error(ERR_INPUT_FILE_NAME_FORMAT)
+		exit(1)
+ 
+	studyInfo['name']=info[1]
+	studyInfo['type']=info[0]
+
+	return studyInfo
+
+
+
+
+
+
+
+
+	#QC_TABLE COLUMNS:
+SAMPLE_ID_COLUMN = "ID"
+SAMPLE_COLUMN = "Sample"
+STUDY_COLUMN = "Study"
+QC_COLUMNS=[(QC_TABLE_NAME+"ID","INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"),
+			(SAMPLE_ID_COLUMN, "VARCHAR(255) NOT NULL"),
+			(SAMPLE_COLUMN,"VARCHAR(45) NOT NULL"),
+			(STUDY_COLUMN,"varchar(45) NOT NULL"),			
+			("Aligned","INT(11)"),
+			("Duplicates","INT(11)"),
+			("Duplication_Rate","DECIMAL(10,8)"),
+			("End_1_%_Sense","DECIMAL(10,8)"),
+			("End_1_Antisense","INT(11)"),
+			("End_1_Sense","INT(11)"),
+			("End_2_%_Sense","DECIMAL(10,8)"),
+			("End_2_Antisense","INT(11)"),
+			("End_2_Sense","INT(11)"),
+			("Estimated_Library_Size","INT(11)"),
+			("Exonic_Rate","DECIMAL(10,8)"),
+			("Expressed_Transcripts","INT(11)"),
+			("Expression_Profiling_Efficiency","DECIMAL(12,10)"),
+			("Intergenic_Rate","DECIMAL(10,8)"),
+			("Intragenic_Rate","DECIMAL(10,8)"),
+			("Intronic_Rate","DECIMAL(10,8)"),
+			("RQS","DECIMAL(3,2)"),
+			("Total_PF_Reads","INT(11)"),
+			("Unique","INT(11)"),
+			("Uniquely_Mapped_Reads_%","DECIMAL(10,8)"),
+			("rRNA_&_mitoRNA_%","DECIMAL(10,8)"),
+			("R2_Overrepresented_Sequences","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Sequence_Quality_Scores","ENUM('pass', 'fail', 'warn')"),
+			("R1_Sequence_Duplication_Levels","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Sequence_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("1-10_sequence_dups","INT(11)"),
+			("R1_Per_Base_N_Content","ENUM('pass', 'fail', 'warn')"),
+			("GC_Std_Dev","DECIMAL(14,10)"),
+			("R1_Per_Sequence_Quality_Scores","ENUM('pass', 'fail', 'warn')"),
+			("100-1000_mapping_dups","INT(11)"),
+			("R2_Per_Base_N_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Kmer_Content","ENUM('pass', 'fail', 'warn')"),
+			("11-100_sequence_dups","INT(11)"),
+			("R2_Per_Base_Sequence_Content","ENUM('pass', 'fail', 'warn')"),
+			("11-100_mapping_dups","INT(11)"),
+			(">_1000_mapping_dups","INT(11)"),
+			("100-1000_sequence_dups","INT(11)"),
+			("R1_Per_Base_Sequence_Content","ENUM('pass', 'fail', 'warn')"),
+			("GC_Skew","DECIMAL(14,10)"),
+			("R1_Per_Base_Sequence_Quality","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Sequence_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R1_Sequence_Length_Distribution","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Sequence_Length_Distribution","ENUM('pass', 'fail', 'warn')"),
+			("R2_Sequence_Duplication_Levels","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_Sequence_Quality","ENUM('pass', 'fail', 'warn')"),
+			(">_1000_sequence_dups","INT(11)"),
+			("R1_Per_Base_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("1-10_mapping_dups","INT(11)"),
+			("GC_Avg","DECIMAL(14,10)"),
+			("R1_Overrepresented_Sequences","ENUM('pass', 'fail', 'warn')"),
+			("R1_Kmer_Content","ENUM('pass', 'fail', 'warn')"),
+			("Sequencing_type", "VARCHAR(45)"),
+			("Sequencing_date", "VARCHAR(45)"),
+			("cur_timestamp","TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")]
+
+
+
+
+
+
+
+'''QC_COLUMNS=[(QC_TABLE_NAME+"ID","INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"),
+			(SAMPLE_ID_COLUMN, "VARCHAR(255) NOT NULL"),
+			(SAMPLE_COLUMN,"VARCHAR(45) NOT NULL"),
+			(STUDY_COLUMN,"varchar(45) NOT NULL"),
+			("Sequencing_type","VARCHAR(45)"),
+			("Sequencing_date","VARCHAR(45)"),
+			(DESCRIPTION_COLUMN,"VARCHAR(45)"),
+			(COMBINED_FLAG_COLUMN,"TINYINT(1)"),
+			("RQS","DECIMAL(3,2)"),
+
+			("Total_PF_Reads","INT(11)"),
+			("Uniquely_Mapped_Reads_%","DECIMAL(10,8)"),
+			("rRNA_&_mitoRNA_%","DECIMAL(10,8)"),
+
+			("R1_Per_Base_Sequence_Quality","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Sequence_Quality_Scores","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Base_Sequence_Content","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Base_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Sequence_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R1_Per_Base_N_Content","ENUM('pass', 'fail', 'warn')"),
+			("R1_Sequence_Length_Distribution","ENUM('pass', 'fail', 'warn')"),
+			("R1_Sequence_Duplication_Levels","ENUM('pass', 'fail', 'warn')"),
+			("R1_Overrepresented_Sequences","ENUM('pass', 'fail', 'warn')"),
+			("R1_Kmer_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_Sequence_Quality","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Sequence_Quality_Scores","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_Sequence_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Sequence_GC_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Per_Base_N_Content","ENUM('pass', 'fail', 'warn')"),
+			("R2_Sequence_Length_Distribution","ENUM('pass', 'fail', 'warn')"),
+			("R2_Sequence_Duplication_Levels","ENUM('pass', 'fail', 'warn')"),
+			("R2_Overrepresented_Sequences","ENUM('pass', 'fail', 'warn')"),
+			("R2_Kmer_Content","ENUM('pass', 'fail', 'warn')"),
+
+			("R1_Duplication_Levels_Graph_Location","VARCHAR(255)"),
+			("R1_Kmer_Profiles_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Base_GC_Content_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Base_N_Content_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Base_Quality_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Base_Sequence_Content_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Sequence_GC_Content_Graph_Location","VARCHAR(255)"),
+			("R1_Per_Sequence_Quality_Graph_Location","VARCHAR(255)"),
+			("R1_Sequence_Length_Distribution_Graph_Location","VARCHAR(255)"),
+			("R2_Duplication_Levels_Graph_Location","VARCHAR(255)"),
+			("R2_Kmer_Profiles_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Base_GC_Content_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Base_N_Content_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Base_Quality_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Base_Sequence_Content_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Sequence_GC_Content_Graph_Location","VARCHAR(255)"),
+			("R2_Per_Sequence_Quality_Graph_Location","VARCHAR(255)"),
+			("R2_Sequence_Length_Distribution_Graph_Location","VARCHAR(255)"),
+			
+			("Aligned","INT(11)"),
+			("Unique","INT(11)"),
+			("Duplicates","INT(11)"),
+			("Duplication_Rate","DECIMAL(10,8)"),
+			("Estimated_Library_Size","INT(11)"),
+			("Intragenic_Rate","DECIMAL(10,8)"),
+			("Exonic_Rate","DECIMAL(10,8)"),
+			("Intronic_Rate","DECIMAL(10,8)"),
+			("Intergenic_Rate","DECIMAL(10,8)"),
+			("Expression_Profiling_Efficiency","DECIMAL(10,8)"),
+			("Expressed_Transcripts","INT(11)"),
+
+			("End_1_Sense","INT(11)"),
+			("End_1_Antisense","INT(11)"),
+			("End_2_Sense","INT(11)"),
+			("End_2_Antisense","INT(11)"),
+			("End_1_%_Sense","DECIMAL(10,8)"),
+			("End_2_%_Sense","DECIMAL(10,8)"),
+
+			("1-10_sequence_dups","INT(11)"),
+			("11-100_sequence_dups","INT(11)"),
+			("100-1000_sequence_dups","INT(11)"),
+			(">_1000_sequence_dups","INT(11)"),
+			("1-10_mapping_dups","INT(11)"),
+			("11-100_mapping_dups","INT(11)"),
+			("100-1000_mapping_dups","INT(11)"),
+			(">_1000_mapping_dups","INT(11)"),
+
+			("GC_Avg","DECIMAL(14,10)"),
+			("GC_Std_Dev","DECIMAL(14,10)"),
+			("GC_Skew","DECIMAL(14,10)"),
+
+			("Duplication_Rate_Plot_Location","VARCHAR(255)"),
+			("GC_Plot_Location","VARCHAR(255)"),
+			("Gene_Body_Coverage_Plot_Location","VARCHAR(255)"),
+			("NVC_Plot_Location","VARCHAR(255)"),
+			("Quality_Boxplot_Location","VARCHAR(255)"),
+			("Quality_Heatmap_Location","VARCHAR(255)"),
+			("cur_timestamp","TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")]
+'''
