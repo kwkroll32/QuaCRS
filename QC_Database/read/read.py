@@ -4,6 +4,7 @@ import os
 from glob import glob
 import getopt
 from shutil import copyfile, rmtree
+import pdb
 
 
 #IMPORTS FOR UTILITIES
@@ -186,7 +187,7 @@ def process_files(command):
 
 		for m_file in files:
 			print "Processing ", m_file, " . . . ."
-
+			
 			global INPUT_FILE
 			INPUT_FILE = str(m_file)
 			'''str(INPUT_FILE_PATH)+'''
@@ -230,7 +231,7 @@ def create(exitIfError=True):
 		or the execution for the file goes fine! if all goes fine, the function will return 0, if anything 
 		goes wrong that would have caused the program to stop from execution, the function returns 1.			  
 	"""
-
+	
 	ret = os.access(INPUT_FILE, os.R_OK)
 	if ret == False:
 		print_error(ERR_READ_PERMISSION_DENIED)
@@ -432,6 +433,7 @@ def insert_content_to_db(inFile,header):
 	or continue the process.
 	"""
 	for line in inFile:
+		
 		line  = line.strip('\n')
 		data  = split(DELIMITER,line)
 
@@ -443,17 +445,17 @@ def insert_content_to_db(inFile,header):
 		Create folders (image folders) corresponding to the patient
 		'''
 
-		#if os.isdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]) == False:
-		os.mkdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]])
+		if os.path.exists(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]) == False:
+			os.makedirs(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]])
 
-		#if os.isdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+FASTQC_FOLDER_NAME) == False:
-		os.mkdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+FASTQC_FOLDER_NAME)
+		if os.path.exists(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+FASTQC_FOLDER_NAME) == False:
+			os.makedirs(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+FASTQC_FOLDER_NAME)
 
-		#if os.isdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RNASEQC_FOLDER_NAME) == False:
-		os.mkdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RNASEQC_FOLDER_NAME)
+		if os.path.exists(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RNASEQC_FOLDER_NAME) == False:
+			os.makedirs(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RNASEQC_FOLDER_NAME)
 
-		#if os.isdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RSEQC_FOLDER_NAME) == False:
-		os.mkdir(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RSEQC_FOLDER_NAME)
+		if os.path.exists(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RSEQC_FOLDER_NAME) == False:
+			os.makedirs(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+RSEQC_FOLDER_NAME)
 
 		file_path = INPUT_FILE[:INPUT_FILE.rfind('/')+1]
 
