@@ -1,0 +1,11 @@
+#ignore files that have login and server configuration 
+./QC_Database/read/constant/config.py
+./QC_Database/qc/application/config/config.php
+./QC_Database/qc/application/config/database.php
+QC_Database/read/constant/__init__.pyc
+QC_Database/read/constant/config.pyc
+QC_Database/read/constant/constants.pyc
+QC_Database/read/constant/error.pyc
+QC_Database/read/constant/warning.pyc
+QC_Database/read/db/__init__.pyc
+QC_Database/read/db/database.pyc
