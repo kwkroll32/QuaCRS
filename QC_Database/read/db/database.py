@@ -1,5 +1,6 @@
 #IMPORTS
 import MySQLdb as mdb
+import pdb # pdb.set_trace()
 
 #IMPORTS FOR DATABASE CREDENTIALS
 from constant.config import *
@@ -104,7 +105,7 @@ class Database:
 		sql += " )"
 		
 		self.debug_log(sql,"CREATES")
-		
+
 		try:
 			self.cur.execute(sql)
 			return True

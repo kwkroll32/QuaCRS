@@ -231,7 +231,7 @@ def create(exitIfError=True):
 		or the execution for the file goes fine! if all goes fine, the function will return 0, if anything 
 		goes wrong that would have caused the program to stop from execution, the function returns 1.			  
 	"""
-	
+
 	ret = os.access(INPUT_FILE, os.R_OK)
 	if ret == False:
 		print_error(ERR_READ_PERMISSION_DENIED)
@@ -264,13 +264,11 @@ def create(exitIfError=True):
 			db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
 			#copying the qc table stucture to the server
-			mFrom = mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
+			mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
 			mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
 
 			copyFile(mFrom , mTo)
 			
-
-
 			#creating the views for the front end part:
 			# There are 9 views that need to be created!
 			if db.table_exist(GENERAL_VIEW) == False:
@@ -444,7 +442,7 @@ def insert_content_to_db(inFile,header):
 		'''
 		Create folders (image folders) corresponding to the patient
 		'''
-
+		
 		if os.path.exists(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]) == False:
 			os.makedirs(WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]])
 
@@ -481,9 +479,7 @@ def insert_content_to_db(inFile,header):
 
 				mFrom = file_path+data[header[key]]
 				mTo = WEB_APP_PATH+"assets/img/"+data[header[SAMPLE_ID_COLUMN]]+"/"+toolName+"/"+str(imgName)
-
 				copyFile(mFrom,mTo)
-				
 				data[header[key]] = data[header[SAMPLE_ID_COLUMN]]+"/"+toolName+"/"+str(imgName)
 
 
@@ -850,7 +846,7 @@ def copyFile(_from, _to):
 
 	#print "FROM : ", _from
 	#print "TO   : ", _to
-	if not os.path.exists(_to):
+	if not os.path.exists('/'.join(_to.split('/')[:-1])):
 		os.makedirs('/'.join(_to.split('/')[:-1]))
 	copyfile(_from, _to)
 
@@ -898,8 +894,10 @@ def clear_project(exitIfError=True):
 	db.drop_table(MAPPING_DUPLICATES_VIEW,	True)
 
 	db.drop_table(QC_TABLE_NAME)
-
-	files = os.listdir(WEB_APP_PATH+"assets/img/")
+	if os.path.exists(WEB_APP_PATH+"assets/img/"):
+		files = os.listdir(WEB_APP_PATH+"assets/img/")
+	else:
+		files = []
 	for img_folder in files:
 		print "removing : ",WEB_APP_PATH+"assets/img/"+img_folder
 		rmtree(WEB_APP_PATH+"assets/img/"+img_folder)
@@ -916,7 +914,7 @@ def clear_project(exitIfError=True):
 	Re-create the table
 	"""
 	try:
-		pdb.set_trace()
+		
 		# Table does not exist
 		db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
@@ -926,10 +924,9 @@ def clear_project(exitIfError=True):
 
 		copyFile(mFrom , mTo)
 		
-
-
 		#creating the views for the front end part:
 		# There are 9 views that need to be created!
+
 		if db.table_exist(GENERAL_VIEW) == False:
 			db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
 

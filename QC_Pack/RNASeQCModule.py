@@ -1,3 +1,9 @@
+import collections
+import numpy
+import os
+import scipy.stats
+import sys
+
 #RNASeQC Main
 #PE is True for Paired-End, False for Single-End
 def Parse(unique_ID, sample_name,  PE):

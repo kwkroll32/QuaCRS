@@ -100,6 +100,17 @@
 		<comment></comment>
 	</column>
 	<column>
+		<field>rRNA_and_mitoRNA</field>
+		<type>DECIMAL(8,8)</type>
+		<null></null>
+		<key></key>
+		<default>DEFAULT NULL</default>
+		<extra></extra>
+		<precision>2</precision>
+		<percentage>true</percentage>
+		<comment></comment>
+	</column>
+	<column>
 		<field>Total_PF_Reads</field>
 		<type>INT(11)</type>
 		<null></null>

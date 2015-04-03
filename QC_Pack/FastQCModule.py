@@ -1,4 +1,10 @@
-def ReadFile(self, filename):
+import collections
+import numpy
+import os
+import scipy.stats
+import sys
+
+def ReadFile(filename):
     out_cols = [""] * 10
     
     try:
@@ -38,7 +44,7 @@ def ReadFile(self, filename):
 
 
 #FastQC Images
-def ReadImages(self, folder_name, end):
+def ReadImages(folder_name, end):
     images = ["duplication_levels", "kmer_profiles", "per_base_gc_content", "per_base_n_content", "per_base_quality", "per_base_sequence_content", "per_sequence_gc_content", "per_sequence_quality", "sequence_length_distribution"]
     out_cols = [""] * len(images)
     
@@ -54,9 +60,9 @@ def ReadImages(self, folder_name, end):
 
 
 #FastQC Main
-def Parse(self, unique_ID):
+def Parse(unique_ID):
     folder_name = "FastQC/" + unique_ID
     R1_data_name = folder_name + "_R1/fastqc_data.txt"
     R2_data_name = folder_name + "_R2/fastqc_data.txt"
     
-    return "\t".join([self.ReadFile(R1_data_name), self.ReadFile(R2_data_name), self.ReadImages(folder_name, "R1"), self.ReadImages(folder_name, "R2")])
+    return "\t".join([ReadFile(R1_data_name), ReadFile(R2_data_name), ReadImages(folder_name, "R1"), ReadImages(folder_name, "R2")])

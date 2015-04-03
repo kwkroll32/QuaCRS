@@ -1,3 +1,9 @@
+import collections
+import numpy
+import os
+import scipy.stats
+import sys
+
 #RSeQC Duplication Rate
 #base_name is either "sequence" or "mapping", for which duplication rate to use
 def ReadDupeRate(folder_name, base_name):

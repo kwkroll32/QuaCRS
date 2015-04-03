@@ -1,1 +1,2 @@
 make qc_table read a whole project at once
+remove sample prefix [T, R, S, M] from the constants.constants function

@@ -1,5 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
+import pdb
 
 #CONSTANTS
 INPUT_FILE=None
@@ -35,11 +36,18 @@ COMBINED_FLAG_COLUMN = "Shown"
 DESCRIPTION_COLUMN = "Run_Description"
 
 QC_COLUMNS=[]
+VIEWS = {}
+VIEWS['general'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STUDY_COLUMN),(DESCRIPTION_COLUMN)]
 
 curDir = os.path.dirname(__file__)
-tree = ET.parse(os.path.join(curDir,'qc_table_definition.xml'))
+tree = ET.parse(os.path.join(curDir,'karl_qc_table_definition.xml'))
 root = tree.getroot()
 for col in root:
+	try:
+		VIEWS[col.attrib['block']]
+	except:
+		VIEWS[col.attrib['block']] = [('qcID')]
+	VIEWS[col.attrib['block']].append((col.find('field').text))
 	for i,c in enumerate(col):
 		if c.text is None:
 			col[i].text = ""
@@ -49,102 +57,36 @@ for col in root:
 	m_tuple = col[0].text, data
 	QC_COLUMNS.append(m_tuple)
 	
-
-
-
 QC_COLUMNS_DICT={}
 for i,col in enumerate(QC_COLUMNS):
-	QC_COLUMNS_DICT[col[0]]=i
-
+	QC_COLUMNS_DICT[col[0]]=i	
 
 #VIEWS:
 #General Fields
 GENERAL_VIEW="general"
-VIEW_GENERAL=[(QC_TABLE_NAME+"ID"),
-			  (SAMPLE_ID_COLUMN),
-			  (SAMPLE_COLUMN),
-			  (STUDY_COLUMN),
-			  (DESCRIPTION_COLUMN)]
-
+VIEW_GENERAL=VIEWS['general']
 #Alignment Stats:
 ALIGNMENT_STATS_VIEW="alignment_stats"
-VIEW_ALIGNMENT_STATS=[(QC_TABLE_NAME+"ID"),
-					  #("Total_PF_Reads"),
-					  ("Aligned"),
-					  ("Unique"),
-					  ("Duplicates"),
-					  ("Duplication_Rate")]
+VIEW_ALIGNMENT_STATS=VIEWS['alignment_stats']
 #GENOMIC STATS
 GENOMIC_STATS_VIEW="genomic_stats"
-VIEW_GENOMIC_STATS=[(QC_TABLE_NAME+"ID"),
-					("Intragenic_Rate"),
-				   	("Exonic_Rate"),
-				   	("Intronic_Rate"),
-				   	("Intergenic_Rate"),
-				   	("Expression_Profiling_Efficiency"),
-				   	("Expressed_Transcripts")]
+VIEW_GENOMIC_STATS=VIEWS['genomic_stats']
 #LIBRARY STATS
 LIBRARY_STATS_VIEW="library_stats"
-VIEW_LIBRARY_STATS=[(QC_TABLE_NAME+"ID"),
-					("Estimated_Library_Size"),
-		   	   		("RQS")]
-
+VIEW_LIBRARY_STATS=VIEWS['library_stats']
 #STRAND STATS
 STRAND_STATS_VIEW="strand_stats"
-VIEW_STRAND_STATS=[(QC_TABLE_NAME+"ID"),
-				   ("End_1_Sense"),
-				   ("End_1_Antisense"),
-				   ("End_2_Sense"),
-				   ("End_2_Antisense"),
-				   ("End_1_%_Sense"),
-				   ("End_2_%_Sense")]
-
+VIEW_STRAND_STATS=VIEWS['strand_stats']
 #FAST QC VIEWS
 FAST_QC_STATS_VIEW="fastqc_stats"
-VIEW_FAST_QC_STATS=[(QC_TABLE_NAME+"ID"),
-					("R1_Per_Base_Sequence_Quality"),
-					("R1_Per_Sequence_Quality_Scores"),
-					("R1_Per_Base_Sequence_Content"),
-					("R1_Per_Base_GC_Content"),
-					("R1_Per_Sequence_GC_Content"),
-					("R1_Per_Base_N_Content"),
-					("R1_Sequence_Length_Distribution"),
-					("R1_Sequence_Duplication_Levels"),
-					("R1_Overrepresented_Sequences"),
-					("R1_Kmer_Content"),
-					("R2_Per_Base_Sequence_Quality"),
-					("R2_Per_Sequence_Quality_Scores"),
-					("R2_Per_Base_Sequence_Content"),
-					("R2_Per_Base_GC_Content"),
-					("R2_Per_Sequence_GC_Content"),
-					("R2_Per_Base_N_Content"),
-					("R2_Sequence_Length_Distribution"),
-					("R2_Sequence_Duplication_Levels"),
-					("R2_Overrepresented_Sequences"),
-					("R2_Kmer_Content")]
-
+VIEW_FAST_QC_STATS=VIEWS['fastqc_stats']
 #RSeQC VIEWS
 #GC CONTENT
 GC_CONTENT_VIEW="GC_content"
-VIEW_GC_CONTENT=[(QC_TABLE_NAME+"ID"),
-				 ("GC_Avg"),
-				 ("GC_Std_Dev"),
-				 ("GC_Skew")]
-
-
+VIEW_GC_CONTENT=VIEWS['GC_content']
 #SEQUENCE DUPLICATES
 SEQUENCE_DUPLICATES_VIEW="sequence_duplicates"
-VIEW_SEQUENCE_DUPLICATES=[(QC_TABLE_NAME+"ID"),
-						  ("1-10_sequence_dups"),
-					      ("11-100_sequence_dups"),
-					      ("100-1000_sequence_dups"),
-					      (">_1000_sequence_dups")]
-
-
+VIEW_SEQUENCE_DUPLICATES=VIEWS['sequence_duplicates']
 #MAPPING DUPLICATES
 MAPPING_DUPLICATES_VIEW="mapping_duplicates"
-VIEW_MAPPING_DUPLICATES=[(QC_TABLE_NAME+"ID"),
-						 ("1-10_mapping_dups"),
-					     ("11-100_mapping_dups"),
-					     ("100-1000_mapping_dups"),
-					     (">_1000_mapping_dups")]
+VIEW_MAPPING_DUPLICATES=VIEWS['mapping_duplicates']
