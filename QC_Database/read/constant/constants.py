@@ -40,7 +40,7 @@ VIEWS = {}
 VIEWS['general'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STUDY_COLUMN),(DESCRIPTION_COLUMN)]
 
 curDir = os.path.dirname(__file__)
-tree = ET.parse(os.path.join(curDir,'karl_qc_table_definition.xml'))
+tree = ET.parse(os.path.join(curDir,'qc_table_definition.xml'))
 root = tree.getroot()
 for col in root:
 	try:
