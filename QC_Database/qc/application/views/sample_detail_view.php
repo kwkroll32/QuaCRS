@@ -1,4 +1,4 @@
-<?
+<?php
 $base_url = $this->config->item('base_url');
 $precision = $this->config->item('precision');
 $resources = $this->config->item('resources');
@@ -11,14 +11,14 @@ $viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
 			<div>
 				<h3><?=$sample?> Details:</h3>
 				
-				<?$hidden = array('id' => $qcID);
+				<?php $hidden = array('id' => $qcID);
 				echo form_open('ajax/generate_report', "", $hidden);?>
 					<input type="submit" name="submit" id="download-report" class="btn btn-success btn-sm" value="Download Report">
-				<?=form_close();?>
+				<?php form_close();?>
 
 			</div>
 			<div class="row">
-				<?foreach($viewNames as $viewName){
+				<?php foreach($viewNames as $viewName){
 					echo "<div class='col-md-6'>";
 						echo "<div class='row'>";
 							echo "<div class='col-md-6'>";
@@ -87,7 +87,7 @@ $viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
 							</div>
 							<div id="duplicatin_stats" class="panel-collapse collapse in">
 								<div class="panel-body">
-									<?foreach($viewHiddens as $viewName){
+									<?php foreach($viewHiddens as $viewName){
 										echo "<div class='col-md-6'>";
 											echo "<h4>".ucfirst(str_replace("_"," ",$viewName)). "</h4>";
 											echo "<table class='table table-hover table-bordered'><thead>";
@@ -118,7 +118,7 @@ $viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
 							<div id="plots_images" class="panel-collapse collapse in">
 								<div class="panel-body">
 									<div class='row'>
-										<?
+										<?php
 										foreach($img as $image){
 											if ($image == "")
 												continue;

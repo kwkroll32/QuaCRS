@@ -1,9 +1,9 @@
-<?
+<?php
 $base_url = $this->config->item('base_url');
 $precision = $this->config->item('precision');
 ?>
 <div class="container">
-	<?echo form_open('search/presearch');?>
+	<?php echo form_open('search/presearch');?>
 	<div class="row">
 		<div class="col-md-6">
 			<h3>Search Bar</h3>
@@ -37,7 +37,7 @@ $precision = $this->config->item('precision');
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body columns-accordion-body">
 							<!--<ul class='list-unstyled'>-->
-							<?
+							<?php
 							$i=0;
 							foreach($view as $viewName => $viewDetail){?>
 								<div class="panel-group">
@@ -50,7 +50,7 @@ $precision = $this->config->item('precision');
 										<div id="<?=$viewName?>" class="panel-collapse collapse in">
 											<div class="container">
 												<ul class='list-unstyled'>
-												<?
+												<?php
 												foreach($viewDetail as $viewColumn){
 													if($viewColumn['Field'] == "qcID")
 														continue;
@@ -69,15 +69,15 @@ $precision = $this->config->item('precision');
 										</div>
 									</div>
 								</div>
-							<?}?>
+							<?php }?>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<?echo form_close();?>
+		<?php echo form_close();?>
 
-		<?echo form_open('sample/aggregate');?>
+		<?php echo form_open('sample/aggregate');?>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-6">
@@ -92,7 +92,7 @@ $precision = $this->config->item('precision');
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="toggleCheckbox" data-checked="false"></th>
-						<?
+						<?php
 						$i=0;
 						foreach($columns as $column){
 							#if (in_array($column['Field'],$defaultColumns))
@@ -121,7 +121,7 @@ $precision = $this->config->item('precision');
 						</tr>
 					</thead>
 					<tbody>
-					<?
+					<?php
 					if (!empty($samples)){
 						foreach($samples as $sample){
 							echo "<tr >";
@@ -178,6 +178,6 @@ $precision = $this->config->item('precision');
 					</tbody>
 				</table>
 			</div>
-		<?echo form_close();?>
+		<?php echo form_close();?>
 	</div>
 </div>	

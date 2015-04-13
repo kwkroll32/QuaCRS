@@ -2,7 +2,7 @@
 <script type="text/javascript" src="assets/plugins/jquery_sparkline/js/jquery.sparkline.min.js"></script>
 <script type="text/javascript">$(function() {$('.sparklines').sparkline('html', {type: 'box', width: '4em', tooltipFormatFieldlist: ['lw', 'lq', 'med', 'uq', 'rw'], tooltipFormatFieldlistKey: 'field'});});</script>
 
-<?
+<?php
 $base_url = $this->config->item('base_url'); 
 $precision = $this->config->item('precision');
 $viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
@@ -20,10 +20,10 @@ $samplesString = rtrim($samplesString,",");
 			<div>
 				<h3>Aggregate Results:</h3>
 				
-				<?$hidden = array('id' => $samplesString);
+				<?php $hidden = array('id' => $samplesString);
 				echo form_open('ajax/generate_report', "", $hidden);?>
 					<input type="submit" name="submit" id="download-report" class="btn btn-success btn-sm" value="Download Report">
-				<?=form_close();?>
+				<?php form_close();?>
 			
 			</div>
 			<div class="row">
@@ -63,7 +63,7 @@ $samplesString = rtrim($samplesString,",");
 					</table>
 				</div>
 			</div>
-			<?
+			<?php
 			foreach($viewNames as $viewName){
 				echo "<div class='col-md-6'>";
 					echo "<div class='row'>";

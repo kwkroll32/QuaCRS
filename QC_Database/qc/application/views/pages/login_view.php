@@ -1,4 +1,4 @@
-<?
+<?php
   $head['title'] = 'login';
   $navbar['selected']='Null';
   $this->load->view('templates/head', $head);

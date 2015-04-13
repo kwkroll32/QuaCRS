@@ -1,4 +1,4 @@
-<?
+<?php
 $base_url = $this->config->item('base_url');
 $precision = $this->config->item('precision');
 $resources = $this->config->item('resources');
