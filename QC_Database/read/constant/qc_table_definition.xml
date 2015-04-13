@@ -341,7 +341,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Duplication_Levels_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -352,7 +352,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Kmer_Profiles_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -363,7 +363,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Base_GC_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -374,7 +374,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Base_N_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -385,7 +385,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Base_Quality_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -396,7 +396,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Base_Sequence_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -407,7 +407,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Sequence_GC_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -418,7 +418,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Per_Sequence_Quality_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -429,7 +429,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R1_Sequence_Length_Distribution_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -440,7 +440,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Duplication_Levels_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -451,7 +451,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Kmer_Profiles_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -462,7 +462,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Base_GC_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -473,7 +473,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Base_N_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -484,7 +484,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Base_Quality_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -495,7 +495,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Base_Sequence_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -506,7 +506,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Sequence_GC_Content_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -517,7 +517,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Per_Sequence_Quality_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
@@ -528,7 +528,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="">
 		<field>R2_Sequence_Length_Distribution_Graph_Location</field>
 		<type>VARCHAR(255)</type>
 		<null></null>
