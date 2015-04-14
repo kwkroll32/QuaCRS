@@ -18,5 +18,7 @@ ERR_DB_NOT_CONNECTED="The database is not connected! Please check the config.py 
 ERR_DB_TABLE_ALREADY_EXIST="The table already exist"
 ERR_DB_VIEW_ALREADY_EXIST="The view already exist"
 
+#WARNINGS
+WAR_DB_COLUMN="The column {0} does not exist in the database. Has it been properly defined in the XML definitions?"
 
 ERR_DB_IDK="SOMETHING JUST WENT WRONG!"

@@ -63,14 +63,20 @@ def main():
 	for o, a in opts:
 		if o in ("-i", "--input-file"):
 			global INPUT_FILE
-			INPUT_FILE=str(a)
+			INPUT_FILE=str(os.path.realpath(os.path.expanduser(a)))
+			if not os.path.isfile(INPUT_FILE):
+				print_error("Argument passed to '-i' is not a regular file! Verify that it exists, or use '-b' for directories.")
+				sys.exit(1)
 
 		if o in ("-d", "--delimiter"):
 			DELIMITER=str(a)
 
 		if o in ("-b", "--input-directory"):
 			global INPUT_FILE_PATH
-			INPUT_FILE_PATH=str(a)
+			INPUT_FILE_PATH=str(os.path.realpath(os.path.expanduser(a))) + '/'
+			if not os.path.isdir(INPUT_FILE_PATH):
+				print_error("Argument passed to '-b' is not a directory! Verify that it exists, or use '-i' for files.")
+				sys.exit(1)
 
 		if o in ("-h", "--help"):
 			print main.__doc__
@@ -182,7 +188,7 @@ def process_files(command):
 	ans = None
 	rtn = -1
 	try:
-		files = glob(INPUT_FILE_PATH+"qc_*.csv")
+		files = glob(INPUT_FILE_PATH+"*.csv")
 		print_log("READ ALL THE CSV FILES IN THE FOLDER")
 
 		for m_file in files:
@@ -245,12 +251,16 @@ def create(exitIfError=True):
 	header=get_header(inFile)
 
 	# Checking if the header matches what is in the database
+	header = check_header(header)
+	
+	'''
 	if check_header(header) == False:
 		print_error(ERR_HEADER_NOT_MATCH)
 		if exitIfError:
 			sys.exit(1)
 		else:
 			return 1
+	'''
 
 
 	# Check if we have already created the table
@@ -326,7 +336,8 @@ def create(exitIfError=True):
 		else:
 			#open the file again!
 			inFile=open(INPUT_FILE,"r")
-			header=get_header(inFile)
+			#trim off the file header
+			inFile.readline()
 
 			insert_content_to_db(inFile,header)
 
@@ -359,12 +370,15 @@ def update(exitIfError=True, yesToAll=False, answer=None):
 	print_log("HAVE READ THE FILE AND THE HEADER")
 
 	# Checking if the header matches what is in the database
+	header = check_header(header)
+	'''
 	if check_header(header) == False:
 		print_error(ERR_HEADER_NOT_MATCH)
 		if exitIfError:
 			sys.exit(1)
 		else:
 			return (1, None)
+	'''
 
 	print_log("CHECKED THE HEADER AND THERE WAS NO PROBLEM")
 
@@ -499,7 +513,7 @@ def insert_content_to_db(inFile,header):
 			columns.append("`"+COMBINED_FLAG_COLUMN+"`")
 			values.append(prep_value_for_db(int(not hasCombined)))
 		
-
+		
 		db.insert(QC_TABLE_NAME,columns,values)
 
 
@@ -818,13 +832,24 @@ def get_header(inFile):
 
 def check_header(header):
 	"""
-	In this file, we look at the fields in the database and compare them with the columns in the header dictionary. If they match, return true, if not return false
+	This function will compare the input file header to the columns in the existing MySQL database
+	If all of the file columns are already in the database, returns (a copy of) the original header 
+	If there are unexpected columns in the file, they are removed and returns only the columns that are permitted in the database
+	If the input file header lacks any of the requried columns, throws error and quit program. 
 	"""
+	reqs = [STUDY_COLUMN, SAMPLE_ID_COLUMN, SAMPLE_COLUMN, DESCRIPTION_COLUMN]
+	if not all([ header.has_key(x) for x in reqs ]):
+		print_error("Missing one of the required columns! {0}".format(str(reqs)))
+		sys.exit(1)
+	new_header = {}
+	
 	for key in header.keys():
 		if QC_COLUMNS_DICT.has_key(key) == False:
-			print key
-			return False
-	return True
+			print_warning(WAR_DB_COLUMN.format(key))
+		else:
+			new_header[key] = header[key]
+	
+	return new_header 
 
 
 

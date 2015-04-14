@@ -110,7 +110,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="">
+	<column block="alignment_stats">
 		<field>Total_PF_Reads</field>
 		<type>INT(11)</type>
 		<null></null>
