@@ -28,10 +28,10 @@ class Sample_model extends CI_Model {
 	}
 
 	function get_sample_view($viewName, $sampleID, $fields="*"){
-		$this->db->select($fields);
-		$this->db->where("qcID", $sampleID);
-		$query = $this->db->get($viewName);
-		$result = $query->result_array();
+		$this->db->select($fields);	      //select database
+		$this->db->where("qcID", $sampleID);  //compare $sampleID to qcID
+		$query = $this->db->get($viewName);   //runs select and where calls and builds the query for table ($viewname)
+		$result = $query->result_array();     //query result as associative array
 		return $result[0];
 	}
 
@@ -48,6 +48,39 @@ class Sample_model extends CI_Model {
 		$result = $query->result_array();
 		return $result[0]['C'];
 	}
+
+	function get_table_names($viewPage){
+		$notTableList = array("permissions", "qc", "users");
+		if ($viewPage == "sample_detail_view"){
+			$notTableList[3] = "General";
+		}
+		if ($viewPage == "aggregate_detail_view"){
+			$notTableList[3] = "General";
+			$notTableList[4] = "fastqc_stats";
+		}
+		$query = $this->db->query("SHOW TABLES");
+		$result = $query->result_array();
+		$tableOut = array();
+		$query = $this->db->query("SELECT DATABASE() as name;");
+		$tmp = $query->row();
+		$db_name = substr($tmp->name,0);
+		
+		$j = 0;
+		for($i = 0; $i < count($result); $i++){
+			if(!in_array($result[$i]["Tables_in_{$db_name}"], $notTableList)){
+				$tableOut[$j]=$result[$i]["Tables_in_{$db_name}"];
+				$j++;
+			}
+		}
+		return $tableOut;
+	}
+
+	/*function get_hidden_names(){
+		$query = $this->db->query("SHOW TABLES");
+		$result = $query->result_array();
+		$tableOut = array();
+		$notHiddenList = array("general", "mapping_duplicates", "permissions", "qc", "sequence_duplicates", "users");
+		$j = 0; */
 
 	function get_columns($viewName){
 		$query = $this->db->query("SHOW COLUMNS FROM $viewName");

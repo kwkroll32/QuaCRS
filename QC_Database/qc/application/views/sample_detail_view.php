@@ -2,8 +2,14 @@
 $base_url = $this->config->item('base_url');
 $precision = $this->config->item('precision');
 $resources = $this->config->item('resources');
-$viewNames = array("fastqc_stats","GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
-$viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
+//$viewNames = array("fastqc_stats","GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
+$viewHiddens=array("mapping_duplicates", "sequence_duplicates");
+$staticTables = array();
+foreach($viewNames as $view){
+	if(!in_array($view, $viewHiddens)){
+		$staticTables[$view] = $view;
+	}
+}
 ?>
 <div class="container">
 	<div class="row">
@@ -18,7 +24,7 @@ $viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
 
 			</div>
 			<div class="row">
-				<?php foreach($viewNames as $viewName){
+				<?php foreach($staticTables as $viewName){
 					echo "<div class='col-md-6'>";
 						echo "<div class='row'>";
 							echo "<div class='col-md-6'>";

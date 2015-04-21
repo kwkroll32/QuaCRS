@@ -37,17 +37,21 @@ DESCRIPTION_COLUMN = "Run_Description"
 
 QC_COLUMNS=[]
 VIEWS = {}
-VIEWS['general'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STUDY_COLUMN),(DESCRIPTION_COLUMN)]
+VIEWS['General'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STUDY_COLUMN),(DESCRIPTION_COLUMN)]
 
 curDir = os.path.dirname(__file__)
 tree = ET.parse(os.path.join(curDir,'qc_table_definition.xml'))
 root = tree.getroot()
 for col in root:
 	try:
-		VIEWS[col.attrib['block']]
+		table_name = col.attrib['block'][0].lower() + col.attrib['block'][1:]
 	except:
-		VIEWS[col.attrib['block']] = [('qcID')]
-	VIEWS[col.attrib['block']].append((col.find('field').text))
+		table_name = ""
+	try:
+		VIEWS[table_name]
+	except:
+		VIEWS[table_name] = [('qcID')]
+	VIEWS[table_name].append((col.find('field').text))
 	for i,c in enumerate(col):
 		if c.text is None:
 			col[i].text = ""
@@ -61,6 +65,7 @@ QC_COLUMNS_DICT={}
 for i,col in enumerate(QC_COLUMNS):
 	QC_COLUMNS_DICT[col[0]]=i	
 
+'''
 #VIEWS:
 #General Fields
 GENERAL_VIEW="general"
@@ -90,3 +95,5 @@ VIEW_SEQUENCE_DUPLICATES=VIEWS['sequence_duplicates']
 #MAPPING DUPLICATES
 MAPPING_DUPLICATES_VIEW="mapping_duplicates"
 VIEW_MAPPING_DUPLICATES=VIEWS['mapping_duplicates']
+#pdb.set_trace()
+'''

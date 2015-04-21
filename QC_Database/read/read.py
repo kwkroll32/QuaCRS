@@ -281,6 +281,11 @@ def create(exitIfError=True):
 			
 			#creating the views for the front end part:
 			# There are 9 views that need to be created!
+			
+			for table, columns in VIEWS.items():
+				if db.table_exist(table) == False:
+					db.create_view(table, QC_TABLE_NAME, columns=columns)
+			'''
 			if db.table_exist(GENERAL_VIEW) == False:
 				db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
 
@@ -307,6 +312,7 @@ def create(exitIfError=True):
 
 			if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
 				db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
+			'''
 
 		except:
 			#something went wrong while creating the table
@@ -907,7 +913,9 @@ def clear_project(exitIfError=True):
 
 	This function is dropping/deleting all 8 views and the single table
 	"""
-
+	for table in VIEWS.keys():
+		db.drop_table(table, True)
+	'''
 	db.drop_table(GENERAL_VIEW,				True)
 	db.drop_table(ALIGNMENT_STATS_VIEW,		True)
 	db.drop_table(GENOMIC_STATS_VIEW,		True)
@@ -917,6 +925,7 @@ def clear_project(exitIfError=True):
 	db.drop_table(GC_CONTENT_VIEW,			True)
 	db.drop_table(SEQUENCE_DUPLICATES_VIEW,	True)
 	db.drop_table(MAPPING_DUPLICATES_VIEW,	True)
+	'''
 
 	db.drop_table(QC_TABLE_NAME)
 	if os.path.exists(WEB_APP_PATH+"assets/img/"):
@@ -951,7 +960,10 @@ def clear_project(exitIfError=True):
 		
 		#creating the views for the front end part:
 		# There are 9 views that need to be created!
-
+		for table, columns in VIEWS.items():
+			if db.table_exist(table) == False:
+				db.create_view(table, QC_TABLE_NAME, columns=columns)
+		'''
 		if db.table_exist(GENERAL_VIEW) == False:
 			db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
 
@@ -978,7 +990,8 @@ def clear_project(exitIfError=True):
 
 		if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
 			db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
-
+		'''
+		
 	except:
 		#something went wrong while creating the table
 		print_error(ERR_DB_CREATE_TABLE)

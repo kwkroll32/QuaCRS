@@ -5,13 +5,19 @@
 <?php
 $base_url = $this->config->item('base_url'); 
 $precision = $this->config->item('precision');
-$viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
+//$viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
 $viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
 $samplesString = "";
 foreach($samples as $sample){
 	$samplesString .= $sample .',';
 }
 $samplesString = rtrim($samplesString,",");
+
+foreach($viewNames as $view){
+	if(!in_array($view, $viewHiddens)){
+		$staticTables[$view] = $view;
+	}
+}
 ?>
 
 <div class="container">
@@ -64,7 +70,7 @@ $samplesString = rtrim($samplesString,",");
 				</div>
 			</div>
 			<?php
-			foreach($viewNames as $viewName){
+			foreach($staticTables as $viewName){
 				echo "<div class='col-md-6'>";
 					echo "<div class='row'>";
 						echo "<div class='col-md-6'>";

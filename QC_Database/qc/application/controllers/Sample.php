@@ -5,7 +5,7 @@ class Sample extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 
-		$this->load->helper('utility');		
+	$this->load->helper('utility');		
     	$this->load->model("Sample_model");
     	$this->load->helper('form');
 
@@ -36,7 +36,8 @@ class Sample extends CI_Controller{
 		// we need to have the columns in the same order as they appear in the columns dropdown for the table
 		$columns = array();
 
-		$viewNames = array("general","genomic_stats","alignment_stats","fastqc_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
+		$viewNames = $this->Sample_model->get_table_names("sample_view");
+		//$viewNames = array("general","genomic_stats","alignment_stats","fastqc_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
 		foreach ($viewNames as $viewName){
 			$data['view'][$viewName] = $this->Sample_model->get_columns($viewName);
 			foreach($data['view'][$viewName] as $column){
@@ -78,7 +79,7 @@ class Sample extends CI_Controller{
 
 		$data = array();
 		if (!is_numeric($sampleID)){
-			echo "ERROR: $sampleID";
+			echo "ERROR: ".$sampleID;
 			return 1;
 		}
 		if (! $this->Sample_model->is_allowed($session_data['id'], $sampleID) )
@@ -95,17 +96,19 @@ class Sample extends CI_Controller{
 		}
 		
 		$sampleName= $this->Sample_model->get_sample_name($sampleID);
-		$viewNames = array("genomic_stats","alignment_stats","fastqc_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
-
+		$viewNames = $this->Sample_model->get_table_names("sample_detail_view");
+		//$viewNames = array("genomic_stats","alignment_stats","fastqc_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
+		$i = 0;
 		foreach ($viewNames as $viewName){
 			$data['views'][$viewName] = $this->Sample_model->get_sample_view($viewName,$sampleID);
 		}
 
 		$data['qcID'] = $sampleID;
 		$data['sample'] = $sampleName;
+		$data['viewNames'] = $viewNames;
 		$data['img'] = $this->Sample_model->get_images($sampleID);
 		$data['flags'] = get_percent_flags();
-
+		
 		$head['title'] = "Sample Detail for $sampleName";
 		$navbar['selected']="home";
 
@@ -126,13 +129,14 @@ class Sample extends CI_Controller{
 	
 	if (array_key_exists('samples', $data))
 	{
-		$viewNames = array("genomic_stats","alignment_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
+		$viewNames = $this->Sample_model->get_table_names("aggregate_detail_view");
+		//$viewNames = array("genomic_stats","alignment_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
 
 		foreach($viewNames as $viewName){
 			$data['aggregate_result_views'][$viewName] = $this->Sample_model->get_aggregate_view($viewName, $data['samples']);
 			$data['plot_info'][$viewName] = $this->Sample_model->get_samples_info($viewName, $data['samples']);
 		}
-
+		$data['viewNames'] = $viewNames;
 		$data['fastqc_aggregate_result'] = $this->Sample_model->get_fastqc_aggregate_view($data['samples']);
 		$data['flags'] = get_percent_flags();
 	

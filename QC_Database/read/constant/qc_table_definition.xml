@@ -88,7 +88,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="library_stats">
+	<column block="Library_Stats">
 		<field>RQS</field>
 		<type>DECIMAL(3,2)</type>
 		<null></null>
@@ -99,7 +99,7 @@
 		<percentage>false</percentage>
 		<comment></comment>
 	</column>
-	<column block="library_stats">
+	<column block="Contamination">
 		<field>rRNA_and_mitoRNA</field>
 		<type>DECIMAL(8,8)</type>
 		<null></null>
@@ -110,7 +110,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="alignment_stats">
+	<column block="Alignment_Stats">
 		<field>Total_PF_Reads</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -121,7 +121,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Base_Sequence_Quality</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -132,7 +132,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Sequence_Quality_Scores</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -143,7 +143,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Base_Sequence_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -154,7 +154,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Base_GC_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -165,7 +165,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Sequence_GC_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -176,7 +176,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Per_Base_N_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -187,7 +187,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Sequence_Length_Distribution</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -198,7 +198,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Sequence_Duplication_Levels</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -209,7 +209,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Overrepresented_Sequences</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -220,7 +220,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R1_Kmer_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -231,7 +231,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Base_Sequence_Quality</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -242,7 +242,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Sequence_Quality_Scores</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -253,7 +253,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Base_Sequence_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -264,7 +264,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Base_GC_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -275,7 +275,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Sequence_GC_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -286,7 +286,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Per_Base_N_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -297,7 +297,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Sequence_Length_Distribution</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -308,7 +308,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Sequence_Duplication_Levels</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -319,7 +319,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Overrepresented_Sequences</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -330,7 +330,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="fastqc_stats">
+	<column block="FastQC_Stats">
 		<field>R2_Kmer_Content</field>
 		<type>ENUM('PASS','FAIL','WARN')</type>
 		<null></null>
@@ -539,7 +539,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="alignment_stats">
+	<column block="Alignment_Stats">
 		<field>Aligned</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -550,7 +550,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="alignment_stats">
+	<column block="Alignment_Stats">
 		<field>Unique</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -561,7 +561,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="alignment_stats">
+	<column block="Alignment_Stats">
 		<field>Duplicates</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -572,7 +572,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="alignment_stats">
+	<column block="Alignment_Stats">
 		<field>Duplication_Rate</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -583,7 +583,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="library_stats">
+	<column block="Library_Stats">
 		<field>Estimated_Library_Size</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -594,7 +594,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Intragenic_Rate</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -605,7 +605,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Exonic_Rate</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -616,7 +616,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Intronic_Rate</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -627,7 +627,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Intergenic_Rate</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -638,7 +638,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Expression_Profiling_Efficiency</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -649,7 +649,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="genomic_stats">
+	<column block="Genomic_Stats">
 		<field>Expressed_Transcripts</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -660,7 +660,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_1_Sense</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -671,7 +671,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_1_Antisense</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -682,7 +682,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_2_Sense</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -693,7 +693,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_2_Antisense</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -704,7 +704,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_1_%_Sense</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -715,7 +715,7 @@
 		<percentage>false</percentage>
 		<comment></comment>
 	</column>
-	<column block="strand_stats">
+	<column block="Strand_Stats">
 		<field>End_2_%_Sense</field>
 		<type>DECIMAL(10,8)</type>
 		<null></null>
@@ -726,7 +726,7 @@
 		<percentage>false</percentage>
 		<comment></comment>
 	</column>
-	<column block="sequence_duplicates">
+	<column block="Sequence_Duplicates">
 		<field>1-10_sequence_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -737,7 +737,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="sequence_duplicates">
+	<column block="Sequence_Duplicates">
 		<field>11-100_sequence_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -748,7 +748,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="sequence_duplicates">
+	<column block="Sequence_Duplicates">
 		<field>100-1000_sequence_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -759,7 +759,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="sequence_duplicates">
+	<column block="Sequence_Duplicates">
 		<field>>_1000_sequence_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -770,7 +770,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="mapping_duplicates">
+	<column block="Mapping_Duplicates">
 		<field>1-10_mapping_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -781,7 +781,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="mapping_duplicates">
+	<column block="Mapping_Duplicates">
 		<field>11-100_mapping_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -792,7 +792,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="mapping_duplicates">
+	<column block="Mapping_Duplicates">
 		<field>100-1000_mapping_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -803,7 +803,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="mapping_duplicates">
+	<column block="Mapping_Duplicates">
 		<field>>_1000_mapping_dups</field>
 		<type>INT(11)</type>
 		<null></null>
@@ -814,7 +814,7 @@
 		<percentage></percentage>
 		<comment></comment>
 	</column>
-	<column block="GC_content">
+	<column block="GC_Content">
 		<field>GC_Avg</field>
 		<type>DECIMAL(14,10)</type>
 		<null></null>
@@ -825,7 +825,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="GC_content">
+	<column block="GC_Content">
 		<field>GC_Std_Dev</field>
 		<type>DECIMAL(14,10)</type>
 		<null></null>
@@ -836,7 +836,7 @@
 		<percentage>true</percentage>
 		<comment></comment>
 	</column>
-	<column block="GC_content">
+	<column block="GC_Content">
 		<field>GC_Skew</field>
 		<type>DECIMAL(14,10)</type>
 		<null></null>
