@@ -41,24 +41,25 @@ VIEWS['General'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STU
 curDir = os.path.dirname(__file__)
 tree = ET.parse(os.path.join(curDir,QC_TABLE_DEFINITION))
 root = tree.getroot()
-for col in root:
+for view in root:
 	try:
-		table_name = col.attrib['block'][0].lower() + col.attrib['block'][1:]
+		view_name = view.attrib['name'][0].lower() + view.attrib['name'][1:]
 	except:
-		table_name = ""
+		view_name = ""
 	try:
-		VIEWS[table_name]
+		VIEWS[view_name]
 	except:
-		VIEWS[table_name] = [(QC_TABLE_NAME+"ID")]
-	VIEWS[table_name].append((col.find('field').text))
-	for i,c in enumerate(col):
-		if c.text is None:
-			col[i].text = ""
-	
-	data = col[1].text+ " "+ str(col[2].text)+ " " + str(col[3].text) + " " + str(col[4].text) + " "+ str(col[5].text)
-	data = " ".join(data.split())
-	m_tuple = col[0].text, data
-	QC_COLUMNS.append(m_tuple)
+		VIEWS[view_name] = [(QC_TABLE_NAME+"ID")]
+	for col in view.getchildren():
+		VIEWS[view_name].append((col.find('field').text))
+		for i,c in enumerate(col):
+			if c.text is None:
+				col[i].text = ""
+		
+		data = col[1].text+ " "+ str(col[2].text)+ " " + str(col[3].text) + " " + str(col[4].text) + " "+ str(col[5].text)
+		data = " ".join(data.split())
+		m_tuple = col[0].text, data
+		QC_COLUMNS.append(m_tuple)
 	
 QC_COLUMNS_DICT={}
 for i,col in enumerate(QC_COLUMNS):
