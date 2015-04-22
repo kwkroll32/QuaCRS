@@ -6,7 +6,7 @@
 $base_url = $this->config->item('base_url'); 
 $precision = $this->config->item('precision');
 //$viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
-$viewHiddens=array("mapping_duplicates", "sequence_duplicates" );
+$viewHiddens=array("mapping_Duplicates", "sequence_Duplicates" );
 $samplesString = "";
 foreach($samples as $sample){
 	$samplesString .= $sample .',';
@@ -85,7 +85,7 @@ foreach($viewNames as $view){
 							echo "<tr><th>Metric</th><th>Min</th><th>Avg</th><th>Max</th><th>Plot</th></tr></thead><tbody>";
 														
 							$plot_data = array();
-							if ($viewName != "fastqc_stats"){
+							if ($viewName != "fastQC_Stats"){
 								for ($i=0;$i<count($plot_info[$viewName]);$i++){
 									foreach($plot_info[$viewName][$i] as $key=>$value){
 										if(isset($plot_data[$key])){

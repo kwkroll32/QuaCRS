@@ -117,10 +117,6 @@ def process(arg):
 	"""
 
 	arg=arg.lower()
-	if arg == "init":
-		init_project();
-		exit(0);
-
 
 	if arg == "clear":
 		if INPUT_FILE is not None:
@@ -268,84 +264,89 @@ def create(exitIfError=True):
 	# if the tables does not exist, no data will be updated or over written, therefore, there will 
 	# be no warning! However if the table already exists, that means that we need to check and see
 	# the new data will be over righting any of the already previously existing data.
-	if db.table_exist(QC_TABLE_NAME) == False:
-		try:
+	#if db.table_exist(QC_TABLE_NAME) == False:
+	create_database(exitIfError)
+	'''
+	try:
+		if db.table_exist(QC_TABLE_NAME) == False:
 			# Table does not exist
 			db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
-			#copying the qc table stucture to the server
-			mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
-			mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
+		#copying the qc table stucture to the server
+		mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
+		mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
 
-			copyFile(mFrom , mTo)
-			
-			#creating the views for the front end part:
-			# There are 9 views that need to be created!
-			
-			for table, columns in VIEWS.items():
-				if db.table_exist(table) == False:
-					db.create_view(table, QC_TABLE_NAME, columns=columns)
-			'''
-			if db.table_exist(GENERAL_VIEW) == False:
-				db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
+		copyFile(mFrom , mTo)
+		
+		#creating the views for the front end part:
+		# There are 9 views that need to be created!
+		
+		for table, columns in VIEWS.items():
+			if db.table_exist(table) == False:
+				db.create_view(table, QC_TABLE_NAME, columns=columns)
 
-			if db.table_exist(ALIGNMENT_STATS_VIEW) == False:
-				db.create_view(ALIGNMENT_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_ALIGNMENT_STATS)
+		#
+		if db.table_exist(GENERAL_VIEW) == False:
+			db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
 
-			if db.table_exist(GENOMIC_STATS_VIEW) == False:
-				db.create_view(GENOMIC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_GENOMIC_STATS)
+		if db.table_exist(ALIGNMENT_STATS_VIEW) == False:
+			db.create_view(ALIGNMENT_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_ALIGNMENT_STATS)
 
-			if db.table_exist(LIBRARY_STATS_VIEW) == False:
-				db.create_view(LIBRARY_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_LIBRARY_STATS)
+		if db.table_exist(GENOMIC_STATS_VIEW) == False:
+			db.create_view(GENOMIC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_GENOMIC_STATS)
 
-			if db.table_exist(STRAND_STATS_VIEW) == False:
-				db.create_view(STRAND_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_STRAND_STATS)
+		if db.table_exist(LIBRARY_STATS_VIEW) == False:
+			db.create_view(LIBRARY_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_LIBRARY_STATS)
 
-			if db.table_exist(FAST_QC_STATS_VIEW) == False:
-				db.create_view(FAST_QC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_FAST_QC_STATS)
+		if db.table_exist(STRAND_STATS_VIEW) == False:
+			db.create_view(STRAND_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_STRAND_STATS)
 
-			if db.table_exist(GC_CONTENT_VIEW) == False:
-				db.create_view(GC_CONTENT_VIEW, QC_TABLE_NAME, columns=VIEW_GC_CONTENT)
+		if db.table_exist(FAST_QC_STATS_VIEW) == False:
+			db.create_view(FAST_QC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_FAST_QC_STATS)
 
-			if db.table_exist(SEQUENCE_DUPLICATES_VIEW) == False:
-				db.create_view(SEQUENCE_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_SEQUENCE_DUPLICATES)
+		if db.table_exist(GC_CONTENT_VIEW) == False:
+			db.create_view(GC_CONTENT_VIEW, QC_TABLE_NAME, columns=VIEW_GC_CONTENT)
 
-			if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
-				db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
-			'''
+		if db.table_exist(SEQUENCE_DUPLICATES_VIEW) == False:
+			db.create_view(SEQUENCE_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_SEQUENCE_DUPLICATES)
 
-		except:
-			#something went wrong while creating the table
-			print_error(ERR_DB_CREATE_TABLE)
-			if exitIfError:
-				sys.exit(1)
-			else:
-				return 1
+		if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
+			db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
+		#
 
-		#insert the data from the file to the newly created table
-		insert_content_to_db(inFile,header)
+	except:
+		#something went wrong while creating the table
+		print_error(ERR_DB_CREATE_TABLE)
+		if exitIfError:
+			sys.exit(1)
+		else:
+			return 1
+	'''
+
+	#insert the data from the file to the newly created table
+	#insert_content_to_db(inFile,header)
 
 	# if the table already exist
 	# we first have to process the line and see if the sample already exist
-	else:
-		fwo = file_will_overwrite(inFile,header)
+	#else:
+	fwo = file_will_overwrite(inFile,header)
 
-		#the data will overwrite something in the table
-		if fwo == 1 or fwo == -1:
-			print_error(ERR_SAMPLE_ALREADY_EXIST)
-			if exitIfError:
-				sys.exit(1)
-			else:
-				return 1
-
-		# the data will not overwrite anything in the table
+	#the data will overwrite something in the table
+	if fwo == 1 or fwo == -1:
+		print_error(ERR_SAMPLE_ALREADY_EXIST)
+		if exitIfError:
+			sys.exit(1)
 		else:
-			#open the file again!
-			inFile=open(INPUT_FILE,"r")
-			#trim off the file header
-			inFile.readline()
+			return 1
 
-			insert_content_to_db(inFile,header)
+	# the data will not overwrite anything in the table
+	else:
+		#open the file again!
+		inFile=open(INPUT_FILE,"r")
+		#trim off the file header
+		inFile.readline()
+
+		insert_content_to_db(inFile,header)
 
 	return 0
 
@@ -369,6 +370,8 @@ def update(exitIfError=True, yesToAll=False, answer=None):
 			return (1, None)
 
 	print_log("HAVE PERMISSIONS TO READ THE FILE!")
+
+	create_database(exitIfError=True)
 
 	inFile=open(INPUT_FILE,"r")
 	header=get_header(inFile)
@@ -400,6 +403,7 @@ def update(exitIfError=True, yesToAll=False, answer=None):
 			# The sample does not exist in the database
 			# throw an error 
 			print_error(ERR_SAMPLE_DOES_NOT_EXIST)
+			print "Try using `CREATE` instead of `UPDATE`"
 			if exitIfError:
 				sys.exit(1)
 			else:
@@ -575,7 +579,7 @@ def will_overwrite(data, header, printDetail=True):
 	sampleData = db.select(QC_TABLE_NAME,where=SAMPLE_ID_COLUMN+"='"+sampleID+"'", limit=1)
 	threshold = 0.0001
 	changed = False
-
+	#pdb.set_trace()
 
 	if len(sampleData) == 0:
 		return 0
@@ -584,6 +588,8 @@ def will_overwrite(data, header, printDetail=True):
 
 	res = -1
 
+	changed_data = [["Column", "Old_val", "New_val"]]
+	changed_data_row = 1
 	for key in header.keys():
 		if key == SAMPLE_COLUMN:
 			continue
@@ -641,15 +647,25 @@ def will_overwrite(data, header, printDetail=True):
 			#informing the user on what columns are being overwritten
 			#FORMAT: Column_name		old_val		new_val
 			if printDetail:
-				if res == -1:
-					print "Column\t\tOld_val\t\tNew_val"
-					print "----------------------------------------"
-				print str(key)+"\t\t"+str(oldData)+"\t\t"+str(newData)
+				#if res == -1:
+					#print "Column\t\tOld_val\t\tNew_val"
+					#print "----------------------------------------"
+				#print str(key)+"\t\t"+str(oldData)+"\t\t"+str(newData)
+				changed_data.append([])
+				changed_data[changed_data_row] = [key, oldData, newData]
+				changed_data_row += 1
 				res = 1
 			else:
 				return 1
 
 			changed = False
+
+	if changed and printDetail:
+		# print change dict here
+		col_width = max(len(str(word)) for row in changed_data for word in row) + 2  
+		for row in changed_data:
+			print "".join(str(word).ljust(col_width) for word in row)
+
 	return res
 
 
@@ -811,7 +827,7 @@ def sample_exist(sampleID):
 	"""
 
 	res = db.select(QC_TABLE_NAME,columns="qcID", where=SAMPLE_ID_COLUMN+"='"+sampleID+"'", limit=1)
-	if res == False:
+	if not res:
 		return None
 	else:
 		return res[0][0]
@@ -882,17 +898,6 @@ def copyFile(_from, _to):
 	copyfile(_from, _to)
 
 
-
-def init_project():
-	"""
-	This function will be called before any other command is called
-	This function will create the tables/views required for the project.
-
-
-	"""
-	return True
-
-
 def clear_item(uniqueID):
 	"""
 	This function will remove one item from the project
@@ -911,21 +916,10 @@ def clear_project(exitIfError=True):
 	The name of the table that is going to be deleted, are all in the config
 	file in the constant forler.
 
-	This function is dropping/deleting all 8 views and the single table
+	This function is dropping/deleting all views and the single table
 	"""
-	for table in VIEWS.keys():
-		db.drop_table(table, True)
-	'''
-	db.drop_table(GENERAL_VIEW,				True)
-	db.drop_table(ALIGNMENT_STATS_VIEW,		True)
-	db.drop_table(GENOMIC_STATS_VIEW,		True)
-	db.drop_table(LIBRARY_STATS_VIEW,		True)
-	db.drop_table(STRAND_STATS_VIEW,		True)
-	db.drop_table(FAST_QC_STATS_VIEW,		True)
-	db.drop_table(GC_CONTENT_VIEW,			True)
-	db.drop_table(SEQUENCE_DUPLICATES_VIEW,	True)
-	db.drop_table(MAPPING_DUPLICATES_VIEW,	True)
-	'''
+	tables_to_delete = db.get_table_names()
+	db.clear_qc_data(tables_to_delete)
 
 	db.drop_table(QC_TABLE_NAME)
 	if os.path.exists(WEB_APP_PATH+"assets/img/"):
@@ -944,13 +938,15 @@ def clear_project(exitIfError=True):
 		print "removing : ",WEB_APP_PATH+"assets/reports/"+report
 		os.remove(WEB_APP_PATH+"assets/reports/"+report)
 	
-	"""
-	Re-create the table
-	"""
+	# recreate the database tables and views
+	create_database(exitIfError)
+
+def create_database(exitIfError):
 	try:
 		
-		# Table does not exist
-		db.create_table(QC_TABLE_NAME,QC_COLUMNS)
+		if db.table_exist(QC_TABLE_NAME) == False:
+			# Table does not exist
+			db.create_table(QC_TABLE_NAME,QC_COLUMNS)
 
 		#copying the qc table stucture to the server
 		mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml'])) 
@@ -960,38 +956,40 @@ def clear_project(exitIfError=True):
 		
 		#creating the views for the front end part:
 		# There are 9 views that need to be created!
-		for table, columns in VIEWS.items():
-			if db.table_exist(table) == False:
-				db.create_view(table, QC_TABLE_NAME, columns=columns)
-		'''
-		if db.table_exist(GENERAL_VIEW) == False:
-			db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
 
-		if db.table_exist(ALIGNMENT_STATS_VIEW) == False:
-			db.create_view(ALIGNMENT_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_ALIGNMENT_STATS)
-
-		if db.table_exist(GENOMIC_STATS_VIEW) == False:
-			db.create_view(GENOMIC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_GENOMIC_STATS)
-
-		if db.table_exist(LIBRARY_STATS_VIEW) == False:
-			db.create_view(LIBRARY_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_LIBRARY_STATS)
-
-		if db.table_exist(STRAND_STATS_VIEW) == False:
-			db.create_view(STRAND_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_STRAND_STATS)
-
-		if db.table_exist(FAST_QC_STATS_VIEW) == False:
-			db.create_view(FAST_QC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_FAST_QC_STATS)
-
-		if db.table_exist(GC_CONTENT_VIEW) == False:
-			db.create_view(GC_CONTENT_VIEW, QC_TABLE_NAME, columns=VIEW_GC_CONTENT)
-
-		if db.table_exist(SEQUENCE_DUPLICATES_VIEW) == False:
-			db.create_view(SEQUENCE_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_SEQUENCE_DUPLICATES)
-
-		if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
-			db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
-		'''
+		# if there's a metric in the database that isn't in the XML, remove it from the database
 		
+		database_columns = db.get_column_names()
+		database_columns.remove('cur_timestamp')
+		delete_these_cols = set(database_columns) - set(QC_COLUMNS_DICT.keys())
+		for col in delete_these_cols:
+			db.alter_table(QC_TABLE_NAME, col, delete=True)
+
+		for table, columns in VIEWS.items():
+			if table == QC_TABLE_NAME:
+				# we already created the primary qc table at the start of this fxn			
+				continue
+
+			# if any XML metric is missing from the primary qc table, add it
+			for col in columns:
+				search_col = "`" + col + "`"
+				#pdb.set_trace()
+				if not db.select(QC_TABLE_NAME, columns=search_col) and db.select(QC_TABLE_NAME, columns=search_col) != tuple():
+					db.alter_table(QC_TABLE_NAME, [ QC_COLUMNS[QC_COLUMNS_DICT[col]] ] )
+			
+			# if a view already exists, drop it and rebuild it
+			# simultaneously handles adding columns to an existing view and removing columns from exiting views
+			#     since the existing view may be different than what has been parsed from the XML definitions 
+			if table and db.table_exist(table):
+				db.drop_table(table, True)
+				db.create_view(table, QC_TABLE_NAME, columns=columns)
+			elif table and not db.table_exist(table):
+				db.create_view(table, QC_TABLE_NAME, columns=columns)
+
+		# delete any old views that existed in the database, but are now not defined in the XML
+		for table in (set(db.get_table_names()) - set(VIEWS.keys())):
+			db.drop_table(table, True)
+
 	except:
 		#something went wrong while creating the table
 		print_error(ERR_DB_CREATE_TABLE)
@@ -999,7 +997,6 @@ def clear_project(exitIfError=True):
 			sys.exit(1)
 		else:
 			return 1
-
 
 
 def print_error(objs):

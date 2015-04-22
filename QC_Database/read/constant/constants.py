@@ -8,15 +8,16 @@ INPUT_FILE_PATH=None
 DELIMITER=","
 QC_TABLE_DEFINITION="qc_table_definition.xml"
 
+'''
 # SMAPLE PREPIX TO IDENTIFY THE TYPE OF THE STUDY
 TOTAL_TRANSCRIPTOME_PREFIX = "T"
 POLY_A_PREFIX = "R"
 SMALL_RNA_PREFIX = "S"
 METHYLATION_PREFIX = "M"
+'''
 
 #DATABASE TABLE NAMES
 QC_TABLE_NAME="qc"
-
 
 #FOLDER NAMES FOR TOOLS
 FASTQC_FOLDER_NAME = "FastQC"
@@ -25,8 +26,6 @@ RSEQC_FOLDER_NAME = "RSeQC"
 
 #COLUMN POSTFIX
 IMAGE_COLUMN_POSTFIX = "Location"
-
-
 
 #REQUIRED QC_TABLE COLUMNS:
 SAMPLE_ID_COLUMN = "Unique_ID"
@@ -40,7 +39,7 @@ VIEWS = {}
 VIEWS['General'] = [(QC_TABLE_NAME+"ID"),(SAMPLE_ID_COLUMN),(SAMPLE_COLUMN),(STUDY_COLUMN),(DESCRIPTION_COLUMN)]
 
 curDir = os.path.dirname(__file__)
-tree = ET.parse(os.path.join(curDir,'qc_table_definition.xml'))
+tree = ET.parse(os.path.join(curDir,QC_TABLE_DEFINITION))
 root = tree.getroot()
 for col in root:
 	try:
@@ -50,7 +49,7 @@ for col in root:
 	try:
 		VIEWS[table_name]
 	except:
-		VIEWS[table_name] = [('qcID')]
+		VIEWS[table_name] = [(QC_TABLE_NAME+"ID")]
 	VIEWS[table_name].append((col.find('field').text))
 	for i,c in enumerate(col):
 		if c.text is None:
@@ -64,36 +63,3 @@ for col in root:
 QC_COLUMNS_DICT={}
 for i,col in enumerate(QC_COLUMNS):
 	QC_COLUMNS_DICT[col[0]]=i	
-
-'''
-#VIEWS:
-#General Fields
-GENERAL_VIEW="general"
-VIEW_GENERAL=VIEWS['general']
-#Alignment Stats:
-ALIGNMENT_STATS_VIEW="alignment_stats"
-VIEW_ALIGNMENT_STATS=VIEWS['alignment_stats']
-#GENOMIC STATS
-GENOMIC_STATS_VIEW="genomic_stats"
-VIEW_GENOMIC_STATS=VIEWS['genomic_stats']
-#LIBRARY STATS
-LIBRARY_STATS_VIEW="library_stats"
-VIEW_LIBRARY_STATS=VIEWS['library_stats']
-#STRAND STATS
-STRAND_STATS_VIEW="strand_stats"
-VIEW_STRAND_STATS=VIEWS['strand_stats']
-#FAST QC VIEWS
-FAST_QC_STATS_VIEW="fastqc_stats"
-VIEW_FAST_QC_STATS=VIEWS['fastqc_stats']
-#RSeQC VIEWS
-#GC CONTENT
-GC_CONTENT_VIEW="GC_content"
-VIEW_GC_CONTENT=VIEWS['GC_content']
-#SEQUENCE DUPLICATES
-SEQUENCE_DUPLICATES_VIEW="sequence_duplicates"
-VIEW_SEQUENCE_DUPLICATES=VIEWS['sequence_duplicates']
-#MAPPING DUPLICATES
-MAPPING_DUPLICATES_VIEW="mapping_duplicates"
-VIEW_MAPPING_DUPLICATES=VIEWS['mapping_duplicates']
-#pdb.set_trace()
-'''

@@ -56,7 +56,7 @@ class Sample_model extends CI_Model {
 		}
 		if ($viewPage == "aggregate_detail_view"){
 			$notTableList[3] = "General";
-			$notTableList[4] = "fastqc_stats";
+			$notTableList[4] = "fastQC_Stats";
 		}
 		$query = $this->db->query("SHOW TABLES");
 		$result = $query->result_array();
@@ -113,7 +113,7 @@ class Sample_model extends CI_Model {
 	}
 
 	function get_fastqc_aggregate_view($samplesArr){
-		$viewName = "fastqc_stats";
+		$viewName = "fastQC_Stats";
 		$columns = $this->get_columns($viewName);
 		$result = array();
 

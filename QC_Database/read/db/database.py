@@ -6,7 +6,7 @@ import pdb # pdb.set_trace()
 from constant.config import *
 from constant.error import *
 from constant.warning import *
-
+from constant.constants import *
 
 
 class Database:
@@ -111,6 +111,95 @@ class Database:
 			return True
 		except:
 			self.print_db_error(ERR_DB_CREATE_TABLE)
+			return False
+
+	def alter_table(self, tableName, fields, delete=False):
+		"""
+		This function will alter a table, adding column `fields` to table `tableName`
+		The fields variable have to have the format of
+			[(<str_field_name>,<str_field_type>), ...]
+
+
+		NOTE: if a table with the name `tableName` already exist, this function will NOT re-create the table
+		Example:
+			fields=[("id","INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"),
+					("fname","VARCHAR(45) NOT NULL"),
+					("lname","VARCHAR(45) NOT NULL"),
+					("email","VARCHAR(45)")]
+
+			db.create_table("user",fields)
+		"""
+
+		# checking to see if the table already exists
+		# check if column exists too?
+		#if self.table_exist(tableName):
+			#print WRN_DB_TABLE_EXISTS
+		sql = "ALTER TABLE `"
+		sql += str(tableName)
+		if not delete:
+			sql += "` ADD "
+
+			if isinstance(fields,list):
+				for i,field in enumerate(fields):
+					if isinstance(field,tuple):
+						sql += "`"+str(field[0])+"` "+str(field[1])+", "
+
+			sql=sql[:-2]	#getting rid of the extra comma at the end!
+
+			sql += " AFTER `"
+			sql += str([ k for k,v in QC_COLUMNS_DICT.items() if v == int(QC_COLUMNS_DICT[fields[0][0]] - 1) ][0])
+			sql += "`;"
+			self.debug_log(sql,"alters in a new column")
+		elif delete:
+			sql += "` DROP COLUMN "
+			sql += "`"+str(fields)
+			sql += "`;"
+			self.debug_log(sql,"alters out an old column")
+		try:
+			self.cur.execute(sql)
+			return True
+		except:
+			
+			self.print_db_error("error modifying the table {0} with column {1}".format(str(tableName), str(fields[0])))
+			return False
+
+
+
+	def alter_view(self, viewName, fields):
+		"""
+		This function will alter a table, adding column `fields` to table `viewName`
+		The fields variable have to have the format of
+			[(<str_field_name>,<str_field_type>), ...]
+
+
+		NOTE: if a table with the name `viewName` already exist, this function will NOT re-create the table
+		Example:
+			fields=[("id","INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"),
+					("fname","VARCHAR(45) NOT NULL"),
+					("lname","VARCHAR(45) NOT NULL"),
+					("email","VARCHAR(45)")]
+
+			db.create_table("user",fields)
+		"""
+
+		# checking to see if the table already exists
+		# check if column exists too?
+		#if self.table_exist(viewName):
+			#print WRN_DB_TABLE_EXISTS
+
+		sql = "ALTER VIEW `"
+		sql += str(viewName)
+		sql += "` AS SELECT `"
+		sql += str(fields[0][0])
+		sql += "` FROM `"
+		sql += QC_TABLE_NAME
+		sql += "`;"
+		self.debug_log(sql,"alters in a new column")
+		try:
+			self.cur.execute(sql)
+			return True
+		except:
+			self.print_db_error("error modifying the view {0} with column {1}".format(str(viewName), str(fields[0][0])))
 			return False
 
 	def user_exists(self, tableName, username):
@@ -375,7 +464,7 @@ class Database:
 			self.cur.execute(sql)
 			return self.cur.fetchall()
 		except:
-			self.print_db_error(ERR_DB_IDK)
+			#self.print_db_error(ERR_DB_IDK)
 			return False
 
 
@@ -403,6 +492,15 @@ class Database:
 		if self.table_exist(viewName):
 			self.print_db_error(ERR_DB_VIEW_ALREADY_EXIST)
 			return False
+
+		'''
+		# this is handled elsewhere
+		# insert any new columns into the database
+		for col in columns:
+			if not self.select(tableName, columns=col):
+				print "The column {0} is not in table {1}!".format(col, tableName)
+				self.alter_table(tableName, [ QC_COLUMNS[QC_COLUMNS_DICT[col]] ] )
+		'''
 
 		str_column = ""
 		if isinstance(columns, list):
@@ -464,7 +562,41 @@ class Database:
 		except:
 			return False
 
+	def get_table_names(self):
+		'''
+		This function will return a list of tables that are in the database
+		'''
+		# get the tables in the database
+		sql = 'SHOW TABLES '
+		self.cur.execute(sql)
+		results = self.cur.fetchall()
 
+		# make the sql result into a list of table names
+		tables = []
+		for table in results:
+			tables.append(table[0])
+
+		# remove 'users' and 'permissions' from the list of tables, since we want to keep those two
+		qc_tables = set(tables) - set(['users', 'permissions', 'qc'])
+		return qc_tables
+
+	def get_column_names(self):
+		'''
+		This function will return a list of columns currently in the database
+		'''
+		sql = "SELECT column_name FROM information_schema.columns WHERE table_name='"
+		sql += QC_TABLE_NAME + "';"
+		self.cur.execute(sql)
+		results = self.cur.fetchall()
+		return [x[0] for x in results]
+
+	def clear_qc_data(self, tables_to_delete):
+		''' 
+		This function will drop/delete all tables in the database that are not users and/or permissions
+		'''
+		# delete the tables
+		for table in tables_to_delete:
+			self.drop_table(table, True)
 
 	def debug_log(self,sql,mode):
 		"""

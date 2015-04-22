@@ -89,7 +89,7 @@
 		<comment></comment>
 	</column>
 	<column block="Library_Stats">
-		<field>RQS</field>
+		<field>RIN</field>
 		<type>DECIMAL(3,2)</type>
 		<null></null>
 		<key></key>
@@ -99,7 +99,7 @@
 		<percentage>false</percentage>
 		<comment></comment>
 	</column>
-	<column block="Contamination">
+	<column block="Library_Stats">
 		<field>rRNA_and_mitoRNA</field>
 		<type>DECIMAL(8,8)</type>
 		<null></null>
@@ -629,7 +629,7 @@
 	</column>
 	<column block="Genomic_Stats">
 		<field>Intergenic_Rate</field>
-		<type>DECIMAL(10,8)</type>
+		<type>DECIMAL(10,10)</type>
 		<null></null>
 		<key></key>
 		<default>DEFAULT NULL</default>

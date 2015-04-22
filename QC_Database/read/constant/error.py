@@ -12,7 +12,7 @@ ERR_SERVER_NOT_SETUP="The `WEB_APP_PATH` is not set to point at where your serve
 #DB_ERRORS
 ERR_DB_CREATE_TABLE="While creating the table, something went wrong! Check the fileds variable format"
 ERR_DB_INSERT="Insertion failed! Make sure that you are using the correnct fields and values."
-ERR_DB_TABLE_DOES_NOT_EXIST="The table you are refrensing does NOT exist in the database"
+ERR_DB_TABLE_DOES_NOT_EXIST="The table you are using does NOT exist in the database"
 ERR_DB_UPDATE_COLUMNS_MISMATCH="In the update, the number of elements in the columns variable should match the number of element in the values variable."
 ERR_DB_NOT_CONNECTED="The database is not connected! Please check the config.py inside the constant folder!"
 ERR_DB_TABLE_ALREADY_EXIST="The table already exist"
@@ -21,4 +21,4 @@ ERR_DB_VIEW_ALREADY_EXIST="The view already exist"
 #WARNINGS
 WAR_DB_COLUMN="The column {0} does not exist in the database. Has it been properly defined in the XML definitions?"
 
-ERR_DB_IDK="SOMETHING JUST WENT WRONG!"
+ERR_DB_IDK="Unexpected Error!"
