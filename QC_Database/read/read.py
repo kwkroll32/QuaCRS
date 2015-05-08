@@ -245,19 +245,8 @@ def create(exitIfError=True):
 	
 	inFile=open(INPUT_FILE,"r")
 	header=get_header(inFile)
-
 	# Checking if the header matches what is in the database
 	header = check_header(header)
-	
-	'''
-	if check_header(header) == False:
-		print_error(ERR_HEADER_NOT_MATCH)
-		if exitIfError:
-			sys.exit(1)
-		else:
-			return 1
-	'''
-
 
 	# Check if we have already created the table
 	# if not, create the table based on the columns defined in the constant.constants.QC_COLUMNS
@@ -266,65 +255,6 @@ def create(exitIfError=True):
 	# the new data will be over righting any of the already previously existing data.
 	#if db.table_exist(QC_TABLE_NAME) == False:
 	create_database(exitIfError)
-	'''
-	try:
-		if db.table_exist(QC_TABLE_NAME) == False:
-			# Table does not exist
-			db.create_table(QC_TABLE_NAME,QC_COLUMNS)
-
-		#copying the qc table stucture to the server
-		mFrom = '/'.join((sys.argv[0].split('/')[:-1] + ['constant/qc_table_definition.xml']))
-		mTo = WEB_APP_PATH+"assets/config/"+QC_TABLE_DEFINITION
-
-		copyFile(mFrom , mTo)
-		
-		#creating the views for the front end part:
-		# There are 9 views that need to be created!
-		
-		for table, columns in VIEWS.items():
-			if db.table_exist(table) == False:
-				db.create_view(table, QC_TABLE_NAME, columns=columns)
-
-		#
-		if db.table_exist(GENERAL_VIEW) == False:
-			db.create_view(GENERAL_VIEW, QC_TABLE_NAME, columns=VIEW_GENERAL)
-
-		if db.table_exist(ALIGNMENT_STATS_VIEW) == False:
-			db.create_view(ALIGNMENT_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_ALIGNMENT_STATS)
-
-		if db.table_exist(GENOMIC_STATS_VIEW) == False:
-			db.create_view(GENOMIC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_GENOMIC_STATS)
-
-		if db.table_exist(LIBRARY_STATS_VIEW) == False:
-			db.create_view(LIBRARY_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_LIBRARY_STATS)
-
-		if db.table_exist(STRAND_STATS_VIEW) == False:
-			db.create_view(STRAND_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_STRAND_STATS)
-
-		if db.table_exist(FAST_QC_STATS_VIEW) == False:
-			db.create_view(FAST_QC_STATS_VIEW, QC_TABLE_NAME, columns=VIEW_FAST_QC_STATS)
-
-		if db.table_exist(GC_CONTENT_VIEW) == False:
-			db.create_view(GC_CONTENT_VIEW, QC_TABLE_NAME, columns=VIEW_GC_CONTENT)
-
-		if db.table_exist(SEQUENCE_DUPLICATES_VIEW) == False:
-			db.create_view(SEQUENCE_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_SEQUENCE_DUPLICATES)
-
-		if db.table_exist(MAPPING_DUPLICATES_VIEW) == False:
-			db.create_view(MAPPING_DUPLICATES_VIEW, QC_TABLE_NAME, columns=VIEW_MAPPING_DUPLICATES)
-		#
-
-	except:
-		#something went wrong while creating the table
-		print_error(ERR_DB_CREATE_TABLE)
-		if exitIfError:
-			sys.exit(1)
-		else:
-			return 1
-	'''
-
-	#insert the data from the file to the newly created table
-	#insert_content_to_db(inFile,header)
 
 	# if the table already exist
 	# we first have to process the line and see if the sample already exist
@@ -380,14 +310,6 @@ def update(exitIfError=True, yesToAll=False, answer=None):
 
 	# Checking if the header matches what is in the database
 	header = check_header(header)
-	'''
-	if check_header(header) == False:
-		print_error(ERR_HEADER_NOT_MATCH)
-		if exitIfError:
-			sys.exit(1)
-		else:
-			return (1, None)
-	'''
 
 	print_log("CHECKED THE HEADER AND THERE WAS NO PROBLEM")
 
@@ -579,7 +501,6 @@ def will_overwrite(data, header, printDetail=True):
 	sampleData = db.select(QC_TABLE_NAME,where=SAMPLE_ID_COLUMN+"='"+sampleID+"'", limit=1)
 	threshold = 0.0001
 	changed = False
-	#pdb.set_trace()
 
 	if len(sampleData) == 0:
 		return 0
@@ -963,7 +884,13 @@ def create_database(exitIfError):
 		database_columns.remove('cur_timestamp')
 		delete_these_cols = set(database_columns) - set(QC_COLUMNS_DICT.keys())
 		for col in delete_these_cols:
-			db.alter_table(QC_TABLE_NAME, col, delete=True)
+			print_warning(WRN_DELETING_COLUMN.format(col))
+			answer = raw_input(DELETING_Q).lower()
+			if answer == "yes" or answer == "y":
+				db.alter_table(QC_TABLE_NAME, col, delete=True)
+			else:
+				print_error(ERR_DB_DELETE)
+				sys.exit(1)
 
 		for table, columns in VIEWS.items():
 			if table == QC_TABLE_NAME:
@@ -973,7 +900,6 @@ def create_database(exitIfError):
 			# if any XML metric is missing from the primary qc table, add it
 			for col in columns:
 				search_col = "`" + col + "`"
-				#pdb.set_trace()
 				if not db.select(QC_TABLE_NAME, columns=search_col) and db.select(QC_TABLE_NAME, columns=search_col) != tuple():
 					db.alter_table(QC_TABLE_NAME, [ QC_COLUMNS[QC_COLUMNS_DICT[col]] ] )
 			
@@ -990,7 +916,7 @@ def create_database(exitIfError):
 		for table in (set(db.get_table_names()) - set(VIEWS.keys())):
 			db.drop_table(table, True)
 
-	except:
+	except Exception:
 		#something went wrong while creating the table
 		print_error(ERR_DB_CREATE_TABLE)
 		if exitIfError:

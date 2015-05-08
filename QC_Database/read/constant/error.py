@@ -17,6 +17,7 @@ ERR_DB_UPDATE_COLUMNS_MISMATCH="In the update, the number of elements in the col
 ERR_DB_NOT_CONNECTED="The database is not connected! Please check the config.py inside the constant folder!"
 ERR_DB_TABLE_ALREADY_EXIST="The table already exist"
 ERR_DB_VIEW_ALREADY_EXIST="The view already exist"
+ERR_DB_DELETE="XML column definitions must match the MySQL database columns. Update the XML or delete the offending column(s)."
 
 #WARNINGS
 WAR_DB_COLUMN="The column {0} does not exist in the database. Has it been properly defined in the XML definitions?"

@@ -378,7 +378,7 @@
 	</view>
 	<view name="library_Stats">
 		<column>
-			<field>RQS</field>
+			<field>RIN</field>
 			<type>DECIMAL(3,2)</type>
 			<null></null>
 			<key></key>

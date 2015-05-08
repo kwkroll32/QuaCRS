@@ -1,11 +1,11 @@
 #This file contains all the information needed to connect to the MySQL database
 
 
-DB_HOST=""
-DB_USER=""
-DB_PASS=""
+DB_HOST="localhost"
+DB_USER="root"
+DB_PASS="password"
 DB_PORT=""
-DB_NAME=""
+DB_NAME="QuaCRS"
 
 """
 This constant should contain where you copy the files
@@ -16,7 +16,7 @@ You should have a server (local) running on the machine that you are running the
 **Full path
 
 """
-WEB_APP_PATH=""
+WEB_APP_PATH="/var/www/html/qc/"
 
 
 

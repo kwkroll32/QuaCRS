@@ -34,8 +34,12 @@ done
 [ $count == '2' ] && PE=yes
 [ $count -gt 2 ] && echo "Too many fastq files provided."  && exit 1
 
-[ ${#DATE} -gt 0 ] && UNIQUE_ID=${DATE}_L00${LN}_${SID}_${STUDY}
-[ ${#DATE} -le 0 ] && UNIQUE_ID=${SID}_${STUDY}
+[ ${#FCN} -eq 0 ] && FCN="None"
+[ ${#LN} -eq 0 ] && LN="None"
+[ ${#INDEX} -eq 0 ] && INDEX="None"
+[ ${#UNIQUE_ID} -eq 0 ] && echo "UNIQUE_ID required in input.cfg!" && exit 1
+#[ ${#DATE} -gt 0 ] && UNIQUE_ID=${DATE}_L00${LN}_${SID}_${STUDY}
+#[ ${#DATE} -le 0 ] && UNIQUE_ID=${SID}_${STUDY}
 echo $UNIQUE_ID
 
 ################################################################### 
@@ -81,11 +85,11 @@ echo
 echo " ==== RNA-SeQC ==== "
 echo
 [ ! -d RNASeQC ] && mkdir RNASeQC 
-cd RNASeQC
-[ ! -d ${UNIQUE_ID} ] && mkdir  ${UNIQUE_ID} 
-cd ${UNIQUE_ID}
-[ -d RNASeQC/${UNIQUE_ID} ] && cd RNASeQC/${UNIQUE_ID}
-out_dir=`pwd -P`
+#cd RNASeQC
+#[ ! -d ${UNIQUE_ID} ] && mkdir  ${UNIQUE_ID} 
+#cd ${UNIQUE_ID}
+#[ -d RNASeQC/${UNIQUE_ID} ] && cd RNASeQC/${UNIQUE_ID}
+out_dir=`pwd -P`/RNASeQC/${UNIQUE_ID}
 pwd
 if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then 
 	echo "RNASeQC has already been run for "$BAM_FILE
@@ -243,9 +247,9 @@ if [ -f $output/${SID}.bam.stat.txt ] && [ $keep_temp == "yes" ]; then
 	echo "    Skipping this step ... "
 else
 	echo "Running BAM stats for "$UNIQUE_ID
-	#python $RSEQC_DIR/bam_stat.py -i $BAM_FILE &> $output/${SID}.bam.stat.txt
+	python $RSEQC_DIR/bam_stat.py -i $BAM_FILE &> $output/${SID}.bam.stat.txt
 fi
-if [ -f $output/${SID}.geneBodyCoverage.pdf ] && [ $keep_temp == "yes" ]; then
+if [ -f $output/${SID}.geneBodyCoverage.curves.pdf ] && [ $keep_temp == "yes" ]; then
 	echo "Gene body coverage already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
@@ -287,6 +291,13 @@ else
 	echo "Running read quality for "$UNIQUE_ID
 	python $RSEQC_DIR/read_quality.py -i $BAM_FILE -o $output/${SID}
 fi
+if [ -f $output/${SID}.splice.pdf ] && [ $keep_temp == "yes" ]; then
+	echo "Junction annotation already present for "$UNIQUE_ID
+	echo "    Skipping this step ... "
+else
+	echo "Running junction annotation for "$UNIQUE_ID
+	python $RSEQC_DIR/junction_annotation.py -i $BAM_FILE -r $ANNOT_BED -o $output/${SID} &> $output/${SID}.junction_annotation.txt
+fi
 
 for i in RSeQC/${UNIQUE_ID}/*.pdf 
 do
@@ -300,6 +311,19 @@ do
     fi
 done
 
+################################################################### 
+#### ExpressionQC
+################################################################### 
+echo
+echo " ==== Expression QC ==== "
+echo
+
+[ ! -d "ExpressionQC" ] && mkdir ExpressionQC
+[ ! -d "ExpressionQC/"$UNIQUE_ID ] && mkdir ExpressionQC/$UNIQUE_ID
+
+output=ExpressionQC/$UNIQUE_ID
+
+python $HTSEQ_COUNTS --format=bam --order=pos --stranded=reverse --minaqual=10 --type=exon --idattr=gene_name --mode=union TDIMI034_V1T.bam /bigdata/backup/Tools/References/gencode.v19.annotation.gtf > TDIMI034_V1T.counts.txt
 	
 ################################################################### 
 #### Temporary Files
@@ -311,10 +335,10 @@ if [ "$keep_temp" == "yes" ]; then
 	[ ! -d temp/$UNIQUE_ID ] && mkdir temp/$UNIQUE_ID
 	[ ! -d temp/$UNIQUE_ID/RNASeQC ] && mkdir temp/$UNIQUE_ID/RNASeQC
 	[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
-	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && mv accepted_hits_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
+	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && mv *_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
 	
 elif [ "$keep_temp" == "no" ]; then
-	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && rm accepted_hits_grpd*.bam*
+	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && rm *_grpd*.bam*
 	[ `\ls | grep fastq | grep "$UNIQUE_ID" | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
 	[ `\ls RSeQC/${SID}/*.pdf | wc -l` -gt 0 ] && rm RSeQC/${SID}/*.pdf
 fi

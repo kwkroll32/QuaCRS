@@ -11,6 +11,7 @@ import sys
 import FastQCModule as FastQC
 import RNASeQCModule as RNASeQC
 import RSeQCModule as RSeQC
+import ExpressionQCModule as ExpressionQC
 
 
 ###################################################################
@@ -33,12 +34,21 @@ header_RNASeQC_PE = "Aligned\tUnique\tDuplicates\tDuplication Rate\tEstimated Li
 header_RNASeQC_SE = "Aligned\tUnique\tDuplicates\tDuplication Rate\tEstimated Library Size\tIntragenic Rate\tExonic Rate\tIntronic Rate\tIntergenic Rate\tExpression Profiling Efficiency\tExpressed Transcripts"
 
 #RSeQC
-header_RSeQC_dup_rate_sequence = "1-10 sequence dups\t11-100 sequence dups\t100-1000 sequence dups\t> 1000 sequence dups"
-header_RSeQC_dup_rate_mapping = "1-10 mapping dups\t11-100 mapping dups\t100-1000 mapping dups\t> 1000 mapping dups"
+header_RSeQC_dup_rate_sequence = "1-10 sequence dups\t11-100 sequence dups\t100-1000 sequence dups\t> 1000 sequence dups\t%1-10 sequence dups\t%11-100 sequence dups\t%100-1000 sequence dups\t%>1000 sequence dups"
+header_RSeQC_dup_rate_mapping = "1-10 mapping dups\t11-100 mapping dups\t100-1000 mapping dups\t> 1000 mapping dups\t%1-10 mapping dups\t%11-100 mapping dups\t%100-1000 mapping dups\t%>1000 mapping dups"
 header_RSeQC_GC = "GC Avg\tGC Std Dev\tGC Skew"
+header_RSeQC_Junctions = "Spliced Reads\t% Spliced Reads\tReads with Known Splices\tReads with Novel Splices\t% Known Spliced Reads\t% Novel Spliced Reads\tTotal Splice Sites\tKnown Splice Sites\tNovel Splice Sites\t% Known Splice Sites\t% Novel Splice Sites"
 header_RSeQC_images = "Duplication Rate Plot Location\tGC Plot Location\tGene Body Coverage Plot Location\tNVC Plot Location\tQuality Boxplot Location\tQuality Heatmap Location"
 ".DupRate_plot.pdf", ".GC_plot.pdf", ".geneBodyCoverage.pdf", ".NVC_plot.pdf", ".qual.boxplot.pdf", ".qual.heatmap.pdf"
-header_RSeQC = "\t".join([header_RSeQC_dup_rate_sequence, header_RSeQC_dup_rate_mapping, header_RSeQC_GC, header_RSeQC_images])
+header_RSeQC = "\t".join([header_RSeQC_dup_rate_sequence, header_RSeQC_dup_rate_mapping, header_RSeQC_GC, header_RSeQC_Junctions, header_RSeQC_images])
+
+#Expression QC
+header_global = "Global Genes >1 FPKM\tGlobal Genes >10 FPKM\tGlobal Genes >100 FPKM"
+header_coding = "Coding Genes >1 FPKM\tCoding Genes >10 FPKM\tCoding Genes >100 FPKM"
+header_lincRNA = "lincRNA Genes >1 FPKM\tlincRNA Genes >10 FPKM\tlincRNA Genes >100 FPKM"
+header_housekeeping="C1orf43\tCHMP2A\tEMC7\tGPI\tPSMB2\tPSMB4\tRAB7A\tREEP5\tSNRPD3\tVCP\tVPS29"
+header_expression_images = "Global FPKM Graph Location\tCoding FPKM Graph Location\tlincRNA FPKM Graph Location"
+header_ExpressionQC = "\t".join([header_global, header_coding, header_lincRNA, header_housekeeping, header_expression_images])
 
 #Parse arguments
 parser = argparse.ArgumentParser()
@@ -67,10 +77,10 @@ else:
     header_RNASeQC = header_RNASeQC_SE
 
 #Generate header and data
-header = [header_info, header_FastQC, header_RNASeQC, header_RSeQC]
+header = [header_info, header_FastQC, header_RNASeQC, header_RSeQC, header_ExpressionQC]
 
 data_info = "\t".join([args.unique_ID, args.study, args.sample_name, args.sequencing_type, args.sequencing_date, args.run_description, RQS_str, args.contamination_rate])
-data = [data_info, FastQC.Parse(args.unique_ID), RNASeQC.Parse(args.unique_ID, args.sample_name, PE), RSeQC.Parse(args.unique_ID, args.sample_name)]
+data = [data_info, FastQC.Parse(args.unique_ID), RNASeQC.Parse(args.unique_ID, args.sample_name, PE), RSeQC.Parse(args.unique_ID, args.sample_name), ExpressionQC.Parse(args.unique_ID)]
 
 #Print output
 output_filename = "qc_" + args.unique_ID + ".csv"
