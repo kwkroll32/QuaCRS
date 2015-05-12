@@ -28,12 +28,17 @@ class ExpressionMatrix(object):
             print('\t' + sid)
 
     def readRaw(self, fn):
-        for line in csv.DictReader(open(fn), delimiter='\t', fieldnames=['Gene', 'Count']):
+        lengths = {}
+        for line in csv.DictReader(open(fn), delimiter='\t', fieldnames=['Geneid', 'Chr', 'Start', 'End', 'Strand', 'Length', 'Count']):
+            if line['Geneid'].startswith('#') or line['Geneid'].startswith('Geneid'):
+                continue
             try:
-                self.columns.append(line['Gene'])
+                self.columns.append(line['Geneid'])
                 self.raw[self.name].append(int(line['Count']))
+                lengths[line['Geneid']] = int(line['Length'])
             except:
                 print("warning: ")
+        self.lengths = pd.DataFrame(lengths.values(), index=lengths.keys(), columns=['lengths'])
         return True
 
     def rawToNorm(self):
@@ -140,7 +145,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-name", "--name", required=True, help="Sample name")
     parser.add_argument("-raw", "--raw_counts", required=True, help="Raw read counts per gene from HTSeq")
-    parser.add_argument("-len", "--gene_lengths", required=True, help="tab-delimited text file of gene_name and total_gene_length")
+    parser.add_argument("-len", "--gene_lengths", required=False, help="tab-delimited text file of gene_name and total_gene_length. not needed when using subread featureCounts")
     parser.add_argument("-lnc", "--lncRNA_names", required=False, help="text file of long non-coding RNA names")
     parser.add_argument("-linc", "--lincRNA_names", required=False, help="text file of long intergenic non-coding RNA names")
     parser.add_argument("-coding", "--codingRNA_names", required=False, help="text file of coding RNA names")
@@ -156,18 +161,19 @@ def main():
     data.outfile = open(data.outdir + '/' + 'expression_qc.txt', 'w')
 
     if args.raw_counts:
-        print("reading in raw data ...")
+        print("Reading in raw data ...")
         data.readRaw(args.raw_counts)
-        print("making it into a dataframe ...")
+        print("Making it into a dataframe ...")
         data.frameUp()
-        print("normalizing the raw dataframe for read yield ...")
+        print("Normalizing the raw dataframe for read yield ...")
         data.rawToNorm()
+    '''
     print("parsing gene lengths ...")
     data.readLengths(args.gene_lengths)
-    
-    print("normalizing the read-yield-normalized data for gene length ...")
+    '''
+    print("Normalizing the read-yield-normalized data for gene length ...")
     data.normalize()
-    print("writing output ...")
+    print("Writing output ...")
     data.printSummary()
 
     printHousekeepingGenes(data.fpkmDF, data.outdir)
@@ -176,7 +182,7 @@ def main():
     if args.lincRNA_names:
         data.printSubset(args.lincRNA_names, "lincRNA")
     if args.codingRNA_names:
-        data.printSubset(args.codingRNA_names, "Coding RNA")
+        data.printSubset(args.codingRNA_names, "Coding_RNA")
     if args.other_names:
         data.printSubset(args.other_names, "Genes")
 

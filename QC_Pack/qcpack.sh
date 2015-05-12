@@ -38,6 +38,7 @@ done
 [ ${#LN} -eq 0 ] && LN="None"
 [ ${#INDEX} -eq 0 ] && INDEX="None"
 [ ${#UNIQUE_ID} -eq 0 ] && echo "UNIQUE_ID required in input.cfg!" && exit 1
+[ ${#threads} -eq 0 ] && threads=1
 #[ ${#DATE} -gt 0 ] && UNIQUE_ID=${DATE}_L00${LN}_${SID}_${STUDY}
 #[ ${#DATE} -le 0 ] && UNIQUE_ID=${SID}_${STUDY}
 echo $UNIQUE_ID
@@ -151,7 +152,7 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 	#picard.MarkDuplicates.job.sh
 	base_BAM=${BAM%%.bam*}
 	out_BAM=${base_BAM##*/}_marked.bam
-	out_metrics=${base_BAM}_metrics.txt
+	out_metrics=$out_dir/${base_BAM}_metrics.txt
 	args="INPUT=${BAM} OUTPUT=${out_BAM} ASSUME_SORTED=True OPTICAL_DUPLICATE_PIXEL_DISTANCE=100 MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=8000 SORTING_COLLECTION_SIZE_RATIO=0.25 METRICS_FILE=$out_metrics VALIDATION_STRINGENCY=LENIENT  CREATE_INDEX=true"
 
 	if [ -f "$out_BAM" ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ] && [ $keep_temp == "yes" ]; then
@@ -225,6 +226,9 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 		echo "    Continuing to RSeQC ... "
 	fi
 fi
+#This line will interrogate the RNA-SeQC output to determine the strandedness of the data 
+#  for use with Subread featureCounts. 0 is non-stranded, 1 is read1 stranded, 2 is reverse stranded
+featureCountsStrand=$(tail -1 $out_dir/${SID}/${SID}.metrics.txt | awk '{if ($(NF-1)>75) print 1; else if ($NF>75) print 2; else print 0}')
 cd $CWD
 ################################################################### 
 #### RSeQC
@@ -235,12 +239,7 @@ echo
 
 [ ! -d "RSeQC" ] && mkdir RSeQC
 [ ! -d "RSeQC/"$UNIQUE_ID ] && mkdir RSeQC/$UNIQUE_ID
-echo "Available RSeQC Functions"
-for i in `\ls $RSEQC_DIR`
-do
-	echo $i
-done
-echo
+
 output=RSeQC/$UNIQUE_ID
 if [ -f $output/${SID}.bam.stat.txt ] && [ $keep_temp == "yes" ]; then
 	echo "BAM stats already present for "$UNIQUE_ID
@@ -291,7 +290,7 @@ else
 	echo "Running read quality for "$UNIQUE_ID
 	python $RSEQC_DIR/read_quality.py -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.splice.pdf ] && [ $keep_temp == "yes" ]; then
+if [ -f $output/${SID}.splice_events.pdf ] && [ $keep_temp == "yes" ]; then
 	echo "Junction annotation already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
@@ -322,23 +321,61 @@ echo
 [ ! -d "ExpressionQC/"$UNIQUE_ID ] && mkdir ExpressionQC/$UNIQUE_ID
 
 output=ExpressionQC/$UNIQUE_ID
+featureCountsStrand=$(tail -1 RNASeQC/TDIMI034_V1T/TDIMI034_V1T/TDIMI034_V1T.metrics.txt | awk '{if ($(NF-1)>75) print 1; else if ($NF>75) print 2; else print 0}')
+if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ] && [ $keep_temp == "yes" ]; then
+	echo "Expression analysis already present for "$UNIQUE_ID
+	echo "    Skipping this step ... "
+else
+	if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] ; then
+		echo "Running expression analysis for "$UNIQUE_ID
+		$SUBREAD/featureCounts -s $featureCountsStrand -g gene_name -T $threads -R $( [ $PE '==' "yes" ] && echo "-p") -a $ANNOT -o ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $BAM_FILE
+		for trash in ExpressionQC/$UNIQUE_ID/expression_qc.txt ExpressionQC/$UNIQUE_ID/housekeeping_expression.txt; do [ -f $trash ] && rm $trash ; done
+		[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts ExpressionQC/$UNIQUE_ID/
+	fi
+	if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ ! -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ]; then
+		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
+	fi
+fi
+if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ]; then
+	echo "Expression analysis may have failed"
+	echo "    Continuing anyway ... "
+fi
 
-python $HTSEQ_COUNTS --format=bam --order=pos --stranded=reverse --minaqual=10 --type=exon --idattr=gene_name --mode=union TDIMI034_V1T.bam /bigdata/backup/Tools/References/gencode.v19.annotation.gtf > TDIMI034_V1T.counts.txt
-	
+################################################################### 
+#### VariantQC
+################################################################### 
+echo
+echo " ==== Variant QC ==== "
+echo
+if [ ${#VCF} -eq 0 ]; then
+	echo "VCF file not found. Exiting ..." && exit 1
+fi
+if [ -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] && [ -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
+	echo "Variant QC already present for "$UNIQUE_ID
+	echo "    Skipping this step ... "
+else
+	python $SCRIPTS/VAF_QC_from_VCF.py -vcf $VCF -bam $BAM_FILE -name $UNIQUE_ID
+fi
+if [ ! -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] || [ ! -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
+	echo "Variant QC may have failed"
+	echo "    Continuing anyway ... "
+fi
+
 ################################################################### 
 #### Temporary Files
 ################################################################### 
 
 if [ "$keep_temp" == "yes" ]; then 
+	echo
 	echo "Keeping intermediate files"
 	[ ! -d temp ] && mkdir temp
 	[ ! -d temp/$UNIQUE_ID ] && mkdir temp/$UNIQUE_ID
 	[ ! -d temp/$UNIQUE_ID/RNASeQC ] && mkdir temp/$UNIQUE_ID/RNASeQC
-	[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
-	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && mv *_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
+	#[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
+	[ `\ls | grep ${BAM_FILE%.bam*}_grpd | grep bam | wc -l` -gt 0 ] && mv ${BAM_FILE%.bam*}*_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
 	
 elif [ "$keep_temp" == "no" ]; then
-	[ `\ls | grep accepted_hits_grpd | grep bam | wc -l` -gt 0 ] && rm *_grpd*.bam*
+	[ `\ls | grep ${BAM_FILE%.bam*}_grpd | grep bam | wc -l` -gt 0 ] && rm ${BAM_FILE%.bam*}*_grpd*.bam*
 	[ `\ls | grep fastq | grep "$UNIQUE_ID" | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
 	[ `\ls RSeQC/${SID}/*.pdf | wc -l` -gt 0 ] && rm RSeQC/${SID}/*.pdf
 fi
@@ -359,7 +396,7 @@ args=$UNIQUE_ID' '$STUDY' '$SID' '$PE
 [ ${#CONTAMINATION} -gt 0 ] && args+=' -cr '${CONTAMINATION}
 [ ${#DATE} -gt 0 ] && args+=' -sd '${DATE}
 
-python $SCRIPTS/QC_table.py $args
+python $SCRIPTS/my_QC_table.py $args
 
 
 
