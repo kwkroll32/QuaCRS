@@ -348,17 +348,18 @@ echo
 echo " ==== Variant QC ==== "
 echo
 if [ ${#VCF} -eq 0 ]; then
-	echo "VCF file not found. Exiting ..." && exit 1
-fi
-if [ -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] && [ -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
-	echo "Variant QC already present for "$UNIQUE_ID
-	echo "    Skipping this step ... "
+	echo "VCF file not found. skipping ..." 
 else
-	python $SCRIPTS/VAF_QC_from_VCF.py -vcf $VCF -bam $BAM_FILE -name $UNIQUE_ID
-fi
-if [ ! -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] || [ ! -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
-	echo "Variant QC may have failed"
-	echo "    Continuing anyway ... "
+	if [ -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] && [ -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
+		echo "Variant QC already present for "$UNIQUE_ID
+		echo "    Skipping this step ... "
+	else
+		python $SCRIPTS/VAF_QC_from_VCF.py -vcf $VCF -bam $BAM_FILE -name $UNIQUE_ID
+	fi
+	if [ ! -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] || [ ! -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
+		echo "Variant QC may have failed"
+		echo "    Continuing anyway ... "
+	fi
 fi
 
 ################################################################### 

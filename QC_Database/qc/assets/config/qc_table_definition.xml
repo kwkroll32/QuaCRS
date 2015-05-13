@@ -376,9 +376,9 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="library_stats">
+	<view name="library_Stats">
 		<column>
-			<field>RQS</field>
+			<field>RIN</field>
 			<type>DECIMAL(3,2)</type>
 			<null></null>
 			<key></key>
@@ -411,7 +411,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="fastqc_stats">
+	<view name="FastQC_Stats">
 		<column>
 			<field>R1_Per_Base_Sequence_Quality</field>
 			<type>ENUM('PASS','FAIL','WARN')</type>
@@ -633,7 +633,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="alignment_stats">
+	<view name="Alignment_Stats">
 		<column>
 			<field>Aligned</field>
 			<type>INT(11)</type>
@@ -679,7 +679,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="genomic_stats">		
+	<view name="Genomic_Stats">		
 		<column>
 			<field>Intragenic_Rate</field>
 			<type>DECIMAL(10,8)</type>
@@ -747,7 +747,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="strand_stats">
+	<view name="Strand_Stats">
 		<column>
 			<field>End_1_Sense</field>
 			<type>INT(11)</type>
@@ -815,7 +815,31 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="sequence_duplicates">
+	<view name="Something">
+		<column>
+			<field>new_metric</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>interesting_metric</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="Duplication">
 		<column>
 			<field>1-10_sequence_dups</field>
 			<type>INT(11)</type>
@@ -860,8 +884,6 @@
 			<percentage></percentage>
 			<comment></comment>
 		</column>
-	</view>
-	<view name="mapping_duplicates">
 		<column>
 			<field>1-10_mapping_dups</field>
 			<type>INT(11)</type>
@@ -907,7 +929,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="GC_content">
+	<view name="GC_Content">
 		<column>
 			<field>GC_Avg</field>
 			<type>DECIMAL(14,10)</type>

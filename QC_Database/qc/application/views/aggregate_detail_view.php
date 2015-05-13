@@ -1,12 +1,30 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/plugins/jquery_sparkline/js/jquery.sparkline.min.js"></script>
-<script type="text/javascript">$(function() {$('.sparklines').sparkline('html', {type: 'box', width: '4em', tooltipFormatFieldlist: ['lw', 'lq', 'med', 'uq', 'rw'], tooltipFormatFieldlistKey: 'field'});});</script>
+<script type="text/javascript">
+$(function() {
+	$('.sparklines').sparkline('html', {type: 'box', width: '4em', tooltipFormatFieldlist: ['lw', 'lq', 'med', 'uq', 'rw'], tooltipFormatFieldlistKey: 'field'});
+});
+</script>
+<script type="text/javascript">
+function change_val(buttonID)
+{
+	if (document.getElementById("btn_"+buttonID).innerHTML == "Show"){
+		document.getElementById("btn_"+buttonID).innerHTML = "Hide";
+	}
+	else{
+		show = 1;
+		document.getElementById("btn_"+buttonID).innerHTML = "Show";
+	}
+}
+</script>
+
+
 
 <?php
 $base_url = $this->config->item('base_url'); 
 $precision = $this->config->item('precision');
 //$viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
-$viewHiddens=array("mapping_Duplicates", "sequence_Duplicates" );
+$viewHiddens=array("alignment_Stats");
 $samplesString = "";
 foreach($samples as $sample){
 	$samplesString .= $sample .',';
@@ -15,7 +33,10 @@ $samplesString = rtrim($samplesString,",");
 
 foreach($viewNames as $view){
 	if(!in_array($view, $viewHiddens)){
-		$staticTables[$view] = $view;
+		$allTables[$view] = true;
+	}
+	else{
+		$allTables[$view] = false;
 	}
 }
 ?>
@@ -39,12 +60,12 @@ foreach($viewNames as $view){
 						<h4>FastQC Stats</h4>
 					</div>
 					<div class="col-md-6">
-						<button type="button" id="btn_fastqc_stats" class="pull-right btn btn-info btn-sm" onclick="toggle_table('fastqc_stats')">Hide</button>
-						<button type="button" id="btn_fastqc_stats_table" class="pull-right btn btn-success btn-sm" onclick="toggle_hidden_columns('fastqc_stats_table')">Show Details</button>
+						<button type="button" data-toggle='collapse' data-target='#fastQC_Stats' data-parent='#accordion' id="btn_fastQC_Stats" onclick="change_val('fastQC_Stats')" class="pull-right btn btn-info btn-sm">Hide</button>
+						<button type="button" id="btn_fastQC_Stats_table" class="pull-right btn btn-success btn-sm" onclick="toggle_hidden_columns('fastQC_Stats_table')">Show Details</button>
 					</div>
 				</div>
-				<div id="fastqc_stats">
-					<table id="fastqc_stats_table" class="table table-hover table-bordered">
+				<div class = 'row panel-collapse collapse' id="fastQC_Stats">
+					<table id="fastQC_Stats_table" class="table table-hover table-bordered">
 						<thead>
 							<tr><th>Metric</th><th data-secondary='true' class='hidden'>Fail</th><th data-secondary='true' class='hidden'>Warn</th><th>Pass</th></tr>
 						</thead>
@@ -70,17 +91,21 @@ foreach($viewNames as $view){
 				</div>
 			</div>
 			<?php
-			foreach($staticTables as $viewName){
+			foreach($allTables as $viewName=>$shown){
 				echo "<div class='col-md-6'>";
 					echo "<div class='row'>";
 						echo "<div class='col-md-6'>";
 							echo "<h4>".ucfirst(str_replace("_"," ",$viewName)). "</h4>";
 						echo "</div>";
 						echo "<div class='col-md-6'>";
-							echo "<button type='button' id='btn_".$viewName."' class='pull-right btn btn-info btn-sm' onclick='toggle_table(\"".$viewName."\")'>Hide</button>";
+							echo "<button type='button' id='btn_".$viewName."' class='pull-right btn btn-info btn-sm' data-toggle='collapse' data-target='#".$viewName."' data-parent='#accordion' onclick='change_val(\"".$viewName."\")'>"; if(!$shown){echo "Show";} else{echo "Hide";} echo "</button>";
 						echo "</div>";
 					echo "</div>";
-					echo "<div id='".$viewName."'>";
+
+					echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
+					//echo "<div id='".$viewName."'>"; //original, working
+					//echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>"; //jackson's, not working
+
 						echo "<table  class='table table-hover table-bordered'><thead>";
 							echo "<tr><th>Metric</th><th>Min</th><th>Avg</th><th>Max</th><th>Plot</th></tr></thead><tbody>";
 														
@@ -191,3 +216,4 @@ foreach($viewNames as $view){
 		</div>
 	</div>
 </div>
+
