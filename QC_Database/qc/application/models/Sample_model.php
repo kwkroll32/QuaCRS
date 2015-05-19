@@ -233,8 +233,10 @@ class Sample_model extends CI_Model {
 
 		$this->db->select($select);
 		$this->db->where($where);
+
 		$query = $this->db->get($viewName);
 		$result = $query->result_array();
+		
 		return $result;
 	}
 

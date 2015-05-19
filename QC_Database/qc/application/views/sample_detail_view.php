@@ -14,6 +14,10 @@ foreach($viewNames as $view){
 	}
 }
 
+function reformat_number($output, $precision){
+	$this_length = strlen(explode('.', $output)[0]);
+	if($this_length>=3){echo number_format($output);}elseif($this_length==2){echo number_format($output,1);}elseif($this_length==1){echo number_format($output,2);}else{echo number_format($output,$precision);};
+}
 //prints all the tables with clickable buttons to collapse them
 function shown_block($views, $flags, $precision, $viewName, $shown){
 	echo "<div class='col-md-6'>";
@@ -31,7 +35,7 @@ function shown_block($views, $flags, $precision, $viewName, $shown){
 			echo "</div>";
 		echo "</div>";
 		#important line below. The If-statement in this line determines which tables start closed.
-		echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
+		echo "<div class = 'table panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
 			echo "<table  class='table table-hover table-bordered'><thead>";
 				echo "<tr><th>Metric</th><th>Value</th></tr></thead><tbody>";
 				foreach($views[$viewName] as $key=>$value){
@@ -62,7 +66,7 @@ function shown_block($views, $flags, $precision, $viewName, $shown){
 							}
 						}
 						else{
-							echo number_format($value);
+							echo reformat_number($value, $precision);
 						}
 						echo "</td>";
 					}

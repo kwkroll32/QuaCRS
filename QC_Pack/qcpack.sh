@@ -86,6 +86,7 @@ echo
 echo " ==== RNA-SeQC ==== "
 echo
 [ ! -d RNASeQC ] && mkdir RNASeQC 
+[ ! -d RNASeQC/${UNIQUE_ID} ] && mkdir RNASeQC/${UNIQUE_ID}
 #cd RNASeQC
 #[ ! -d ${UNIQUE_ID} ] && mkdir  ${UNIQUE_ID} 
 #cd ${UNIQUE_ID}

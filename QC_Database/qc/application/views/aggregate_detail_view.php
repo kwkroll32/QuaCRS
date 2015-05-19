@@ -31,6 +31,11 @@ foreach($samples as $sample){
 }
 $samplesString = rtrim($samplesString,",");
 
+function reformat_number($output, $precision){
+	$this_length = strlen(explode('.', $output)[0]);
+	if($this_length>=3){echo number_format($output);}elseif($this_length==2){echo number_format($output,1);}elseif($this_length==1){echo number_format($output,2);}else{echo number_format($output,$precision);};
+}
+
 foreach($viewNames as $view){
 	if(!in_array($view, $viewHiddens)){
 		$allTables[$view] = true;
@@ -64,7 +69,7 @@ foreach($viewNames as $view){
 						<button type="button" id="btn_fastQC_Stats_table" class="pull-right btn btn-success btn-sm" onclick="toggle_hidden_columns('fastQC_Stats_table')">Show Details</button>
 					</div>
 				</div>
-				<div class = 'row panel-collapse collapse' id="fastQC_Stats">
+				<div class = 'table panel-collapse collapse' id="fastQC_Stats">
 					<table id="fastQC_Stats_table" class="table table-hover table-bordered">
 						<thead>
 							<tr><th>Metric</th><th data-secondary='true' class='hidden'>Fail</th><th data-secondary='true' class='hidden'>Warn</th><th>Pass</th></tr>
@@ -102,7 +107,13 @@ foreach($viewNames as $view){
 						echo "</div>";
 					echo "</div>";
 
-					echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
+					echo "<div class = 'table panel-collapse collapse in' id='".$viewName."'>";
+					$script='$("#'.$viewName.'").removeClass(\'collapse in\');$("#'.$viewName.'").addClass(\'in\');';
+					if ($shown){echo '<script>'.$script.';</script>';};
+
+					#if ($shown){echo '<script>$("#'.$viewName.'").removeClass(\'collapse in\');$("#'.$viewName.'").addClass(\'collapse\');</script>';};  // functionally identical to what we have with the 'if-->"in" statement'
+					#if (!$shown){echo '<script>$(btn_'.$viewName.').trigger("click.bs.dropdown");</script>';};
+					//echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
 					//echo "<div id='".$viewName."'>"; //original, working
 					//echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>"; //jackson's, not working
 
@@ -152,9 +163,9 @@ foreach($viewNames as $view){
 									if ($printFlag == "percent")
 										echo number_format(($value*100), $precision). "%";
 									elseif($printFlag == "decimal")
-										echo number_format($value, $precision);
+										echo reformat_number($value, $precision);
 									else
-										echo number_format($value);
+										echo reformat_number($value, $precision);
 									echo "</td>";
 									$printAvg = true;
 									$printMax = false;
@@ -167,9 +178,9 @@ foreach($viewNames as $view){
 									if ($printFlag == "percent")
 										echo number_format(($value*100), $precision). "%";
 									elseif($printFlag == "decimal")
-										echo number_format($value, $precision);
+										echo reformat_number($value, $precision);
 									else
-										echo number_format($value);
+										echo reformat_number($value, $precision);
 									echo "</td>";
 									$printAvg = false;
 									$printMax = true;
@@ -182,9 +193,9 @@ foreach($viewNames as $view){
 									if ($printFlag == "percent")
 										echo number_format(($value*100), $precision). "%";
 									elseif($printFlag == "decimal")
-										echo number_format($value, $precision);
+										echo reformat_number($value, $precision);
 									else
-										echo number_format($value);
+										echo reformat_number($value, $precision);
 									echo "</td>";
 									$keyPrinted = false;
 									$printMin = false;
@@ -202,14 +213,18 @@ foreach($viewNames as $view){
 									$printMax = false;
 									$printAvg = false;
 									$printPlot = false;
+
 								}
 									#echo "<td>$value</td>";
 								#echo "</tr>";
 							}
 
 						echo "</tbody></table>";
+
 					echo "</div>";
+
 				echo "</div>";
+
 			}
 			?>
 			</div>
