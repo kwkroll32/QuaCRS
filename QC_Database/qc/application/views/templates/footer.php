@@ -18,6 +18,8 @@
         <!--<script src="<?php echo $resources;?>plugins/sorttable/js/sorttable.js"></script>-->
         <script src="<?php echo $resources;?>plugins/tablesorter/js/tablesorter.min.js"></script>
         <script src="<?php echo $resources;?>plugins/overlay/itpoverlay.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="<?php echo $resources;?>plugins/agg_plts.js"></script>
         <script src="<?php echo $resources;?>plugins/fancybox/jquery.fancybox.pack.js"></script>
         <script src="<?php echo $resources;?>plugins/jquery_cookie/jquery.cookie.js"></script>
         <script src="<?php echo $resources;?>js/script.js"></script>

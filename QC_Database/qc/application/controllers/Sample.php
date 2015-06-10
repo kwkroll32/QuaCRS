@@ -135,6 +135,7 @@ class Sample extends CI_Controller{
 		foreach($viewNames as $viewName){
 			$data['aggregate_result_views'][$viewName] = $this->Sample_model->get_aggregate_view($viewName, $data['samples']);
 			$data['plot_info'][$viewName] = $this->Sample_model->get_samples_info($viewName, $data['samples']);
+			$data['per_row_info'][$viewName] = $this->Sample_model->get_agg_plot_info($viewName, $data['samples']);
 		}
 		$data['viewNames'] = $viewNames;
 		$data['fastqc_aggregate_result'] = $this->Sample_model->get_fastqc_aggregate_view($data['samples']);

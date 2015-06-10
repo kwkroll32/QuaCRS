@@ -17,14 +17,22 @@ function change_val(buttonID)
 	}
 }
 </script>
-
+<style>
+	tr[id^="slidingDiv"]{
+    height:auto;
+    padding:5px;
+    margin-top:5px;
+    display:none;
+    border:1px solid #333;
+}
+</style>
 
 
 <?php
 $base_url = $this->config->item('base_url'); 
 $precision = $this->config->item('precision');
 //$viewNames = array("GC_content","alignment_stats","genomic_stats", "library_stats", "strand_stats");
-$viewHiddens=array("alignment_Stats");
+$viewHiddens=array("duplication","expression","gC_Content");
 $samplesString = "";
 foreach($samples as $sample){
 	$samplesString .= $sample .',';
@@ -97,6 +105,7 @@ foreach($viewNames as $view){
 			</div>
 			<?php
 			foreach($allTables as $viewName=>$shown){
+
 				echo "<div class='col-md-6'>";
 					echo "<div class='row'>";
 						echo "<div class='col-md-6'>";
@@ -111,17 +120,12 @@ foreach($viewNames as $view){
 					$script='$("#'.$viewName.'").removeClass(\'collapse in\');$("#'.$viewName.'").addClass(\'in\');';
 					if ($shown){echo '<script>'.$script.';</script>';};
 
-					#if ($shown){echo '<script>$("#'.$viewName.'").removeClass(\'collapse in\');$("#'.$viewName.'").addClass(\'collapse\');</script>';};  // functionally identical to what we have with the 'if-->"in" statement'
-					#if (!$shown){echo '<script>$(btn_'.$viewName.').trigger("click.bs.dropdown");</script>';};
-					//echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>";
-					//echo "<div id='".$viewName."'>"; //original, working
-					//echo "<div class = 'row panel-collapse collapse"; if (!$shown){echo " in";}; echo "' id='".$viewName."'>"; //jackson's, not working
-
 						echo "<table  class='table table-hover table-bordered'><thead>";
 							echo "<tr><th>Metric</th><th>Min</th><th>Avg</th><th>Max</th><th>Plot</th></tr></thead><tbody>";
 														
 							$plot_data = array();
 							if ($viewName != "fastQC_Stats"){
+								//var_dump(json_encode($per_row_info[$viewName]) );
 								for ($i=0;$i<count($plot_info[$viewName]);$i++){
 									foreach($plot_info[$viewName][$i] as $key=>$value){
 										if(isset($plot_data[$key])){
@@ -140,6 +144,8 @@ foreach($viewNames as $view){
 							$printPlot = false;
 							
 							foreach($aggregate_result_views[$viewName] as $key=>$value){
+								// special characters are not permitted in HTML ID or NAME tags
+								$metric = str_replace("%","",str_replace(">","",explode('_', $key,2)[1]));
 								if (!$keyPrinted){
 									if(strpos($key, "min") !== false){
 										$printMin = true;
@@ -155,7 +161,7 @@ foreach($viewNames as $view){
 									else{
 										$printFlag = "int";
 									}
-									echo "<tr><td>". substr(str_replace("_"," ",$key), 3) ."</td>";
+									echo '<tr><td><a href="#" class="show_hide" rel="#slidingDiv'.$metric.'">'. substr(str_replace("_"," ",$key), 3) ."</a></td>";
 									$keyPrinted = true;
 								}
 								if ($printMin){
@@ -215,8 +221,11 @@ foreach($viewNames as $view){
 									$printPlot = false;
 
 								}
-									#echo "<td>$value</td>";
+								echo '<tr id="slidingDiv'.$metric.'"><td colspan="5" id="'.$metric.'_plt_row"></td></tr>';
+								echo '<tr style="display: none;"><td colspan="5" id="'.$metric.'_plt_data">'.json_encode($per_row_info[$viewName]).'</td></tr>';
+								#echo "<td>$value</td>";
 								#echo "</tr>";
+								#echo json_encode($per_row_info[$viewName]);
 							}
 
 						echo "</tbody></table>";

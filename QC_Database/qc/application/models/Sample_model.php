@@ -213,6 +213,33 @@ class Sample_model extends CI_Model {
 		return $result;
 	}
 
+	function get_agg_plot_info($viewName, $samplesArr){
+		$columns = $this->get_columns($viewName);
+		$result = array();
+		$select = "unique_ID, ";
+		
+		foreach($columns as $column){
+			if($column['Field'] == "qcID")
+				continue;
+			$select .= $column['Field'].", ";
+		}
+		
+		$select = rtrim($select, ", ");
+		$where = "";
+		foreach($samplesArr as $sampleID){
+			$where .= "qcID = ".$sampleID." OR ";
+		}
+		$where = rtrim($where, "OR "); 
+
+		$this->db->select($select);
+		$this->db->where($where);
+
+		$query = $this->db->get('qc');
+		$result = $query->result_array();
+		
+		return $result;
+	}
+
 	function get_samples_info($viewName, $samplesArr){
 		$columns = $this->get_columns($viewName);
 		$result = array();
@@ -224,12 +251,12 @@ class Sample_model extends CI_Model {
 			$select .= $column['Field'].", ";
 		}
 		
-		$select = rtrim($select, ", "); #substr($select, 0, -2);
+		$select = rtrim($select, ", ");
 		$where = "";
 		foreach($samplesArr as $sampleID){
 			$where .= "qcID = ".$sampleID." OR ";
 		}
-		$where = rtrim($where, "OR "); #substr($where, 0, -3);
+		$where = rtrim($where, "OR "); 
 
 		$this->db->select($select);
 		$this->db->where($where);
