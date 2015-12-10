@@ -1,0 +1,655 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : Sep 9, 2015, 1:50:54 PM
+    Author     : Taha
+*/
+
+p[disabled]{
+    color:red;
+    cursor:not-allowed;
+}
+
+.compareRowHeader{
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 10px;
+}
+
+.compareRowHeader a{
+    float: right;
+}
+
+.compareRowHeader h3{
+    margin: 0px;
+    margin-top: 5px;
+    float: left;
+}
+
+.boxBottomControl{
+    position: fixed;
+    bottom:0;
+    left:0;
+    right: 0;
+    width :98%;
+    height: 0px;
+    z-index: 9999;
+    margin: 0px auto;
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 49%, rgba(240,240,240,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(49%, rgba(245,245,245,1)), color-stop(100%, rgba(240,240,240,1)));
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 49%, rgba(240,240,240,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 49%, rgba(240,240,240,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 49%, rgba(240,240,240,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 49%, rgba(240,240,240,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f0f0f0', GradientType=0 );
+    border-top:2px solid #666;
+    border-right:2px solid #666;
+    border-left:2px solid #666;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    -webkit-transition: height 0.4s;
+    -moz-transition: height 0.4s;
+    transition: height 0.4s;
+    text-align: center;
+    overflow: hidden;
+}
+
+.boxRightControl{
+    display:inline-block;
+    vertical-align: top;
+    width :10%;
+    height: 300px;
+    background-color: transparent;
+    z-index: 9999;
+    color:black;
+    border-left:2px solid #666;
+    overflow: hidden;
+    float: right;
+}
+
+.boxLeftControl{
+    display:inline-block;
+    vertical-align: top;
+    width :10%;
+    height: 300px;
+    background-color: transparent;
+    z-index: 9999;
+    color:black;
+    border-right:2px solid #666;
+    overflow: hidden;
+    float: left;
+}
+
+.boxMiddleControl{
+    display:inline-block;
+    vertical-align: top;
+    width :79%;
+    height: 300px;
+    background-color: transparent;
+    z-index: 9999;
+    padding-top: 5px;
+}
+
+.simpleButton{
+    width: auto;
+    height: auto;
+    background: none;
+    background-color: transparent;
+    border:none;
+    outline:0;
+    color: green;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.simpleButton[disabled]{
+    color:red;
+    cursor: not-allowed;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.simpleButton[addtogroup]{
+    color:black;
+    font-size: 25px;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.horizontal{
+    width: 100%;
+    height: 285px;
+    margin:0px auto;
+    padding: 0px;
+    text-align: center;
+}
+
+.hold{
+    width:100%;
+    height: 105px;
+    margin: 0px;
+    font-size: 25px;
+    padding-top: 20px;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.hold p{
+    cursor: pointer;
+}
+
+.hold:hover{
+    color: #FF6600;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.wrapperGroup{
+    width:100%;
+    height: 280px;
+    margin:0px auto;
+    padding-top: 2px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.capsule{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 250px;
+    height: 270px;
+    border: 2px solid #CCC;
+    margin:10px;
+    margin-top:0px;
+    font-size: 25px;
+    border-radius:5px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #FFF;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.capsule[activeDefault]{
+    border: 2px solid #FF6666;
+}
+
+.capsuletoggle{
+    width:100%;
+    height: 50px;
+}
+
+.groupName{
+    display: inline-block;
+    vertical-align: top;
+    width: 90%;
+    height: 50px;
+    font-size: 20px;
+    font-weight:200;
+    padding-top: 5px;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin:0px auto;
+}
+
+.groupColor{
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    font-size: 15px;
+    font-weight:200;
+    border-radius: 50%;
+    margin-top: 15px;
+}
+
+.dropPort{
+    width: 100%;
+    height: 225px;
+    padding-bottom: 10px;
+    overflow:auto;
+    border-top:1px solid #CCC;
+}
+
+.sampleinnerhold{
+    width: 100%;
+    min-height: 40px;
+    margin-top: 5px;
+    overflow:auto;
+    font-size: 18px;
+    border-bottom:1px solid #CCC;
+}
+
+.sampleinnerName{
+    display: inline-block;
+    vertical-align: top;
+    float: left;
+    width: 78%;
+    padding-top: 7px;
+}
+
+.sampleinnerDelete{
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+    width: 30px;
+    height: 30px;
+    padding-top: 0px;
+    color: white;
+    margin-right: 10px;
+    margin-top: 6px;
+    border:2px solid transparent;
+    border-radius: 50%;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.sampleinnerDelete:hover{
+    color: #c63939;
+    border-color: #c63939;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.backdrop{
+    display:none;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,1);
+    z-index: 10000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.head{
+    width:100%;
+    height: 50px;
+    margin:0px auto;
+    border-bottom: 1px solid #CCC;
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.head p{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    color:white;
+}
+
+.head button{
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+}
+
+.cont{
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    min-width: 250px;
+    height: auto;
+    min-height: 100px;
+    background-color: #FFF;
+    border-radius: 10px;
+    margin: 0px auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    overflow: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bannerCluster{
+    width: 80%;
+    height: 30px;
+    margin:0px auto;
+    border-bottom: 1px solid #CCC;
+    font-weight: 200;
+    font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.holdCluster{
+    width: 80%;
+    height: 30px;
+    margin: 0px auto;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.buttonCluster{
+    display:inline-block;
+    vertical-align: top;
+    width: 45%;
+    height: 25px;
+    color: black;
+    font-size: 15px;
+    padding-top: 5px;
+}
+
+.sampleHoldCluster{
+    width: 98%;
+    min-height: 100px;
+    margin:0px auto;
+    padding-bottom: 20px;
+}
+
+.samplePoint{
+    padding-top: 10px;
+    width: 95%;
+    min-height: 0px;
+    border:1px solid #EDEDED;
+    margin:0px auto;
+    margin-top: 10px;
+    color:#000;
+    border-radius: 5px;
+}
+
+.warning{
+    background-color: #fcf8e3;
+}
+
+.success{
+    background-color: #dff0d8;
+}
+
+.borderAll{
+    border: 1px solid #CCC;
+}
+
+.border-right{
+    border-right: 1px solid #CCC;
+}
+
+.border-top-bottom-light{
+    border-top: 1px solid #EDEDED;
+    border-bottom: 1px solid #EDEDED;
+}
+
+.border-bottom-light{
+    border-bottom: 1px solid #EDEDED;
+}
+
+.design-font{
+    color:blue;
+    font-size:17px;
+    cursor:pointer
+}
+
+.menu{
+    vertical-align: top;
+    display: inline-block;
+    width: 40%;
+    height: auto;
+    text-align: center;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+    overflow: auto;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    border: 2px solid #EDEDED;
+    border-radius: 10px;
+}
+
+.menuSampleInfo{
+    font-size: 17px;
+    line-height: 40px;
+    padding-bottom: 20px;
+}
+
+.linkHold{
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    min-height: 30px;
+    margin-bottom: 10px;
+    font-size: 19px;
+}
+
+.linkHold a{
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.topBanner{
+    width: 100%;
+    min-height: 50px;
+    font-size: 20px;
+    padding-top: 8px;
+    border-bottom: 1px solid #CCC;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.topBanner button{
+    font-size: 15px;
+}
+
+
+.table{
+    margin: 0px auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #EDEDED;
+}
+
+.tableBody{
+    height: 100%;
+}
+
+.tableHeader{
+    font-size: 0px;
+    width: 100%;
+    min-height: 40px;
+}
+
+.tableRow{
+    width: 100%;
+    min-height: 40px;
+}
+
+.tableColumn{
+    display: inline-block;
+    vertical-align: top;
+    width: 16%;
+    min-height: 40px;
+    font-size: 18px;
+    margin: 0px;
+    padding-top: 4px;
+}
+
+.tableColumn[metric]{
+    width: 35%;
+}
+
+.tableColumn[metric-small]{
+    width: 20%;
+}
+
+.tableColumn[metric-half]{
+    width: 48%;
+}
+
+.tableHeader .tableColumn{
+    color: #333;
+}
+
+.tableBody .tableColumn{
+    font-size: 16px;
+    padding-top: 7px;
+}
+
+.tableColumnWrap{
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+}
+
+.tableColumnWrap[open]{
+    height: auto;
+}
+
+.viewHold{
+    width: 100%;
+    height: auto;
+    border: 1px solid #CCC;
+    margin-bottom: 20px;
+    border-radius:4px;
+}
+
+.tableData{
+    width: 95%;
+    height: auto;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    text-align: center;
+    overflow: hidden;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+}
+
+.SampleDisplayBackDrop{
+    display:  none;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,1);
+    z-index: 10000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.SampleDisplayBackDrop p{
+    margin: 0px;
+}
+
+.SampleDisplayBackDrop .head{
+    width:100%;
+    min-width: 500px;
+    height: 50px;
+    margin:0px auto;
+    border-bottom: 1px solid #CCC;
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.SampleDisplayBackDrop .head p{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    color:white;
+}
+
+.SampleDisplayBackDrop .head button{
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+}
+
+.SampleDisplayBackDrop .backdropSingleContent{
+    width: 95%;
+    min-height: 300px;
+    min-width: 500px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    border: 1px solid white;
+    border-radius: 15px;
+    background-color: #FFF;
+}
+
+.SampleDisplayBackDrop .backdropSingleContent .header{
+    width: 100%;
+    height: 50px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #BBB;
+    padding-top: 10px;
+}
+
+.SampleDisplayBackDrop .backdropSingleContent .header:nth-child(1){
+    color:#000;
+    font-size: 22px;
+}
+
+.SampleDisplayBackDrop .backdropSingleContent .info{
+    width: 95%;
+    margin:0px auto;
+    min-height: 400px;
+
+}
+
+
+.form-switch{
+    width: 100%;
+    height: 35px;
+    margin: 0px auto;
+    font-size: 17px;
+    font-weight: 200;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    outline: 0;
+    padding-left:10px;
+    padding-right: 10px;
+    border: 1px solid transparent;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.form-switch:hover, .form-switch:active, .form-switch:focus{
+    border: 1px solid #0CF;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.designedCheck label{
+    margin:0px auto;
+    font-weight: 200;
+    cursor: pointer;
+    font-size: 20px;
+    color: #CCC;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.designedCheck input[type="checkbox"] {
+    display:none;
+}

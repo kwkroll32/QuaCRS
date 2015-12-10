@@ -1,35 +1,33 @@
 <?php 
-$base_url = $this->config->item('base_url');
-$projectName = $this->config->item('project_name');
-?>
-    <div role="navigation" class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="<?php echo $base_url;?>" class="navbar-brand"><?=$projectName?></a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="<?=(($selected=="downloads")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/downloads"?>">DOWNLOADS</a></li>
-            <li class="<?=(($selected=="aboutus")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/aboutus"?>">ABOUT US</a></li>
-	    <li class="<?=(($selected=="readme")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/readme"?>">README</a></li>
+    $base_url = $this->config->item('base_url');
+    $projectName = $this->config->item('project_name');
+?>    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-target=".navbar-collapse" data-toggle="collapse" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="<?php echo $base_url;?>" class="navbar-brand"><?=$projectName?></a>
+          </div>
+          <div class="collapse in navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="<?=(($selected=="downloads")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/downloads"?>">DOWNLOADS</a></li>
+              <li class="<?=(($selected=="aboutus")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/aboutus"?>">ABOUT US</a></li>
+	            <li class="<?=(($selected=="readme")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/readme"?>">README</a></li>
 	    
-	    <?php
-	    if($this->session->userdata('logged_in'))
-		{
-		$session_data = $this->session->userdata('logged_in');
-    		$sdata['username'] = $session_data['username'];
-    		?>
-		<li class="<?=(($selected=="logout")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/logout"?>">LOGOUT</a></li>
-	    <?php
-		}
-	    ?>	
-            
+        	    <?php
+        	       if($this->session->userdata('logged_in'))
+              		{
+              		    $session_data = $this->session->userdata('logged_in');
+                  		$sdata['username'] = $session_data['username'];
+              ?>
+              	     <li class="<?=(($selected=="logout")?"active":"")?>"><a href="<?=$base_url."index.php/pages/view/logout"?>">LOGOUT</a></li>
+              <?php
+              		}
+        	    ?>
 	    <!--<li><a href="#contact">Contact</a></li>-->
             <!--<li class="dropdown">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">Dropdown <b class="caret"></b></a>

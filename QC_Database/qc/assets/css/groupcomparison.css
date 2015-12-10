@@ -1,0 +1,674 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 9, 2015, 1:54:21 PM
+    Author     : Taha
+*/
+
+.viewNameButtonTable{
+    width: 200px;
+    height: 30px;
+    border: 2px solid #EDEDED;
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 5px; 
+    float: right;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.viewNameButtonTable:hover{
+    border-color: green;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.viewNameButtonTable:disabled{
+    border-color: red;
+    cursor: not-allowed;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.topHalf{
+    width: 100%;
+    min-height: 200px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+.banner{
+    width:60%;
+    height: 40px;
+    font-size: 23px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+.groupblock{
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    height: 200px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.nameGroup{
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    padding-top: 5px;
+    border-bottom: 1px solid #CCC;
+}
+
+.groupSummary{
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    padding-top: 8px;
+    border-bottom: 1px solid #CCC;
+}
+
+.groupInfo{
+    width: 100%;
+    height: 100px;
+    padding-top: 5px;
+    overflow: auto;
+}
+
+.groupInfo p{
+    cursor: pointer;
+    color:#3328e6;
+}
+
+.header{
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+    padding-top: 8px;
+    margin: 10px 0px 10px 0px;
+    font-size: 25px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.bottomHalf{
+    width: 100%;
+    min-height: 200px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #CCC;
+}
+
+.topBanner{
+    width: 100%;
+    min-height: 50px;
+    font-size: 20px;
+    padding-top: 8px;
+    border-bottom: 1px solid #CCC;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-weight: 200;
+    font-family: 'Raleway', serif;  
+}
+
+.topBanner button{
+    font-size: 15px;
+}
+
+.menu{
+    width: 100%;
+    margin-bottom: 20px;
+    height: auto;
+    text-align: center;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+    overflow: auto;
+}
+
+.menu .viewTables{
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    height:320px;
+    float: left;
+    overflow: auto;
+    border: 1px solid #EDEDED;
+    border-radius: 3px;
+}
+
+.menu .viewSettings{
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    height:320px;
+    float: right;
+    border: 1px solid #EDEDED;
+    border-radius: 3px;
+}
+
+.menu[overlay]{
+    vertical-align: top;
+    display: inline-block;
+    width: 40%;
+    height: auto;
+    text-align: center;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+    overflow: auto;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    border: 2px solid #EDEDED;
+    border-radius: 10px;
+}
+
+.menuSampleInfo[overlay]{
+    font-size: 17px;
+    line-height: 40px;
+    padding-bottom: 20px;
+}
+
+.viewSettingsRow{
+    width: 80%;
+    min-height: 40px;
+    border: 2px solid #EDEDED;
+    font-size: 17px;
+    padding-top: 10px;
+    margin: 0px auto;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.viewSettingsRow:hover{
+    border-color: green;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.viewSaveCompareBar{
+    width: 80%;
+    min-height: 40px;
+    border: 2px solid #EDEDED;
+    padding: 10px;
+    margin: 0px auto;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.menu .viewTables .topBanner{
+    min-height: 30px;
+}
+
+.menu .viewSettings .topBanner{
+    min-height: 30px;
+}
+
+.tabBarToggle{
+    width: 100%;
+    height: 55px;
+    margin: 5px 0px 10px 0px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.toggleButton{
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    height: 40px;
+    margin: 0px 10px 0px 10px;
+    padding-top: 0px;
+    border: 2px solid #CCC;
+    border-radius: 5px;
+    font-size: 25px;
+    font-weight: 200;
+    font-family: 'Raleway' , serif;
+    color:#000;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.toggleButton:hover{
+    color:#0cf;
+    border: 2px solid #0cf;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.infoContainer{
+    width: 100%;
+    height: auto;
+}
+
+.fastqcContainer{
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #CCC;
+    border-radius:4px;
+    padding-bottom: 20px;
+}
+
+.fastqcData{
+    width:95%;
+    height: auto;
+    margin: 0px auto;
+    text-align: center;
+    overflow: hidden;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+}
+
+.fastqcData th{
+    text-align: center;
+}
+
+table {
+    margin: 0px auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #EDEDED;
+}
+
+th{
+  height: 60px;  
+  border-bottom: 2px solid #CCC;
+}
+
+td{
+    height: 50px;
+}
+
+.danger{
+    background-color: #f2dede;
+}
+
+.warning{
+    background-color: #fcf8e3;
+}
+
+.success{
+    background-color: #dff0d8;
+}
+
+.borderAll{
+    border: 1px solid #CCC;
+}
+
+.border-right{
+    border-right: 1px solid #CCC;
+}
+
+.border-top-bottom-light{
+    border-top: 1px solid #EDEDED;
+    border-bottom: 1px solid #EDEDED;
+}
+
+.border-bottom-light{
+    border-bottom: 1px solid #EDEDED;
+}
+
+.design-font{
+    color:#007FFF;
+    font-size:17px;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.design-font:hover{
+    color:#ff004c;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.linkHold{
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    min-height: 30px;
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+
+.linkHold a{
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.linkHold a[disabled='true']{
+    color: red;
+    cursor: not-allowed;
+    pointer-events:none;
+    text-decoration: line-through;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.table{
+    margin: 0px auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #EDEDED; 
+}
+
+.tableBody{
+    height: 100%;
+}
+
+.tableHeader{
+    font-size: 0px;
+    width: 100%;
+    min-height: 40px;
+}
+
+.tableRow{
+    width: 100%;
+    min-height: 40px;
+}
+
+.tableColumn{
+    display: inline-block;
+    vertical-align: top;
+    width: 16%;
+    min-height: 40px;
+    font-size: 18px;
+    margin: 0px;
+    padding-top: 4px;
+}
+
+.tableColumn[metric]{
+    width: 35%;
+}
+
+.tableColumn[metric-small]{
+    width: 20%;
+}
+
+.tableColumn[metric-half]{
+    width: 48%;
+}
+
+.tableHeader .tableColumn{
+    color: #333;
+}
+
+.tableBody .tableColumn{
+    font-size: 16px;
+    padding-top: 7px;
+}
+
+.tableColumnWrap{
+    width: 100%;
+    overflow: hidden;
+    -webkit-transition: all 1s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+.tableColumnWrap[open]{
+    height: auto;
+}
+
+.tableColumnWrap[close]{
+    height: 0px
+}
+
+.allStats{
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    padding-top: 30px;
+    margin-top: 30px;
+    border-top: 1px solid #EDEDED;
+}
+
+.viewHold{
+    width: 100%;
+    max-height: 10000px;
+    border: 1px solid #CCC;
+    margin-bottom: 20px;
+    border-radius:4px;
+}
+
+.tableData{
+    width: 95%;
+    height: auto;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    text-align: center;
+    overflow: hidden;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+}
+
+.graphingHeader{
+    width: 30%;
+    margin:0px auto;
+    padding-top: 10px;
+    margin-bottom: 5px;
+    min-height: 30px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.graphingRow{
+    width: 100%;
+    height: 410px;
+    -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: height 1s;
+    transition: height 1s;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top:1px solid #CCC;
+    border-bottom:1px solid #CCC;
+}
+
+.graphingRow[open]{
+    height: 410px;
+
+}
+
+.graphingRow[close]{
+    height: 0px;
+}
+
+.information{
+    width: 90%;
+    height: 30px;
+    padding-top: 4px;
+    margin: 0px auto;
+    border: 1px solid #EDEDED;
+    background-color: #EDEDED;
+    border-radius: 10px;
+}
+
+.graphingRow .graphBlock{
+    width: 96%;
+    height: 400px;
+    padding-top: 10px;
+    margin: 0px auto;
+    margin-top: 5px;
+}
+
+/* Styles for Backdrop and all information. Certain information inherited from top*/
+
+.backdrop{
+    display:none;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,1);
+    z-index: 10000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.backdrop p{
+    margin: 0px;
+}
+
+.head{
+    width:100%;
+    height: 50px;
+    margin:0px auto;
+    border-bottom: 1px solid #CCC;
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.head p{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    color:white;
+}
+
+.head button{
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+}
+
+.backdropContent{
+    width: 95%;
+    min-height: 300px;
+    min-width: 1000px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    border: 1px solid white;
+    border-radius: 15px;
+    background-color: #FFF;
+}
+
+.backdropContent .header{
+    width: 100%;
+    height: 50px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #BBB;
+}
+
+.backdropContent .header:nth-child(1){
+    color:#000;
+    font-size: 22px;
+}
+
+.backdropContent .info{
+    width: 95%;
+    margin:0px auto;
+    min-height: 400px;
+}
+
+/* Graph Container Style */
+
+.graphBoxHeader{
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+.selectBox{
+    display:inline-block;
+    vertical-align: top;
+    width: 45%;
+    min-height: 40px;
+    margin: 0px 10px 0px 10px;
+}
+
+.select-style {
+    display: inline-block;
+    vertical-align: top;
+    border: 2px solid #000;
+    width: auto;
+    border-radius: 3px;
+    overflow: hidden;
+    background: transparent;
+    -webkit-transition: all 0.7s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
+}
+
+.select-style select {
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border:none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: #000;
+    font-size: 17px;
+    font-weight: 200;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+.plotButton{
+    width: 50%;
+    min-height: 40px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+.multipleGraphViewContainer{
+    width: 96%;
+    height: 500px;
+    margin: 0px auto;
+    margin-top: 10px;
+}
+
+.hideContent{
+    display: none;
+}
+
+.showContent{
+    display: block;
+}

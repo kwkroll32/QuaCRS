@@ -223,7 +223,7 @@ if ( ! is_php('5.4'))
 	if (extension_loaded('iconv'))
 	{
 		define('ICONV_ENABLED', TRUE);
-		iconv_set_encoding('internal_encoding', $charset);
+		//iconv_set_encoding('internal_encoding', $charset);
 	}
 	else
 	{

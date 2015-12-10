@@ -14,6 +14,6 @@
       <input type="password" size="20" id="password" name="password"/>
       <br/>
       <input type="submit" value="Login"/>
-    </form>
+    <?echo form_close();?>
   </body>
 </html>

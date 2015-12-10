@@ -6,19 +6,19 @@ $(function() {
 });
 </script>
 <script type="text/javascript">
-function change_val(buttonID)
-{
-	if (document.getElementById("btn_"+buttonID).innerHTML == "Show"){
-		document.getElementById("btn_"+buttonID).innerHTML = "Hide";
-	}
-	else{
-		show = 1;
-		document.getElementById("btn_"+buttonID).innerHTML = "Show";
-	}
-}
+    function change_val(buttonID)
+    {
+            if (document.getElementById("btn_"+buttonID).innerHTML == "Show"){
+                    document.getElementById("btn_"+buttonID).innerHTML = "Hide";
+            }
+            else{
+                    show = 1;
+                    document.getElementById("btn_"+buttonID).innerHTML = "Show";
+            }
+    }
 </script>
 <style>
-	tr[id^="slidingDiv"]{
+tr[id^="slidingDiv"]{
     height:auto;
     padding:5px;
     margin-top:5px;
@@ -161,7 +161,7 @@ foreach($viewNames as $view){
 									else{
 										$printFlag = "int";
 									}
-									echo '<tr><td><a href="#" class="show_hide" rel="#slidingDiv'.$metric.'">'. substr(str_replace("_"," ",$key), 3) ."</a></td>";
+									echo '<tr><td><a href="#" id="slidingDiv" class="show_hide" rel="#slidingDiv'.$metric.'">'. substr(str_replace("_"," ",$key), 3) ."</a></td>";
 									$keyPrinted = true;
 								}
 								if ($printMin){

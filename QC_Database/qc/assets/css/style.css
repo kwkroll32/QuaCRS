@@ -1,20 +1,22 @@
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   position: relative;
   min-height: 100%;
 }
 body {
-  /* Margin bottom by footer height */
+  /* Margin bottom for footer height */
   margin-bottom: 60px;
+  padding-top: 100px;
+  min-width: 652px;
 }
+
 #footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #f5f5f5;
+  border-top: 1px solid #CCC;
+  text-align: center;
 }
 
 .text-muted {
@@ -27,4 +29,10 @@ body {
 
 .hidden {
     display: none;
+}
+
+.compareButtonRow{
+    float:right;
+    padding-right: 30px;
+    margin-bottom:8px;
 }

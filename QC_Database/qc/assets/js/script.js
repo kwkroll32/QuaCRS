@@ -15,14 +15,14 @@ var base_url = get_base_URL();
 
 function redirect_to(url){
 	//this is how you should use it
-	
+
 	//onclick='redirect_to(\"".$base_url."index.php/sample/detail/".$sample['qcID']."\")'
 	window.location= url;
 }
 
 function toggle_column(columnID){
 	$('#samples tr *[data-col-ind="'+(columnID)+'"]').toggleClass('hidden');
-	
+
 	// This is after we have changed the class of the element
 	var elementClass = $('#samples tr *[data-col-ind="'+(columnID)+'"]').attr("class");
 
@@ -34,11 +34,11 @@ function toggle_column(columnID){
 	else{
 		//when you uncheck a column
 		$.removeCookie("col-order-"+columnID);
-		
+
 
 		//get all the checked checkboxes in the select column seciton:
 		//and check to see if the length of it is zero or not
-		
+
 		var numberOfCheckedCheckboxes = $("input.column-name:checked").length;
 		if(numberOfCheckedCheckboxes == 0){
 			//alert("There is nothing thats checked anymore");
@@ -67,7 +67,7 @@ function toggle_table(tableID){
 		$("#btn_"+tableID).text("Show");
 	else
 		$("#btn_"+tableID).text("Hide");
-	
+
 }
 
 
@@ -84,7 +84,7 @@ function toggle_table(tableID){
 				alert("ERROR: You need to change the permissions on the assets/reports folder and set to 777");
 			}
 			else{
-				window.location = base_url + "assets/reports/"+fileName;	
+				window.location = base_url + "assets/reports/"+fileName;
 			}
     	}
 	});
@@ -127,7 +127,7 @@ $( document ).ready(function() {
 
 	$('.collapse').collapse({hide: true});
 	$(".fancybox").fancybox();
-	
+
 	$("#samples").tablesorter({
 		headers:{
 			0:{
@@ -158,3 +158,23 @@ $( document ).ready(function() {
 		search(keyword);
 	});*/
 });
+
+function ease(){
+    var y = window.scrollY;
+    if(y > 100){
+        $(".scrollUp").fadeIn(500);
+    }else{
+        $(".scrollUp").fadeOut(500);
+    }
+}
+
+function scrollupPrimary(){
+    $('html, body').animate({scrollTop:0},800);
+}
+
+document.getElementById('body').onscroll = function() {
+    var pathname = window.location.pathname;
+    if(pathname !== "/QuaCRS/index.php/sample"){
+        ease();
+    }
+};

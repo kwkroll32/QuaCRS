@@ -6,24 +6,24 @@ $resources = $this->config->item('resources');
 $viewHiddens=array("fastQC_Stats");
 $staticTables = array();
 foreach($viewNames as $view){
-	if(!in_array($view, $viewHiddens)){
-		$allTables[$view] = true;
-	}
-	else{
-		$allTables[$view] = false;
-	}
+    if(!in_array($view, $viewHiddens)){
+        $allTables[$view] = true;
+    }
+    else{
+        $allTables[$view] = false;
+    }
 }
 
 function reformat_number($output, $precision){
-	$this_length = strlen(explode('.', $output)[0]);
-	if($this_length>=3){echo number_format($output);}elseif($this_length==2){echo number_format($output,1);}elseif($this_length==1){echo number_format($output,2);}else{echo number_format($output,$precision);};
+    $this_length = strlen(explode('.', $output)[0]);
+    if($this_length>=3){echo number_format($output);}elseif($this_length==2){echo number_format($output,1);}elseif($this_length==1){echo number_format($output,2);}else{echo number_format($output,$precision);};
 }
 //prints all the tables with clickable buttons to collapse them
 function shown_block($views, $flags, $precision, $viewName, $shown){
 	echo "<div class='col-md-6'>";
 		echo "<div class='row'>";
 			echo "<div class='col-md-6'>";
-				if ($viewName == "fastqc_stats"){
+				if ($viewName == "fastQC_Stats"){
 					echo "<h4>FastQC Stats</h4>";
 				}
 				else{

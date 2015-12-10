@@ -11,22 +11,23 @@ jQuery(function ($) {
             
         };
         var options = $.extend(defaults, options);
-        $(this).click(function () {
+        $("#slidingDiv").click(function () {
+            alert("Taha");
         	 var $name = event.target.rel.replace('#slidingDiv','');
         	 //var $row_name = '#'.concat(event.target.rel.replace('#slidingDiv',''),'_plt_row')
         	 var $row_name = '[id=' + $name + '_plt_row]';
-             var $db_name = this.innerText.split(' ').join('_') //this.innerText.replace(' ','_');
-            
-            var $j = 1;
-            var $my_data = [];
-            try{
-                for (var i = 0; i < $.parseJSON($("#" + $name + "_plt_data").text()).length; i++) {
-                    if($.parseJSON($("#" + $name + "_plt_data").text())[i][$db_name]) {
-                        $my_data.push( ({"x": $j, "y": parseFloat($.parseJSON($("#" + $name + "_plt_data").text())[i][$db_name]), "name": $.parseJSON($("#" + $name + "_plt_data").text())[i]['unique_ID']}) );
-                        $j++
-                    };
-                }
-            }catch(e){};
+                var $db_name = this.innerText.split(' ').join('_') //this.innerText.replace(' ','_');
+
+               var $j = 1;
+               var $my_data = [];
+               try{
+                   for (var i = 0; i < $.parseJSON($("#" + $name + "_plt_data").text()).length; i++) {
+                       if($.parseJSON($("#" + $name + "_plt_data").text())[i][$db_name]) {
+                           $my_data.push( ({"x": $j, "y": parseFloat($.parseJSON($("#" + $name + "_plt_data").text())[i][$db_name]), "name": $.parseJSON($("#" + $name + "_plt_data").text())[i]['unique_ID']}) );
+                           $j++
+                       };
+                   }
+               }catch(e){};
  
              var $width = $("#slidingDiv" + $name).parent().width()*(0.96);
         	 thing($row_name,$my_data, $width);
@@ -58,8 +59,6 @@ $(document).ready(function(){
         showText: 'View',// the button text to show when a div is closed
         hideText: 'Close', // the button text to show when a div is open     
     }); 
-
-
 });
 
 function thing(name, data, width) { 
