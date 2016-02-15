@@ -331,7 +331,7 @@ if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ -f ExpressionQC/
 else
 	if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] ; then
 		echo "Running expression analysis for "$UNIQUE_ID
-		$SUBREAD_EXEC -s $featureCountsStrand -g gene_name -T $threads -R $( [ $PE '==' "yes" ] && echo "-p") -a $ANNOT -o ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $BAM_FILE
+		$FEATURECOUNTS_EXEC -s $featureCountsStrand -g gene_name -T $threads -R $( [ $PE '==' "yes" ] && echo "-p") -a $ANNOT -o ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $BAM_FILE
 		for trash in ExpressionQC/$UNIQUE_ID/expression_qc.txt ExpressionQC/$UNIQUE_ID/housekeeping_expression.txt; do [ -f $trash ] && rm $trash ; done
 		[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts ExpressionQC/$UNIQUE_ID/
 	fi
