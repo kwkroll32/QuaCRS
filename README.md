@@ -64,6 +64,7 @@ Other dependencies
 * python-dev
 * ncurses
 * ImageMagic convert (http://www.imagemagick.org/script/convert.php)
+Note: RNA-SeQC is not compatible with java 8.
 
 INSTALLATION
 ----------------

@@ -100,9 +100,8 @@ def ReadGC(folder_name):
 
 #RSeQC Images
 def ReadImages(folder_name):
-    images = ["DupRate_plot", "GC_plot", "geneBodyCoverage", "NVC_plot", "qual.boxplot", "qual.heatmap"]
+    images = ["DupRate_plot", "GC_plot", "geneBodyCoverage.curves", "NVC_plot", "qual.boxplot", "qual.heatmap", "splice_junction", "splice_events"]
     out_cols = [""] * len(images)
-    
     #Gather filenames of existing images
     i = 0
     for image in images:

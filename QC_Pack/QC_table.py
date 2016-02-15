@@ -40,7 +40,7 @@ header_RSeQC_dup_rate_sequence = ["1-10 sequence dups", "11-100 sequence dups", 
 header_RSeQC_dup_rate_mapping = ["1-10 mapping dups", "11-100 mapping dups", "100-1000 mapping dups", "> 1000 mapping dups", "%1-10 mapping dups", "%11-100 mapping dups", "%100-1000 mapping dups", "%>1000 mapping dups"]
 header_RSeQC_GC = ["GC Avg", "GC Std Dev", "GC Skew"]
 header_RSeQC_Junctions = ["Spliced Reads", "% Spliced Reads", "Reads with Known Splices", "Reads with Novel Splices", "% Known Spliced Reads", "% Novel Spliced Reads", "Total Splice Sites", "Known Splice Sites", "Novel Splice Sites", "% Known Splice Sites", "% Novel Splice Sites"]
-header_RSeQC_images = ["Duplication Rate Plot Location", "GC Plot Location", "Gene Body Coverage Plot Location", "NVC Plot Location", "Quality Boxplot Location", "Quality Heatmap Location"]
+header_RSeQC_images = ["Duplication Rate Plot Location", "GC Plot Location", "Gene Body Coverage Plot Location", "NVC Plot Location", "Quality Boxplot Location", "Quality Heatmap Location", "Splice Junctions Loction", "Splice Events Location"]
 header_RSeQC = header_RSeQC_dup_rate_sequence + header_RSeQC_dup_rate_mapping + header_RSeQC_GC + header_RSeQC_Junctions + header_RSeQC_images
 
 #Expression QC

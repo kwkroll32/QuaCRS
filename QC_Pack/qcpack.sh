@@ -3,10 +3,10 @@
 SCRIPTS=$(dirname $0)
 CWD=`pwd -P`
 while read line; do if [ "$line" != "" ]; then export $line; fi ; done < ${SCRIPTS}/tools.cfg
-[ ! -d "$FASTQC_DIR" ] && echo "FastQC directory $FASTQC_DIR not found" && exit 1
-[ ! -d "$PICARD_DIR" ] && echo "Picard tools directory $PICARD_DIR not found" && exit 1
+[ ! -e "$FASTQC_EXEC" ] && echo "FastQC directory $FASTQC_EXEC not found" && exit 1
+[ ! -e "$PICARD_JAR" ] && echo "Picard tools directory $PICARD_JAR not found" && exit 1
 [ ! -e "$RNASEQC_JAR" ] && echo "RNA-SeQC jar file $RNASEQC_JAR not found" && exit 1
-[ ! -d "$SAMTOOLS_DIR" ] && echo "Samtools directory $SAMTOOLS_DIR not found" && exit 1
+[ ! -e "$SAMTOOLS_EXEC" ] && echo "Samtools directory $SAMTOOLS_EXEC not found" && exit 1
 [ ! -d "$RSEQC_DIR" ] && echo "RSeQC directory $RSEQC_DIR not found" && exit 1
 [ ! -e "$WGF" ] && echo "Whole genome fasta file not found" && exit 1
 [ ! -e "$ANNOT" ] && echo "Genome annotation gtf file not found" && exit 1
@@ -64,10 +64,10 @@ do
 		if [ ${fastq##*.} == "gz" ]; then
 			
 			zcat $fastq > ${processed_fastq%.gz*}
-			${FASTQC_DIR}/fastqc -o FastQC -f fastq ${processed_fastq%.gz*}
+			${FASTQC_EXEC} -o FastQC -f fastq ${processed_fastq%.gz*}
 			rm ${processed_fastq%.gz*}
 		elif [ ${fastq##*.} == "fastq" ]; then
-			${FASTQC_DIR}/fastqc -o FastQC -f fastq ${fastq}
+			${FASTQC_EXEC} -o FastQC -f fastq ${fastq}
 		fi
 		[ ! -d "FastQC/${processed_fastq%.fastq*}_fastqc" ] && unzip "FastQC/${processed_fastq%.fastq*}_fastqc.zip" -d FastQC/
 		mv "FastQC/${processed_fastq%.fastq*}_fastqc" "FastQC/${UNIQUE_ID}_${end}"
@@ -96,7 +96,7 @@ pwd
 if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then 
 	echo "RNASeQC has already been run for "$BAM_FILE
 	echo "     Skipping this step ..."
-	else
+else
 	BAM=${BAM_FILE##*/}
 	base_BAM=${BAM%%.bam*}
 	out_BAM="${base_BAM}_grpd.bam"
@@ -111,7 +111,7 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 		echo " running Picard.AddOrReplaceReadGroups.jar" 
 
 		echo " arguments= $args"
-		java   -Xmx6g  -jar ${PICARD_DIR}/AddOrReplaceReadGroups.jar $args
+		java   -Xmx6g  -jar ${PICARD_JAR} AddOrReplaceReadGroups $args
 		echo " finished Picard.AddOrReplaceReadGroups.jar"
 	fi
 	if [ ! -f $out_BAM ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ]; then
@@ -137,7 +137,7 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 		echo "    Skipping this step ... "
 	elif [ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ] || [ $keep_temp == "no" ]; then
 		echo "running samtools sort" 
-		${SAMTOOLS_DIR}/samtools sort $BAM $out_BAM
+		${SAMTOOLS_EXEC} sort $BAM $out_BAM
 		echo "finished samtools sort"
 	fi
 	if [ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ]; then
@@ -162,7 +162,7 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 	elif [ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ] || [ $keep_temp == "no" ]; then
 		echo " running Picard.MarkDuplicates"
 		echo " arguments= $args"
-		java -Xmx6g -jar ${PICARD_DIR}/MarkDuplicates.jar $args
+		java -Xmx6g -jar ${PICARD_JAR} MarkDuplicates $args
 		echo " finished Picard.MarkDuplicates"
 	fi
 	if [ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ]; then
@@ -185,7 +185,7 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 	elif [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ] || [ $keep_temp == "no" ]; then
 		echo " starting samtools index"
 
-		${SAMTOOLS_DIR}/samtools index ${BAM}
+		${SAMTOOLS_EXEC} index ${BAM}
 		echo " finished samtools index"
 	fi
 	if [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]; then
@@ -254,15 +254,18 @@ if [ -f $output/${SID}.geneBodyCoverage.curves.pdf ] && [ $keep_temp == "yes" ];
 	echo "    Skipping this step ... "
 else
 	echo "Running gene body coverage for "$UNIQUE_ID
+	[ ! -f ${BAM_FILE}.bai ] && ${SAMTOOLS_EXEC} index $BAM_FILE
 	python $RSEQC_DIR/geneBody_coverage.py -r $ANNOT_BED -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.read.distribution.txt ] && [ $keep_temp == "yes" ]; then
-	echo "Read distribution already present for "$UNIQUE_ID
-	echo "    Skipping this step ... "
-else
-	echo "Running read distribution for "$UNIQUE_ID
-	python $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
-fi
+
+#if [ -f $output/${SID}.read.distribution.txt ] && [ $keep_temp == "yes" ]; then
+#	echo "Read distribution already present for "$UNIQUE_ID
+#	echo "    Skipping this step ... "
+#else
+#	echo "Running read distribution for "$UNIQUE_ID
+#	python $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
+#fi
+
 if [ -f $output/${SID}.DupRate_plot.pdf ] && [ $keep_temp == "yes" ]; then
 	echo "Read duplication already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
@@ -322,7 +325,6 @@ echo
 [ ! -d "ExpressionQC/"$UNIQUE_ID ] && mkdir ExpressionQC/$UNIQUE_ID
 
 output=ExpressionQC/$UNIQUE_ID
-featureCountsStrand=$(tail -1 RNASeQC/TDIMI034_V1T/TDIMI034_V1T/TDIMI034_V1T.metrics.txt | awk '{if ($(NF-1)>75) print 1; else if ($NF>75) print 2; else print 0}')
 if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ] && [ $keep_temp == "yes" ]; then
 	echo "Expression analysis already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
@@ -398,7 +400,7 @@ args=$UNIQUE_ID' '$STUDY' '$SID' '$PE
 [ ${#CONTAMINATION} -gt 0 ] && args+=' -cr '${CONTAMINATION}
 [ ${#DATE} -gt 0 ] && args+=' -sd '${DATE}
 
-python $SCRIPTS/my_QC_table.py $args
+python $SCRIPTS/QC_table.py $args
 
 
 

@@ -4,14 +4,16 @@ import pdb # pdb.set_trace()
 def ReadVFRates(uniqueID):
     saved = {}
     ordered = []
-    for line in open('VariantQC/' + uniqueID + '/variant_qc.txt', 'r'):
-        try:
-            col = line.strip().split('\t')
-            bin = col[0].strip(':').replace(' ','_')
-            percent = str(float(col[1].strip('%')))
-            saved[bin] = percent
-        except:
-            continue
+    fn = 'VariantQC/' + uniqueID + '/variant_qc.txt'
+    if os.path.exists(fn):
+        for line in open(fn, 'r'):
+            try:
+                col = line.strip().split('\t')
+                bin = col[0].strip(':').replace(' ','_')
+                percent = str(float(col[1].strip('%')))
+                saved[bin] = percent
+            except:
+                continue
     for key in sorted(saved.keys()):
         ordered.append(saved[key])
     if ordered:
