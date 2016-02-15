@@ -1,6 +1,6 @@
 #IMPORTS
 import MySQLdb as mdb
-import pdb # pdb.set_trace()
+from pdb import set_trace as stop # pdb.set_trace()
 
 #IMPORTS FOR DATABASE CREDENTIALS
 from constant.config import *
@@ -156,11 +156,11 @@ class Database:
 			sql += "`;"
 			self.debug_log(sql,"alters out an old column")
 		try:
+			
 			self.cur.execute(sql)
 			return True
 		except:
-			
-			self.print_db_error("error modifying the table {0} with column {1}".format(str(tableName), str(fields[0])))
+			self.print_db_error("error modifying the table {0} with column {1}".format(str(tableName), str(fields)))
 			return False
 
 

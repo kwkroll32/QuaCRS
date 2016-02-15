@@ -4,7 +4,7 @@ import os
 from glob import glob
 import getopt
 from shutil import copyfile, rmtree
-import pdb
+from pdb import set_trace as stop
 
 
 #IMPORTS FOR UTILITIES
@@ -883,10 +883,12 @@ def create_database(exitIfError):
 		database_columns = db.get_column_names()
 		database_columns.remove('cur_timestamp')
 		delete_these_cols = set(database_columns) - set(QC_COLUMNS_DICT.keys())
+		#stop()
 		for col in delete_these_cols:
 			print_warning(WRN_DELETING_COLUMN.format(col))
 			answer = raw_input(DELETING_Q).lower()
 			if answer == "yes" or answer == "y":
+				#stop()
 				db.alter_table(QC_TABLE_NAME, col, delete=True)
 			else:
 				print_error(ERR_DB_DELETE)

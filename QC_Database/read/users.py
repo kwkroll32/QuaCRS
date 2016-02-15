@@ -5,6 +5,7 @@ from glob import glob
 import getopt
 from shutil import copyfile, rmtree
 import getpass
+from pdb import set_trace as stop
 
 #IMPORTS FOR UTILITIES
 from collections import defaultdict
@@ -313,8 +314,10 @@ def print_warning(objs):
 
 def user_list():
 	out_list = []
-	for i in db.select('users', columns='username, id'):
-		out_list.append(i)
+	queryRes = db.select('users', columns='username, id')
+	if queryRes:
+		for i in queryRes:
+			out_list.append(i)
 	return out_list
 
 def print_log(objs):
