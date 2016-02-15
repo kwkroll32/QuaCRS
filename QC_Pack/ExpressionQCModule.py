@@ -2,10 +2,12 @@ import os
 import pdb
 
 def ReadFeatureQC(uniqueID, feature_type):
-    for line in open('ExpressionQC/' + uniqueID + '/expression_qc.txt', 'r'):
-        col = line.strip().split('\t')
-        if col[0] == feature_type:
-            return "\t".join(col[1:])
+    fn = 'ExpressionQC/' + uniqueID + '/expression_qc.txt'
+    if os.path.exists(fn):
+        for line in open(fn, 'r'):
+            col = line.strip().split('\t')
+            if col[0] == feature_type:
+                return "\t".join(col[1:])
     return "\t"*2
 
 def ReadHousekeepingQC(uniqueID):
