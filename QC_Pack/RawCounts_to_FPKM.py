@@ -133,8 +133,11 @@ def printMets(dframe, name, outdir, out):
         print(str(name) + '\t' + '\t'.join(map(str, counts)), sep='\t', file=out)
     return True 
 
-def printHousekeepingGenes(dframe, outdir):
-    HKGenes = {"C1orf43":0, "CHMP2A":0, "EMC7":0, "GPI":0, "PSMB2":0, "PSMB4":0, "RAB7A":0, "REEP5":0, "SNRPD3":0, "VCP":0, "VPS29":0}
+def printHousekeepingGenes(dframe, outdir, fn):
+    HKGenes = {}
+    for line in open(fn,'r'):
+        HKGenes[line.strip()] = 0
+    #HKGenes = {"C1orf43":0, "CHMP2A":0, "EMC7":0, "GPI":0, "PSMB2":0, "PSMB4":0, "RAB7A":0, "REEP5":0, "SNRPD3":0, "VCP":0, "VPS29":0}
     out = open(outdir + '/' + 'housekeeping_expression.txt', 'w')
     for gene in HKGenes.keys():
         print(str(gene) + '\t' + str(dframe.loc[gene].values[0]), file=out)
@@ -148,6 +151,7 @@ def main():
     parser.add_argument("-len", "--gene_lengths", required=False, help="tab-delimited text file of gene_name and total_gene_length. not needed when using subread featureCounts")
     parser.add_argument("-lnc", "--lncRNA_names", required=False, help="text file of long non-coding RNA names")
     parser.add_argument("-linc", "--lincRNA_names", required=False, help="text file of long intergenic non-coding RNA names")
+    parser.add_argument("-hk", "--housekeeping_names", required=False, help="text file of housekeeping gene names")
     parser.add_argument("-coding", "--codingRNA_names", required=False, help="text file of coding RNA names")
     parser.add_argument("-other", "--other_names", required=False, help="text file of some other RNA names")
     args = parser.parse_args()
@@ -176,7 +180,8 @@ def main():
     print("Writing output ...")
     data.printSummary()
 
-    printHousekeepingGenes(data.fpkmDF, data.outdir)
+    if args.housekeeping_names:
+        printHousekeepingGenes(data.fpkmDF, data.outdir, args.housekeeping_names)
     if args.lncRNA_names:
         data.printSubset(args.lncRNA_names, "lncRNA")
     if args.lincRNA_names:

@@ -336,7 +336,7 @@ else
 		#[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts ExpressionQC/$UNIQUE_ID/
 	fi
 	if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ ! -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ]; then
-		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
+		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#housekeeping_genes} -gt 0 ] && echo " -hk "$housekeeping_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
 	fi
 fi
 if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ]; then
