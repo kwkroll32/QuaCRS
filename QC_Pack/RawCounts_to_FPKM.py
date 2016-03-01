@@ -158,7 +158,7 @@ def main():
 
     data = ExpressionMatrix()
     data.name = str(args.name)
-    output_dir = "/".join(["ExpressionQC", args.name])
+    output_dir = "./" # "/".join(["ExpressionQC", args.name])
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     data.outdir = output_dir

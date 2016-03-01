@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPTS=$(dirname $0)
-CWD=`pwd -P`
+CWD=`pwd`
 while read line; do if [ "$line" != "" ]; then export $line; fi ; done < ${SCRIPTS}/tools.cfg
 [ ! -e "$FASTQC_EXEC" ] && echo "FastQC directory $FASTQC_EXEC not found" && exit 1
 [ ! -e "$PICARD_JAR" ] && echo "Picard tools directory $PICARD_JAR not found" && exit 1
@@ -34,10 +34,12 @@ done
 [ $count == '2' ] && PE=yes
 [ $count -gt 2 ] && echo "Too many fastq files provided."  && exit 1
 
+[ ${#UNIQUE_ID} -eq 0 ] && echo "UNIQUE_ID required in input.cfg!" && exit 1
+[ ${#STUDY} -eq 0 ] && echo "STUDY required in input.cfg!" && exit 1
+[ ${#SID} -eq 0 ] && SID=$UNIQUE_ID
 [ ${#FCN} -eq 0 ] && FCN="None"
 [ ${#LN} -eq 0 ] && LN="None"
 [ ${#INDEX} -eq 0 ] && INDEX="None"
-[ ${#UNIQUE_ID} -eq 0 ] && echo "UNIQUE_ID required in input.cfg!" && exit 1
 [ ${#threads} -eq 0 ] && threads=1
 #[ ${#DATE} -gt 0 ] && UNIQUE_ID=${DATE}_L00${LN}_${SID}_${STUDY}
 #[ ${#DATE} -le 0 ] && UNIQUE_ID=${SID}_${STUDY}
@@ -90,24 +92,23 @@ echo
 #cd RNASeQC
 #[ ! -d ${UNIQUE_ID} ] && mkdir  ${UNIQUE_ID} 
 #cd ${UNIQUE_ID}
-#[ -d RNASeQC/${UNIQUE_ID} ] && cd RNASeQC/${UNIQUE_ID}
-out_dir=`pwd -P`/RNASeQC/${UNIQUE_ID}
-pwd
+[ -d RNASeQC/${UNIQUE_ID} ] && cd RNASeQC/${UNIQUE_ID}
+out_dir=${CWD}/RNASeQC/$UNIQUE_ID 
+BAM=${BAM_FILE##*/}
+
 if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then 
 	echo "RNASeQC has already been run for "$BAM_FILE
 	echo "     Skipping this step ..."
 else
-	BAM=${BAM_FILE##*/}
 	base_BAM=${BAM%%.bam*}
 	out_BAM="${base_BAM}_grpd.bam"
-
 	BAMNAME=${BAM##*/}
 	#creating arguments variable to easily pass to the picard tools
 	args="INPUT=${BAM_FILE} OUTPUT=${out_BAM} RGID=FLOWCELL${FCN}.LANE${LN} RGLB=library_$SID RGPL=Illumina RGPU=${INDEX} RGSM=$SID  VALIDATION_STRINGENCY=LENIENT"
-	if [ -f $out_BAM ] || [ -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ] && [ $keep_temp == "yes" ]; then
+	if ([ -f $out_BAM ] || [ -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ]) && [ $keep_temp == "yes" ]; then
 		echo "Found Add/Replace Read Groups output"
 		echo "    Skipping this step ... "
-	elif [ ! -f $out_BAM ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ] ||  [ $keep_temp == "no" ]; then	
+	elif ([ ! -f $out_BAM ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ]) ||  [ $keep_temp == "no" ]; then	
 		echo " running Picard.AddOrReplaceReadGroups.jar" 
 
 		echo " arguments= $args"
@@ -132,10 +133,10 @@ else
 	base_BAM=${BAM%%.bam*}
 	out_BAM="${base_BAM##*/}_reorded"
 
-	if [ -f "$out_BAM".bam ] || [ -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ] && [ $keep_temp == "yes" ]; then
+	if ([ -f "$out_BAM".bam ] || [ -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ]) && [ $keep_temp == "yes" ]; then
 		echo "Found SamReorder output"
 		echo "    Skipping this step ... "
-	elif [ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ] || [ $keep_temp == "no" ]; then
+	elif ([ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ]) || [ $keep_temp == "no" ]; then
 		echo "running samtools sort" 
 		${SAMTOOLS_EXEC} sort $BAM $out_BAM
 		echo "finished samtools sort"
@@ -156,10 +157,10 @@ else
 	out_metrics=$out_dir/${base_BAM}_metrics.txt
 	args="INPUT=${BAM} OUTPUT=${out_BAM} ASSUME_SORTED=True OPTICAL_DUPLICATE_PIXEL_DISTANCE=100 MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=8000 SORTING_COLLECTION_SIZE_RATIO=0.25 METRICS_FILE=$out_metrics VALIDATION_STRINGENCY=LENIENT  CREATE_INDEX=true"
 
-	if [ -f "$out_BAM" ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ] && [ $keep_temp == "yes" ]; then
+	if ([ -f "$out_BAM" ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ]) && [ $keep_temp == "yes" ]; then
 		echo "Found Mark Duplicates output"
 		echo "    Skipping this step ... "
-	elif [ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ] || [ $keep_temp == "no" ]; then
+	elif ([ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ]) || [ $keep_temp == "no" ]; then
 		echo " running Picard.MarkDuplicates"
 		echo " arguments= $args"
 		java -Xmx6g -jar ${PICARD_JAR} MarkDuplicates $args
@@ -178,21 +179,21 @@ else
 	#Creates an index for the bam file given as an argument
 	# in the form of 'indexbam.job.sh bamfile.bam'.
 	#Passes the bam file straight to the samtools index function.
-
-	if [ -f "$BAM".bai ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ] && [ $keep_temp == "yes" ]; then
-		echo "Found BAM Index "
-		echo "    Skipping this step ... "
-	elif [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ] || [ $keep_temp == "no" ]; then
-		echo " starting samtools index"
-
-		${SAMTOOLS_EXEC} index ${BAM}
-		echo " finished samtools index"
-	fi
-	if [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]; then
-		echo "Samtools index may have failed"
-		echo "    exiting  "
-		exit 1
-	fi
+	#NOTE: may not be needed when markDupes makes an index
+#	if ([ -f "$BAM".bai ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]) && [ $keep_temp == "yes" ]; then
+#		echo "Found BAM Index "
+#		echo "    Skipping this step ... "
+#	elif ([ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]) || [ $keep_temp == "no" ]; then
+#		echo " starting samtools index"
+#
+#		${SAMTOOLS_EXEC} index ${BAM}
+#		echo " finished samtools index"
+#	fi
+#	if [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]; then
+#		echo "Samtools index may have failed"
+#		echo "    exiting  "
+#		exit 1
+#	fi
 
 	#----------------------
 	#QC_StudyFiles.job.sh
@@ -207,11 +208,11 @@ else
 	if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 		echo "Found RNASeQC output"
 		echo "    Skipping this step ... "
-	elif [ ! -f $out_dir"/meanCoverage_high.png" ] || [ $keep_temp == "no" ]; then
+	elif [ ! -f $out_dir/${SID}/${SID}.metrics.txt ] || [ $keep_temp == "no" ]; then
 		echo -e "Sample ID\tBam File\tNotes" > rnaSeQC_samples_list.txt
 		echo -e "$SID\t$BAM\tNo Note" >>rnaSeQC_samples_list.txt
 		
-		args='-s ./rnaSeQC_samples_list.txt -t '$ANNOT' -r '$WGF' -e 50 -n 1000 -o '$out_dir/
+		args=" -s rnaSeQC_samples_list.txt -t "$ANNOT" -r "$WGF" -e 50 -n 1000 -o "$out_dir/
 
 
 		echo " Running	RNA-SeQC" 
@@ -222,14 +223,20 @@ else
 		fi
 		echo " finished RNA-SeQC"
 	fi
-	if [ ! -f $out_dir"/meanCoverage_high.png" ]; then
+	if [ ! -f $out_dir"/${SID}/${SID}.metrics.txt" ]; then
 		echo "RNA-SeQC may have failed"
 		echo "    Continuing to RSeQC ... "
 	fi
 fi
-#This line will interrogate the RNA-SeQC output to determine the strandedness of the data 
-#  for use with Subread featureCounts. 0 is non-stranded, 1 is read1 stranded, 2 is reverse stranded
-featureCountsStrand=$(tail -1 $out_dir/${SID}/${SID}.metrics.txt | awk '{if ($(NF-1)>75) print 1; else if ($NF>75) print 2; else print 0}')
+
+if [ -f $out_dir"/${SID}/${SID}.metrics.txt" ]; then
+	#This line will interrogate the RNA-SeQC output to determine the strandedness of the data 
+	#  for use with Subread featureCounts. 0 is non-stranded, 1 is read1 stranded, 2 is reverse stranded
+	featureCountsStrand=$(tail -1 $out_dir/${SID}/${SID}.metrics.txt | awk '{if ($(NF-1)>75) print 1; else if ($NF>75) print 2; else print 0}')
+else
+	#Default to no strandedness 
+	featureCountsStrand=0
+fi
 cd $CWD
 ################################################################### 
 #### RSeQC
@@ -241,24 +248,25 @@ echo
 [ ! -d "RSeQC" ] && mkdir RSeQC
 [ ! -d "RSeQC/"$UNIQUE_ID ] && mkdir RSeQC/$UNIQUE_ID
 
-output=RSeQC/$UNIQUE_ID
-if [ -f $output/${SID}.bam.stat.txt ] && [ $keep_temp == "yes" ]; then
+cd RSeQC/$UNIQUE_ID
+output=${CWD}/RSeQC/$UNIQUE_ID
+if ([ -f "$output/${SID}.bam.stat.txt" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.bam.stat.txt" ]) && [ $keep_temp == "yes" ]; then
 	echo "BAM stats already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running BAM stats for "$UNIQUE_ID
 	python $RSEQC_DIR/bam_stat.py -i $BAM_FILE &> $output/${SID}.bam.stat.txt
 fi
-if [ -f $output/${SID}.geneBodyCoverage.curves.pdf ] && [ $keep_temp == "yes" ]; then
+if ([ -f "$output/${SID}.geneBodyCoverage.curves.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.geneBodyCoverage.curves.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Gene body coverage already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running gene body coverage for "$UNIQUE_ID
-	[ ! -f ${BAM_FILE}.bai ] && ${SAMTOOLS_EXEC} index $BAM_FILE
+	[ ! -f "${BAM_FILE}.bai" ] && ${SAMTOOLS_EXEC} index $BAM_FILE
 	python $RSEQC_DIR/geneBody_coverage.py -r $ANNOT_BED -i $BAM_FILE -o $output/${SID}
 fi
 
-#if [ -f $output/${SID}.read.distribution.txt ] && [ $keep_temp == "yes" ]; then
+#i(f [ -f $output/${SID}.read.distribution.txt ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/ ]) && [ $keep_temp == "yes" ]; then
 #	echo "Read distribution already present for "$UNIQUE_ID
 #	echo "    Skipping this step ... "
 #else
@@ -266,35 +274,35 @@ fi
 #	python $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
 #fi
 
-if [ -f $output/${SID}.DupRate_plot.pdf ] && [ $keep_temp == "yes" ]; then
+if ([ -f "$output/${SID}.DupRate_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.DupRate_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read duplication already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read duplication for "$UNIQUE_ID
 	python $RSEQC_DIR/read_duplication.py -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.GC_plot.pdf ] && [ $keep_temp == "yes" ]; then
+if ([ -f "$output/${SID}.GC_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.GC_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read GC already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read GC for "$UNIQUE_ID
 	python $RSEQC_DIR/read_GC.py -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.NVC_plot.pdf ] && [ $keep_temp == "yes" ]; then
+if ([ -f "$output/${SID}.NVC_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.NVC_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read NVC already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read NVC for "$UNIQUE_ID
 	python $RSEQC_DIR/read_NVC.py -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.qual.boxplot.pdf ] && [ -f $output/${SID}.qual.heatmap.pdf ] && [ $keep_temp == "yes" ]; then
+if (([ -f "$output/${SID}.qual.boxplot.pdf" ] && [ -f "$output/${SID}.qual.heatmap.pdf" ]) || ([ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.qual.boxplot.pdf" ] && [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.qual.heatmap.pdf" ] )) && [ $keep_temp == "yes" ]; then
 	echo "Read quality already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read quality for "$UNIQUE_ID
 	python $RSEQC_DIR/read_quality.py -i $BAM_FILE -o $output/${SID}
 fi
-if [ -f $output/${SID}.splice_events.pdf ] && [ $keep_temp == "yes" ]; then
+if ([ -f "$output/${SID}.splice_events.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.splice_events.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Junction annotation already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
@@ -302,18 +310,25 @@ else
 	python $RSEQC_DIR/junction_annotation.py -i $BAM_FILE -r $ANNOT_BED -o $output/${SID} &> $output/${SID}.junction_annotation.txt
 fi
 
-for i in RSeQC/${UNIQUE_ID}/*.pdf 
+for samp_dir in ${CWD}/RSeQC/${UNIQUE_ID}/ ${CWD}/temp/${UNIQUE_ID}/RSeQC/
 do
-    if [ ! -f ${i%.pdf*}.png ]; then
-	echo "Converting $i to png"
-	convert $i ${i%.pdf*}.png
-    elif [ -f ${i%.pdf*}.png ]; then
-	echo "Found ${i%.pdf*}.png"
-    else 
-	echo "terrible error"
-    fi
+	if [ -d ${samp_dir} ]; then 
+		for i in `find ${samp_dir} -type f -name "*.pdf"` 
+		do
+			fn=`basename $i`
+		    if [ ! -f ${CWD}/RSeQC/${UNIQUE_ID}/${fn%.pdf*}.png ]; then
+				echo "Converting $fn to png"
+				convert $i ${CWD}/RSeQC/${UNIQUE_ID}/${fn%.pdf*}.png
+		    elif [ -f ${CWD}/RSeQC/${UNIQUE_ID}/${fn%.pdf*}.png ]; then
+				echo "Found ${fn%.pdf*}.png"
+		    else 
+				echo "found pdf but could not find or convert to png"
+				echo $i
+		    fi
+		done
+	fi
 done
-
+cd $CWD
 ################################################################### 
 #### ExpressionQC
 ################################################################### 
@@ -324,26 +339,27 @@ echo
 [ ! -d "ExpressionQC" ] && mkdir ExpressionQC
 [ ! -d "ExpressionQC/"$UNIQUE_ID ] && mkdir ExpressionQC/$UNIQUE_ID
 
-output=ExpressionQC/$UNIQUE_ID
-if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ] && [ $keep_temp == "yes" ]; then
+output=${CWD}/ExpressionQC/$UNIQUE_ID
+cd ExpressionQC/$UNIQUE_ID
+if [ -f $UNIQUE_ID.subCounts.txt ] && [ -f expression_qc.txt ] && [ $keep_temp == "yes" ]; then
 	echo "Expression analysis already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
-	if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] ; then
+	if [ ! -f $UNIQUE_ID.subCounts.txt ] ; then
 		echo "Running expression analysis for "$UNIQUE_ID
-		$FEATURECOUNTS_EXEC -s $featureCountsStrand -g gene_name -T $threads $( [ $PE '==' "yes" ] && echo "-p") -a $ANNOT -o ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $BAM_FILE
-		for trash in ExpressionQC/$UNIQUE_ID/expression_qc.txt ExpressionQC/$UNIQUE_ID/housekeeping_expression.txt; do [ -f $trash ] && rm $trash ; done
-		#[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts ExpressionQC/$UNIQUE_ID/
+		$FEATURECOUNTS_EXEC -s $featureCountsStrand -g gene_name -T $threads $( [ $PE '==' "yes" ] && echo "-p") -a $ANNOT -o ${output}/$UNIQUE_ID.subCounts.txt $BAM_FILE
+		for trash in expression_qc.txt housekeeping_expression.txt; do [ -f $trash ] && rm $trash ; done
+		#[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts 
 	fi
-	if [ -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ] && [ ! -f ExpressionQC/$UNIQUE_ID/expression_qc.txt ]; then
-		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#housekeeping_genes} -gt 0 ] && echo " -hk "$housekeeping_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
+	if [ -f $UNIQUE_ID.subCounts.txt ] && [ ! -f expression_qc.txt ]; then
+		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw $UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#housekeeping_genes} -gt 0 ] && echo " -hk "$housekeeping_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
 	fi
 fi
-if [ ! -f ExpressionQC/$UNIQUE_ID/$UNIQUE_ID.subCounts.txt ]; then
+if [ ! -f $UNIQUE_ID.subCounts.txt ]; then
 	echo "Expression analysis may have failed"
 	echo "    Continuing anyway ... "
 fi
-
+cd $CWD
 ################################################################### 
 #### VariantQC
 ################################################################### 
@@ -375,13 +391,15 @@ if [ "$keep_temp" == "yes" ]; then
 	[ ! -d temp ] && mkdir temp
 	[ ! -d temp/$UNIQUE_ID ] && mkdir temp/$UNIQUE_ID
 	[ ! -d temp/$UNIQUE_ID/RNASeQC ] && mkdir temp/$UNIQUE_ID/RNASeQC
+	[ ! -d temp/$UNIQUE_ID/RSeQC ] && mkdir temp/$UNIQUE_ID/RSeQC
 	#[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
-	[ `\ls | grep ${BAM_FILE%.bam*}_grpd | grep bam | wc -l` -gt 0 ] && mv ${BAM_FILE%.bam*}*_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
+	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAM%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && mv RNASeQC/${UNIQUE_ID}/${BAM%.bam*}_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
+	[ `\ls RSeQC/${UNIQUE_ID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec mv {} temp/$UNIQUE_ID/RSeQC/ \;
 	
 elif [ "$keep_temp" == "no" ]; then
-	[ `\ls | grep ${BAM_FILE%.bam*}_grpd | grep bam | wc -l` -gt 0 ] && rm ${BAM_FILE%.bam*}*_grpd*.bam*
-	[ `\ls | grep fastq | grep "$UNIQUE_ID" | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
-	[ `\ls RSeQC/${SID}/*.pdf | wc -l` -gt 0 ] && rm RSeQC/${SID}/*.pdf
+	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAM%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && rm RNASeQC/${UNIQUE_ID}/${BAM%.bam*}*_grpd*.ba*
+	[ `\ls | grep ${UNIQUE_ID} | grep fastq | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
+	[ `\ls RSeQC/${SID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec rm {} \;
 fi
 
 ################################################################### 
