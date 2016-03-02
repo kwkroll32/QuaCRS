@@ -51,14 +51,15 @@ QC tools
 * FastQC (http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 
 Other dependencies
-* samtools v0.1.10 or newer (http://sourceforge.net/projects/samtools/files/)
-* picardtools v1.94 or newer (http://sourceforge.net/projects/picard/files/)
+* samtools v1.0 or newer (http://www.htslib.org/)
+* picardtools v2.0.1 or newer (http://broadinstitute.github.io/picard/)
 * Reference annotation (GTF & BED), and accompanying FASTA file
 	Tested with Gencode 19 (http://www.gencodegenes.org/releases/19.html)
-	Users may use the Galaxy Convert Format tool to convert the Gencode GTF to a BED file (https://usegalaxy.org/)
+	Users may download the relevant organism bed file from the RSeQC webpage, 
+		or use the Galaxy Convert Format tool to convert the Gencode GTF to a BED file (https://usegalaxy.org/)
 * MySQL database (http://dev.mysql.com/doc/refman/5.6/en/installing.html)
 * Local Server with PHP installed (http://us2.php.net/manual/en/install.php)
-	PHP version 5.1.6 or newer
+	PHP version 5.1.6 or newer 
 * python (https://wiki.python.org/moin/BeginnersGuide/Download)
 	MySQLdb module
 * python-dev
@@ -104,9 +105,11 @@ The following configuration fields are required:
 
 	BAM_FILE= Full file path where the aligned BAM file is located. 
 
-	SID= Sample Identification, or sample name.
+	UNIQUE_ID= Sample Identification, or sample name, unique to this sample
 
 	STUDY= Name of a project with which the sample is associated.
+
+The following configuration fields are optional:	
 
 	DATE= Sequencing date. Can be another important date. Used to uniquely identify multiple runs of the same sample. Left blank only for combined samples
 
@@ -119,8 +122,6 @@ The following configuration fields are required:
 		For paired end data, concatenate the left mates separately from the right mates to yield two composite FASTQ files
  	2) When a sample is combined from multiple flowcell dates, this field must be "COMBINED"
 		If not a combined sample, this field can be any string, or empty. 
-
-The following configuration fields are optional:
 
 	INDEX= Bar code sequence used for demultiplexing 
 
@@ -136,7 +137,7 @@ USAGE - SAMPLES
 
 	$ bash qcpack.sh input.cfg
 
-	qcpack.sh and input.cfg do not need to be in the current working directory, or even the same directory. The program will  output to the current working directory. 
+	The program will  output to the current working directory. 
 
 	Under normal circumstances, qcpack can check for existing output and resume incomplete steps. If QC fails, it may be necessary to run qcpack with the option to force removal of temporary files and existing output. This is done by passing "force" as an additional argument:
 
@@ -220,8 +221,5 @@ TROUBLESHOOTING
 
 MAINTAINERS
 ----------------
-As of 5/28/2014:
-	Nima Esmaili Mokaram - esmailimokaram.1@buckeyemail.osu.edu	
+As of 3/01/2016:
 	Karl Kroll - Karl.Kroll@osumc.edu
-	Alex Pelletier - Alex.Pelletier@osumc.edu
-
