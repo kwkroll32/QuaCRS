@@ -394,7 +394,7 @@ if [ "$keep_temp" == "yes" ]; then
 	[ ! -d temp/$UNIQUE_ID/RSeQC ] && mkdir temp/$UNIQUE_ID/RSeQC
 	[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
 	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAMNAME%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && mv RNASeQC/${UNIQUE_ID}/${BAMNAME%.bam*}_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
-	[ `\ls RSeQC/${UNIQUE_ID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec mv {} temp/$UNIQUE_ID/RSeQC/ \;
+	[ `find ./RSeQC/${UNIQUE_ID}/ -type f -not -name "*.png" -not -name "*.xls" | wc -l` -gt 0 ] && find ./RSeQC/${UNIQUE_ID}/ -type f -not -name "*.png" -not -name "*.xls" -exec mv {} temp/$UNIQUE_ID/RSeQC/ \;
 	for fastq in `echo ${FASTQ_FILE//,/ }`;
 	do
 		fq_name=${fastq##*/}
@@ -405,7 +405,7 @@ if [ "$keep_temp" == "yes" ]; then
 elif [ "$keep_temp" == "no" ]; then
 	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAMNAME%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && rm RNASeQC/${UNIQUE_ID}/${BAMNAME%.bam*}*_grpd*.ba*
 	[ `\ls | grep ${UNIQUE_ID} | grep fastq | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
-	[ `\ls RSeQC/${SID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec rm {} \;
+	[ `find ./RSeQC/${UNIQUE_ID}/ -type f -not -name "*.png" -not -name "*.xls" | wc -l` -gt 0 ] && find ./RSeQC/${UNIQUE_ID}/ -type f -not -name "*.png" -not -name "*.xls" -exec rm {} \;
 	for fastq in `echo ${FASTQ_FILE//,/ }`;
 	do
 		fq_name=${fastq##*/}

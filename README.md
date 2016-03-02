@@ -1,10 +1,11 @@
-﻿
+﻿<pre>
    ___               ____ ____  ____  
   / _ \ _   _  __ _ / ___|  _ \/ ___| 
  | | | | | | |/ _` | |   | |_) \___ \ 
  | |_| | |_| | (_| | |___|  _ < ___) |
   \__\_\\__,_|\__,_|\____|_| \_\____/ 
            Quality Control for RNA-Seq          
+</pre>
 
 The Ohio State University Wexner Medical Center
 Version 1.1
