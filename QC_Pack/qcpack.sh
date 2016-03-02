@@ -95,6 +95,7 @@ echo
 [ -d RNASeQC/${UNIQUE_ID} ] && cd RNASeQC/${UNIQUE_ID}
 out_dir=${CWD}/RNASeQC/$UNIQUE_ID 
 BAM=${BAM_FILE##*/}
+BAMNAME=${BAM##*/}
 
 if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then 
 	echo "RNASeQC has already been run for "$BAM_FILE
@@ -102,7 +103,6 @@ if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 else
 	base_BAM=${BAM%%.bam*}
 	out_BAM="${base_BAM}_grpd.bam"
-	BAMNAME=${BAM##*/}
 	#creating arguments variable to easily pass to the picard tools
 	args="INPUT=${BAM_FILE} OUTPUT=${out_BAM} RGID=FLOWCELL${FCN}.LANE${LN} RGLB=library_$SID RGPL=Illumina RGPU=${INDEX} RGSM=$SID  VALIDATION_STRINGENCY=LENIENT"
 	if ([ -f $out_BAM ] || [ -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ]) && [ $keep_temp == "yes" ]; then
@@ -392,14 +392,26 @@ if [ "$keep_temp" == "yes" ]; then
 	[ ! -d temp/$UNIQUE_ID ] && mkdir temp/$UNIQUE_ID
 	[ ! -d temp/$UNIQUE_ID/RNASeQC ] && mkdir temp/$UNIQUE_ID/RNASeQC
 	[ ! -d temp/$UNIQUE_ID/RSeQC ] && mkdir temp/$UNIQUE_ID/RSeQC
-	#[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
-	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAM%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && mv RNASeQC/${UNIQUE_ID}/${BAM%.bam*}_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
+	[ ! -d temp/$UNIQUE_ID/FastQC ] && mkdir temp/$UNIQUE_ID/FastQC
+	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAMNAME%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && mv RNASeQC/${UNIQUE_ID}/${BAMNAME%.bam*}_grpd*.ba* temp/$UNIQUE_ID/RNASeQC/
 	[ `\ls RSeQC/${UNIQUE_ID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec mv {} temp/$UNIQUE_ID/RSeQC/ \;
-	
+	for fastq in `echo ${FASTQ_FILE//,/ }`;
+	do
+		fq_name=${fastq##*/}
+		[ -f FastQC/${fq_name%.fastq.gz*}_fastqc.zip ] && mv FastQC/${fq_name%.fastq.gz*}_fastqc.zip temp/$UNIQUE_ID/FastQC
+		[ -f FastQC/${fq_name%.fastq.gz*}_fastqc.html ] && mv FastQC/${fq_name%.fastq.gz*}_fastqc.html temp/$UNIQUE_ID/FastQC
+	done
+
 elif [ "$keep_temp" == "no" ]; then
-	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAM%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && rm RNASeQC/${UNIQUE_ID}/${BAM%.bam*}*_grpd*.ba*
+	[ `\ls RNASeQC/${UNIQUE_ID}/ | grep ${BAMNAME%.bam*}_grpd | grep ba | wc -l` -gt 0 ] && rm RNASeQC/${UNIQUE_ID}/${BAMNAME%.bam*}*_grpd*.ba*
 	[ `\ls | grep ${UNIQUE_ID} | grep fastq | wc -l` -gt 0 ] && rm *$UNIQUE_ID*.fastq
 	[ `\ls RSeQC/${SID}/ | grep -v png | wc -l` -gt 0 ] && find RSeQC/${UNIQUE_ID}/ -mindepth 1 -not -name "*.png" -exec rm {} \;
+	for fastq in `echo ${FASTQ_FILE//,/ }`;
+	do
+		fq_name=${fastq##*/}
+		[ -f FastQC/${fq_name%.fastq.gz*}_fastqc.zip ] && rm FastQC/${fq_name%.fastq.gz*}_fastqc.zip 
+		[ -f FastQC/${fq_name%.fastq.gz*}_fastqc.html ] && rm FastQC/${fq_name%.fastq.gz*}_fastqc.html 
+	done
 fi
 
 ################################################################### 
