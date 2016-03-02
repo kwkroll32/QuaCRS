@@ -33,16 +33,16 @@ INTRODUCTION
 VERSION HISTORY
 ----------------
 QuaCRS v1.1 (Released 7/11/14)
-    * Added Readme page
-    * Removed highlighting on searches
-    * Fixed PHP error when attempting to create an aggregate report of 0 samples
-    * Added 'Sequencing date' column
-    * Expanded search capabilities
-    * Added login page and user accounts
-    * Added box plots to aggregate reports
+* Added Readme page
+* Removed highlighting on searches
+* Fixed PHP error when attempting to create an aggregate report of 0 samples
+* Added 'Sequencing date' column
+* Expanded search capabilities
+* Added login page and user accounts
+* Added box plots to aggregate reports
 
 QuaCRS v1.0 (Released 5/29/14)
-    * Initial release
+* Initial release
 
 REQUIREMENTS
 ----------------
