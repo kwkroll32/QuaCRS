@@ -56,7 +56,7 @@ EOF;
 
 <?php
     // Hidden Tables.
-    $viewHiddens=array("duplication","expression","general","gC_Content","splicing","variants");
+    $viewHiddens=array("duplication","expression","General","gC_Content","splicing","variants");
     function reformat_number($output, $precision){
 
         $this_exploded = explode('.',$output);
@@ -273,7 +273,7 @@ EOF;
                                         echo "<div class='tableBody'>";
                                         // Will now print the table data in accordance to group
                                                 $plot_data = array();
-                                                if ($viewName != "fastqc_stats"){
+                                                if ($viewName != "fastQC_Stats"){
                                                     for ($j=0;$j< count($plot_info_cumulative[$viewName]);$j++){
                                                         foreach($plot_info_cumulative[$viewName][$j] as $key=>$value){
                                                             if(isset($plot_data[$key])){
@@ -502,7 +502,7 @@ EOF;
                                                                 /* PLOT DISPLAY USING SPARKLINES */
 
                                                                 $plot_data_group = array();
-                                                                if ($viewName != "fastqc_stats"){
+                                                                if ($viewName != "fastQC_Stats"){
                                                                     for ($j=0;$j< count($plot_info[$i][$viewName]);$j++){
                                                                         foreach($plot_info[$i][$viewName][$j] as $key=>$value){
                                                                             if(isset($plot_data_group[$key])){
@@ -576,7 +576,7 @@ EOF;
                                 <option title="y" value="0">Y - Value</option>
                                 <?php
                                     foreach ($viewNameAndColumnName as $viewName => $columns) {
-                                        if($viewName != "fastqc_stats"){
+                                        if($viewName != "fastQC_Stats"){
                                             echo "<optgroup label='".ucfirst(str_replace("_"," ",$viewName))."'>";
                                             foreach ($columns as $column) {
                                                 if($column['Field'] != "qcID"){
@@ -596,7 +596,7 @@ EOF;
                                 <option title="x" value="0">X - Value</option>
                                 <?php
                                     foreach ($viewNameAndColumnName as $viewName => $columns) {
-                                        if($viewName != "fastqc_stats"){
+                                        if($viewName != "fastQC_Stats"){
                                             echo "<optgroup label='".ucfirst(str_replace("_"," ",$viewName))."'>";
                                             foreach ($columns as $column) {
                                                 if($column['Field'] != "qcID"){

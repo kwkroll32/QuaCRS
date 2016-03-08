@@ -253,7 +253,7 @@ class Sample extends CI_Controller{
         */
 
         foreach ($viewNames as $viewName) {
-            if($viewName != "general"){
+            if($viewName != "General"){
                 $magicalVanishMetric[$viewName] = $this->Sample_model->initiateForMagicalVanishMetric($viewName,$singleGroupArray);
             }
         }
@@ -342,7 +342,7 @@ class Sample extends CI_Controller{
         $precision = $this->config->item('precision');
         $sampleID = $this->input->post('sampleid', TRUE);
         $sampleName= $this->Sample_model->get_sample_name($sampleID);
-        $sampleStudy = $this->Sample_model->get_sample_specific_table_info($sampleID,"general");
+        $sampleStudy = $this->Sample_model->get_sample_specific_table_info($sampleID,"General");
         $viewNames = $this->Sample_model->get_table_names("sample_detail_view");
 
         foreach ($viewNames as $viewName){
@@ -412,7 +412,7 @@ EOF;
         echo "<div class='toggleInfoHold' id='toggleInfoHold'>";
             echo"<div class='info' id='info'>";
                 foreach ($viewNames as $viewName){
-                  if($viewName != 'fastqc_stats'){
+                  if($viewName != 'fastQC_Stats'){
                       echo "<div class='viewHold' id='$viewName'>";
                           echo "<div class='topBanner'>";
                                echo "<p style='float:left'>".ucfirst(str_replace("_"," ",$viewName))."</p>";
