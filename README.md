@@ -44,7 +44,7 @@ QuaCRS v1.1 (Released 7/11/14)
 QuaCRS v1.0 (Released 5/29/14)
 * Initial release
 
-REQUIREMENTS
+SOFTWARE REQUIREMENTS
 ----------------
 QC tools
 * RNA-SeQC (http://www.broadinstitute.org/cancer/cga/rna-seqc)
@@ -58,6 +58,7 @@ Other dependencies
 	Tested with Gencode 19 (http://www.gencodegenes.org/releases/19.html)
 	Users may download the relevant organism bed file from the RSeQC webpage,
 	* It is also possible to use the Galaxy Convert Format tool to convert the Gencode GTF to a BED file (https://usegalaxy.org/)
+* Subread v1.5 or newer (http://subread.sourceforge.net/)
 * MySQL database (http://dev.mysql.com/doc/refman/5.6/en/installing.html)
 * Local Server with PHP installed (http://us2.php.net/manual/en/install.php)
 	PHP version 5.1.6 or newer
@@ -66,7 +67,9 @@ Other dependencies
 * python-dev
 * ncurses
 * ImageMagic convert (http://www.imagemagick.org/script/convert.php)
-Note: RNA-SeQC is not compatible with java 8.
+* X11 with appropriate window forwarding (optional)
+* Java version 1.7.x (OpenJDK Preferred)
+* Java version 1.8.x (Oracle Java Preferred)
 
 INSTALLATION
 ----------------
@@ -192,10 +195,15 @@ The 'users.py' script is used to control project permissions in a QuaCRS databas
 
 Create is used to add users to the database. It will prompt for a password upon creation of each user. Study may be supplied here, or added in the following step. This function supports comma-separated lists (no spaces) and can be re-run to change an existing user's password. For added security, passwords are hashed before being entered into the database.
 
-	Example: $ python users.py -u user1,user2 create  
-		 	-- creates two new users
-		 $ python users.py -u user1,user2 -s studyA,studyB create  
-		 	-- creates two new users and grants them both access to view studyA and studyB
+Example:
+
+    $ python users.py -u user1,user2 create  
+
+Creates two new users
+
+    $ python users.py -u user1,user2 -s studyA,studyB create  
+
+Creates two new users and grants them both access to view studyA and studyB
 
 Add is used to grant additional project permissions to existing users. It supports comma-separated lists (no spaces), requires a study, and optionally accepts users. Identifying specific users will add project permissions only to them. Supplying a study and no users will add view permission for the study to all existing users.
 
@@ -243,4 +251,4 @@ TROUBLESHOOTING
 MAINTAINERS
 ----------------
 As of 3/01/2016:
-	Karl Kroll - Karl.Kroll@osumc.edu
+* Karl Kroll - Karl.Kroll@osumc.edu
