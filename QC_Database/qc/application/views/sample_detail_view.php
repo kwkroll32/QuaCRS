@@ -31,7 +31,7 @@ function shown_block($views, $flags, $precision, $viewName, $shown){
 	echo "<div class='col-md-6'>";
 		echo "<div class='row'>";
 			echo "<div class='col-md-6'>";
-				if ($viewName == "fastqc_stats"){
+				if ($viewName == "fastQC_Stats"){
 					echo "<h4>FastQC Stats</h4>";
 				}
 				else{
