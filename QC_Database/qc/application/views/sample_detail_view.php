@@ -16,14 +16,22 @@ foreach($viewNames as $view){
 
 function reformat_number($output, $precision){
     $this_length = strlen(explode('.', $output)[0]);
-    if($this_length>=3){echo number_format($output);}elseif($this_length==2){echo number_format($output,1);}elseif($this_length==1){echo number_format($output,2);}else{echo number_format($output,$precision);};
+    if($this_length>=3){
+		echo number_format($output);
+	}elseif($this_length==2){
+		echo number_format($output,1);
+	}elseif($this_length==1){
+		echo number_format($output,2);
+	}else{
+		echo number_format($output,$precision);
+	}ßß
 }
 //prints all the tables with clickable buttons to collapse them
 function shown_block($views, $flags, $precision, $viewName, $shown){
 	echo "<div class='col-md-6'>";
 		echo "<div class='row'>";
 			echo "<div class='col-md-6'>";
-				if ($viewName == "fastQC_Stats"){
+				if ($viewName == "fastqc_stats"){
 					echo "<h4>FastQC Stats</h4>";
 				}
 				else{
@@ -41,7 +49,7 @@ function shown_block($views, $flags, $precision, $viewName, $shown){
 				foreach($views[$viewName] as $key=>$value){
 					if ($key == "qcID")
 						continue;
-					
+
 					echo "<tr><td>". str_replace("_"," ",$key) ."</td>";
 					if (strtolower($value) == "fail"){
 						echo "<td class='danger'>$value</td>";
@@ -70,7 +78,7 @@ function shown_block($views, $flags, $precision, $viewName, $shown){
 						}
 						echo "</td>";
 					}
-					
+
 					echo "</tr>";
 				}
 			echo "</tbody></table>";
@@ -109,14 +117,14 @@ function hidden_block($views, $viewName){
 		echo "</div>";
 	echo "</div>";
 }
-	
+
 ?>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<div>
 				<h3><?=$sample?> Details:</h3>
-				
+
 				<?php $hidden = array('id' => $qcID);
 				echo form_open('ajax/generate_report', "", $hidden);?>
 					<input type="submit" name="submit" id="download-report" class="btn btn-success btn-sm" value="Download Report">
@@ -124,7 +132,7 @@ function hidden_block($views, $viewName){
 
 			</div>
 			<div class="row">
-				<?php 
+				<?php
 					foreach($allTables as $viewName => $shown){
 						shown_block($views, $flags, $precision, $viewName, $shown);
 					}
@@ -145,14 +153,14 @@ function hidden_block($views, $viewName){
 										<?php
 										foreach($img as $image){
 											if ($image == "")
-												continue;			
+												continue;
 											echo "<div class='col-xs-6 col-md-3'>";
 												echo "<a href='".$resources."img/".$image."' class='thumbnail fancybox' rel='plots'>";
 													if (strpos($image, ".pdf") !== false)
 														echo "<embed src='".$resources."img/".$image."' width='244' height='183' >";
 													else
 														echo "<img src='".$resources."img/".$image."' alt=''>";
-													
+
 												echo "</a>";
 											echo "</div>";
 										}

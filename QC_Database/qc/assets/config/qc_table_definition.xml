@@ -57,7 +57,7 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>Sequencing_Date</field>
+			<field>Sequencing_date</field>
 			<type>VARCHAR(45)</type>
 			<null></null>
 			<key></key>
@@ -288,6 +288,17 @@
 			<comment></comment>
 		</column>
 		<column>
+			<field>Total_PF_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
 			<field>Duplication_Rate_Plot_Location</field>
 			<type>VARCHAR(255)</type>
 			<null></null>
@@ -378,8 +389,8 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>RNA_Conc</field>
-			<type>DECIMAL(8,2)</type>
+			<field>rRNA_and_mitoRNA</field>
+			<type>DECIMAL(8,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -388,17 +399,6 @@
 			<percentage>true</percentage>
 			<comment></comment>
 		</column>
-		<column>
-                        <field>Library_Conc</field>
-                        <type>DECIMAL(8,2)</type>
-                        <null></null>
-                        <key></key>
-                        <default>DEFAULT NULL</default>
-                        <extra></extra>
-                        <precision>2</precision>
-                        <percentage>true</percentage>
-                        <comment></comment>
-                </column>
 		<column>
 			<field>Estimated_Library_Size</field>
 			<type>INT(11)</type>
@@ -634,20 +634,9 @@
 		</column>
 	</view>
 	<view name="Alignment_Stats">
-	        <column>
-                        <field>Total_Reads</field>
-                        <type>INT(12)</type>
-                        <null></null>
-                        <key></key>
-                        <default>DEFAULT NULL</default>
-                        <extra></extra>
-                        <precision></precision>
-                        <percentage></percentage>
-                        <comment></comment>
-                </column>
-	        <column>
+		<column>
 			<field>Aligned</field>
-			<type>INT(12)</type>
+			<type>INT(11)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -657,30 +646,8 @@
 			<comment></comment>
 		</column>
 		<column>
-                        <field>Alignment_Rate</field>
-                        <type>DECIMAL(5,2)</type>
-                        <null></null>
-                        <key></key>
-                        <default>DEFAULT NULL</default>
-                        <extra></extra>
-                        <precision>2</precision>
-                        <percentage>true</percentage>
-                        <comment></comment>
-                </column>
-		<column>
-                        <field>Uniquely_Aligned_Rate</field>
-                        <type>DECIMAL(5,2)</type>
-                        <null></null>
-                        <key></key>
-                        <default>DEFAULT NULL</default>
-                        <extra></extra>
-                        <precision>2</precision>
-                        <percentage>true</percentage>
-                        <comment></comment>
-                </column>
-		<column>
 			<field>Unique</field>
-			<type>INT(12)</type>
+			<type>INT(11)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -691,7 +658,7 @@
 		</column>
 		<column>
 			<field>Duplicates</field>
-			<type>INT(12)</type>
+			<type>INT(11)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -702,7 +669,7 @@
 		</column>
 		<column>
 			<field>Duplication_Rate</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -715,7 +682,7 @@
 	<view name="Genomic_Stats">		
 		<column>
 			<field>Intragenic_Rate</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -726,7 +693,7 @@
 		</column>
 		<column>
 			<field>Exonic_Rate</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -737,7 +704,7 @@
 		</column>
 		<column>
 			<field>Intronic_Rate</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -748,7 +715,7 @@
 		</column>
 		<column>
 			<field>Intergenic_Rate</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -759,7 +726,7 @@
 		</column>
 		<column>
 			<field>Expression_Profiling_Efficiency</field>
-			<type>DECIMAL(5,2)</type>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -768,17 +735,6 @@
 			<percentage>true</percentage>
 			<comment></comment>
 		</column>
-		 <column>
-                        <field>Expressed_Genes</field>
-                        <type>INT(11)</type>
-                        <null></null>
-                        <key></key>
-                        <default>DEFAULT NULL</default>
-                        <extra></extra>
-                        <precision></precision>
-                        <percentage></percentage>
-                        <comment></comment>
-                </column>
 		<column>
 			<field>Expressed_Transcripts</field>
 			<type>INT(11)</type>
@@ -793,8 +749,52 @@
 	</view>
 	<view name="Strand_Stats">
 		<column>
-			<field>End1_PctSense</field>
-			<type>DECIMAL(5,2)</type>
+			<field>End_1_Sense</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>End_1_Antisense</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>End_2_Sense</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>End_2_Antisense</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>End_1_%_Sense</field>
+			<type>DECIMAL(10,8)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -804,8 +804,157 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>End2_PctSense</field>
-			<type>DECIMAL(5,2)</type>
+			<field>End_2_%_Sense</field>
+			<type>DECIMAL(10,8)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision>2</precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="Something">
+		<column>
+			<field>new_metric</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>interesting_metric</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="Duplication">
+		<column>
+			<field>1-10_sequence_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>11-100_sequence_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>100-1000_sequence_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>>_1000_sequence_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>1-10_mapping_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>11-100_mapping_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>100-1000_mapping_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>>_1000_mapping_dups</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="GC_Content">
+		<column>
+			<field>GC_Avg</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision>2</precision>
+			<percentage>true</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>GC_Std_Dev</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision>2</precision>
+			<percentage>true</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>GC_Skew</field>
+			<type>DECIMAL(14,10)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>

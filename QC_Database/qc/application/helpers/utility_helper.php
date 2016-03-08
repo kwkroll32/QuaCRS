@@ -1,14 +1,14 @@
 <?php
 function set_percent_cookies(){
 	$CI =& get_instance();
-	$resources = $CI->config->item('resources'); 
+	$resources = $CI->config->item('resources');
 
-	
+
 	//echo "WE ARE READING THE DATA FROM THE XML FILE THIS HAS TO HAPPEN NOT VERY OFTEN";
 	#loading the xml for the qc table
 	$qc_table_xml=simplexml_load_file($resources."config/qc_table_definition.xml");
 	$CI->input->set_cookie("flag_percent_set", "true", 0);
-	
+
 	foreach($qc_table_xml->column as $key=>$val){
 		if (strpos($val->type,"DECIMAL") !== false){
 			#set_cookies("percent_".$val->field, $val->percentage);
@@ -16,7 +16,7 @@ function set_percent_cookies(){
 				$CI->input->set_cookie(sha1($val->field), $val->percentage, 0, "","", "percent_");
 		}
 	}
-	
+
 }
 
 
@@ -27,7 +27,7 @@ This function should be used only when the cookies are not set or they have JUST
  */
 function get_percent_flags(){
 	$CI =& get_instance();
-	$resources = $CI->config->item('resources'); 
+	$resources = $CI->config->item('resources');
 	$flags = array();
 	if (is_percent_flag_set()){
 		foreach($_COOKIE as $key=>$val){
@@ -38,7 +38,7 @@ function get_percent_flags(){
 	}
 	else{
 		set_percent_cookies();
-		$qc_table_xml=simplexml_load_file($resources."config/qc_table_definition.xml");	
+		$qc_table_xml=simplexml_load_file($resources."config/qc_table_definition.xml");
 		foreach($qc_table_xml->column as $key=>$val){
 			if (strpos($val->type,"DECIMAL") !== false){
 				$flags["percent_".sha1($val->field)] = (string)$val->percentage;

@@ -27,7 +27,7 @@ function fireUpGraph(viewName){
 }
 
 function performSingleMetricGraph(graphingRowElement){
-    
+    var totalSampleCount = 0;
     var viewName = graphingRowElement.getAttribute("data-view");
     var subtitle = graphingRowElement.getAttribute("data-title");
     var xAxis = JSON.parse(graphingRowElement.getAttribute("data-x"));
@@ -42,6 +42,7 @@ function performSingleMetricGraph(graphingRowElement){
     		}else{
     			eachGroupArray.push(parseFloat(xAxis[i][j]));
     		}
+        totalSampleCount = totalSampleCount + 1;
     	}
     	xAxisInt.push(eachGroupArray);
     }
@@ -57,6 +58,11 @@ function performSingleMetricGraph(graphingRowElement){
    	var xAxis = {
    		categories : MasterSingleGraphSampleNames
    	}
+    var stackLabels = true;
+
+    if (totalSampleCount > 20) {
+      stackLabels = false;
+    }
 
    	var yAxis = {
         min: 0,
@@ -64,7 +70,7 @@ function performSingleMetricGraph(graphingRowElement){
             text: 'Metric of Interest'
         },
         stackLabels: {
-            enabled: true,
+            enabled: stackLabels,
             style: {
                 fontWeight: 'bold',
             }
@@ -177,7 +183,6 @@ function checkForArrayWithNullValuesAndRepair(arraytocheck){
       }
     }
   }
-  console.log(arraytocheck);
   return arraytocheck;
 }
 
@@ -254,7 +259,7 @@ function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
   }
 
   var title = {
-    text : xAxisName + ' vs ' + yAxisName
+    text : yAxisName + ' vs ' + xAxisName
   }
 
   var xAxis= {
@@ -328,8 +333,6 @@ function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
     dataArray["data"] = allPairedValues;
     masterSeries.push(dataArray);
   }
-
-  console.log(masterSeries);
 
   var chartBuild = {};
 

@@ -7,16 +7,17 @@
 				<a href="http://www.cancer.osu.edu/about">The Ohio State University Comprehensive Cancer Center</a>
 			</p>
 			<br>
-                        <p>
+        <p>
    				<b>Maintainers</b>
-				<br>
-				<a href="mailto:esmailimokaram.1@buckeyemail.osu.edu">Nima Esmaili Mokaram</a>
-				<br>
-				<a href="mailto:Karl.Kroll@osumc.edu">Karl Kroll</a>
-				<br>
-				<a href="mailto:Alex.Pelletier@osumc.edu">Alex Pelletier</a>
-                        </p>
-
+					<br>
+						<a href="mailto:topiwala.2@osu.edu">Taha Topiwala</a>
+					<br>
+						<a href="mailto:esmailimokaram.1@buckeyemail.osu.edu">Nima Esmaili Mokaram</a>
+					<br>
+						<a href="mailto:Karl.Kroll@osumc.edu">Karl Kroll</a>
+					<br>
+						<a href="mailto:Alex.Pelletier@osumc.edu">Alex Pelletier</a>
+        </p>
 		</div>
 	</div>
 </div>

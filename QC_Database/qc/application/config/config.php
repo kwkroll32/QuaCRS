@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+$config['base_url']	= 'http://localhost:8888/QuaCRS/';
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +50,17 @@ $config['base_url']	= '';
 | This variable will have the root location of this project.
 |
 */
-$config['root'] = '';
+$config['root'] = '/var/www/html/QuaCRS/';
+
+/*
+|--------------------------------------------------------------------------
+| Root Directory for this project Folder For XHR JavaScript Calls
+|--------------------------------------------------------------------------
+|
+| This variable will have the root location of this project.
+|
+*/
+$config['xhr_root'] = '/QuaCRS/';
 
 /*
 |--------------------------------------------------------------------------|

@@ -1,0 +1,79 @@
+/*
+  @author Taha Mazher Topiwala
+*/
+
+.saveCompareBackDrop{
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right :0;
+  z-index: 100000;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.saveCompareBackContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveCompareContainer{
+  width: 500px;
+  height: auto;
+  background-color: white;
+  border-radius: 7px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.saveCompareContainer .saveCompareheader{
+  height: 40px;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #CCC;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveCompareheader p{
+  margin: 0;
+}
+
+.saveCompareContent{
+  width: 100%;
+  height: 150px;
+  padding: 20px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.utility-option-button{
+  width: 100px;
+  height: 40px;
+  border: none;
+  outline: 0;
+  margin: 0px;
+  margin: 5px;
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(22, 152, 166, 1);
+}
+
+.utility-option-button[red]{
+  background-color: red;
+}

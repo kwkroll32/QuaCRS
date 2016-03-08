@@ -90,10 +90,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '',
-        'username' => '',
-        'password' => '',
-        'database' => '',
+	'hostname' => 'localhost',
+        'username' => 'root',
+        'password' => 'root',
+        'database' => 'QuaCRSDefault',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
