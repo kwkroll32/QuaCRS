@@ -99,18 +99,6 @@ function toggleSelectAll(status){
 	}
 }
 
-function search(keyword){
-	//alert(keyword);
-	$.ajax({
-		url:base_url+"index.php/search/pre_search",
-		type:"POST",
-		data:{"keyword":keyword},
-		success:function(msg){
-			alert(msg);
-		}
-	});
-}
-
 $( document ).ajaxStart(function() {
 	var overlay = new ItpOverlay();
 	overlay.show("body");
@@ -136,11 +124,6 @@ $( document ).ready(function() {
 		}
 	});
 
-	/*$('#download-report').click(function(){
-		var sampleID = $(this).attr("data-sample-id");
-		generate_report(sampleID);
-	});*/
-
 	$("#toggleCheckbox").change(function(){
 		//alert("test");
 		var status = $(this).attr("data-checked");
@@ -151,12 +134,6 @@ $( document ).ready(function() {
 			$(this).attr("data-checked", "false");
 	});
 
-	/*$("#search-key").click(function(){
-		var keyword = document.getElementById("search-bar").value;
-		if (keyword == "")
-			return;
-		search(keyword);
-	});*/
 });
 
 function ease(){
@@ -171,10 +148,3 @@ function ease(){
 function scrollupPrimary(){
     $('html, body').animate({scrollTop:0},800);
 }
-
-document.getElementById('body').onscroll = function() {
-    var pathname = window.location.pathname;
-    if(pathname !== "/QuaCRS/index.php/sample"){
-        ease();
-    }
-};

@@ -1,11 +1,9 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * @author Taha Mazher Topiwala
  */
 
-function _(el){ 
-    return document.getElementById(el); 
+function _(el){
+    return document.getElementById(el);
 }
 
 function collapseViewIndividual(el){
@@ -14,7 +12,7 @@ function collapseViewIndividual(el){
     var dataDiv = _(target);
     var height = dataDiv.getAttribute("height");
     switch(toggle){
-        case 'close': 
+        case 'close':
                 el.innerHTML = "Open Table";
                 dataDiv.style.height = "0px";
                 el.setAttribute("data-toggle","open");
@@ -62,10 +60,11 @@ $(function() {
     });
 });
 
+/* The Following Three Functions Maintain The Toggle For the Back Drop */
+
 function showSampleInfo(el){
-    var text = _("backDropTitle").innerHTML = "Single Sample";
     var id = el.getAttribute("sample-id");
-    $("#backdrop").fadeIn(500);
+    $("#SampleDisplayBackDrop").fadeIn(500);
     var xmlhttp;
     if (window.XMLHttpRequest)
       {
@@ -79,7 +78,7 @@ function showSampleInfo(el){
       {
       if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
-            _("backdropContent").innerHTML = xmlhttp.responseText;
+            _("backdropSingleContent").innerHTML = xmlhttp.responseText;
         }
       };
     xmlhttp.open("POST","singleView",true);
@@ -88,8 +87,43 @@ function showSampleInfo(el){
 }
 
 function closeDrop(){
-    $("#backdrop").fadeOut(500);
+    $("#SampleDisplayBackDrop").fadeOut(500);
 }
+
+function switchViewsBackDrop(el){
+  var status = el.getAttribute("data-status");
+  var id = el.id;
+
+  var container = _("toggleInfoHold");
+  var containerChildren = container.children;
+  var togglebar = _("tabBar");
+  var togglebarChildren = togglebar.children;
+  var toggleValue = el.getAttribute("data-toggle");
+  var i = null;
+  for (i = 0 ; i < containerChildren.length ; i++){
+    containerChildren[i].classList.remove('showContent');
+    containerChildren[i].classList.add('hideContent');
+    togglebarChildren[i].style.backgroundColor = "white";
+  }
+
+  switch (toggleValue) {
+    case '1' :
+      containerChildren[0].classList.add("showContent");
+      break;
+
+    case '2' :
+      containerChildren[1].classList.add("showContent");
+      break;
+
+    default:
+      containerChildren[0].classList.add("showContent");
+    break;
+  }
+  el.style.backgroundColor = "#DDD";
+}
+
+
+/* Toggle For Primary Two Views On Compare Page */
 
 
 function toggleDataView(el){
@@ -98,28 +132,25 @@ function toggleDataView(el){
     var togglebar = _("togglebar");
     var togglebarChildren = togglebar.children;
     var toggleValue = el.getAttribute("data-toggle");
-    var i = null;
+    var i;
     for (i = 0 ; i < containerChildren.length ; i++){
         containerChildren[i].classList.remove('showContent');
         containerChildren[i].classList.add('hideContent');
-        togglebarChildren[i].style.color = "#000";
         togglebarChildren[i].style.borderColor = "#CCC";
     }
-    
+
     switch (toggleValue) {
-        case '1' :  
+        case '1' :
             containerChildren[0].classList.add("showContent");
             break;
-        
+
         case '2' :
             containerChildren[1].classList.add("showContent");
             break;
-        
+
         default:
             containerChildren[0].classList.add("showContent");
         break;
     }
-
-    el.style.color = "#0Cf";
     el.style.borderColor = "#0Cf";
 }

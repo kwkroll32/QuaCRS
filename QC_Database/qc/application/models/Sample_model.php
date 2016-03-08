@@ -1,5 +1,10 @@
 <?php
+/*
+ * @author Taha Mazher Topiwala
+ */
+
 class pValueStatistics extends CI_Model{
+
 	function __construct(){
 		parent::__construct();
 	}
@@ -10,6 +15,9 @@ class pValueStatistics extends CI_Model{
 		$nd2 = $totalSampleCount - $groupCount;
 		return array($nd1, $nd2);
 	}
+	/*
+	 * @author Ralph
+ 	*/
 
 	public function Fstatistic($x, $nd1, $nd2)
 	{
@@ -42,7 +50,7 @@ class pValueStatistics extends CI_Model{
 			 );
 			$b=0.5;
 			$y=1.0-$f;
-	      
+
 		    for($jj=1; $jj<=2; $jj++) {
 				$ga = array(
 					  1 => sqrt(3.1415927),
@@ -66,25 +74,25 @@ class pValueStatistics extends CI_Model{
 				}
 
 				$b=$nn*0.5;
-				
+
 				$q=array(
 					 1 => 1.0-$q[$j],
 					 2 => 1.0-pow($y,$b)
 					 );
-				
+
 				$nn=$nd2;
-				
+
 				if ($nn<=2) {
 				  $j=$nn;
 				  break;
 				}
-				
+
 				$gb=$ga[$j];
 				$gab=array(
 					   1 => $gab[$j],
 					   2 => $gb
 					   );
-				$y=$f;	   
+				$y=$f;
 		    }
 	      	$pvalue=$q[$j];
 	    }
@@ -102,6 +110,16 @@ class pValueStatistics extends CI_Model{
 	}
 }
 class Sample_model extends pValueStatistics {
+
+	/*
+
+		@PRIMARY_TABLE = Primary table in the databse which holds the data
+
+	*/
+
+	private $PRIMARY_TABLE = 'qc';
+
+	private $databaseDictionary = array();
 
 	function __construct(){
         parent::__construct();
@@ -151,12 +169,9 @@ class Sample_model extends pValueStatistics {
 
         if ($viewPage == "sample_detail_view"){
             $notTableList[3] = "General";
-	    $notTableList[4] = "fastQC_Stats";
-        }
-
-        if ($viewPage == "aggregate_detail_view"){
+        }else if ($viewPage == "aggregate_detail_view"){
             $notTableList[3] = "General";
-            $notTableList[4] = "fastQC_Stats";
+            $notTableList[4] = "fastqc_stats";
         }
 
         $query = $this->db->query("SHOW TABLES");
@@ -165,7 +180,7 @@ class Sample_model extends pValueStatistics {
         $query = $this->db->query("SELECT DATABASE() as name;");
         $tmp = $query->row();
         $db_name = substr($tmp->name,0);
-        
+
         $j = 0;
         for($i = 0; $i < count($result); $i++){
         	if(!in_array($result[$i]["Tables_in_{$db_name}"], $notTableList)){
@@ -189,7 +204,7 @@ class Sample_model extends pValueStatistics {
 			if($value['Field'] !== "qcID"){
 				$result[] = $value['Field'];
 			}
-		}	
+		}
 		return $result;
 	}
 
@@ -272,7 +287,24 @@ class Sample_model extends pValueStatistics {
 	}
 
 	/*
-		Initiate  For Magical Vanish Metric
+		Get The Specific Link For image Link
+	*/
+
+	function getLinkForImages($sampleID){
+		$imagelink = array();
+		$sql = "SELECT * FROM qc WHERE qcID = '$sampleID'";
+		$query = $this->db->query($sql);
+		$row = $query->result_array();
+		foreach ($row[0] as $key => $value) {
+			if (strpos($value, ".png") !== false || strpos($value, ".jpeg") !== false || strpos($value, ".jpg") !== false){
+				$imagelink[] = $value;
+			}
+		}
+		return $imagelink;
+	}
+
+	/*
+		Initiate For Magical Vanish Metric
 	*/
 
 	function initiateForMagicalVanishMetric($viewName, $singleGroupArray){
@@ -297,9 +329,9 @@ class Sample_model extends pValueStatistics {
 		$query = $this->db->query($sql);
 		$row = $query->result_array();
 		$result = $this->decideMagicalVanishMetric($row[0]);
-		
+
 		return $result;
-	
+
 	}
 
 	function decideMagicalVanishMetric($data){
@@ -337,7 +369,7 @@ class Sample_model extends pValueStatistics {
 			$sql = "SELECT * FROM $viewName WHERE qcID = '$qcId'";
 			$query = $this->db->query($sql);
 			$row = $query->result_array();
-			for ($j=0; $j < count($row); $j++) { 
+			for ($j=0; $j < count($row); $j++) {
 				$result[] = $row[$j][$column['Field']];
 			}
 		}
@@ -352,8 +384,21 @@ class Sample_model extends pValueStatistics {
 		return $x['Sample'];
 	}
 
-	/*  
-		Calculation function performing 
+	function getOnlyStudy(){
+		$resultingArray = array();
+		$sql = "SELECT study FROM General";
+		$query = $this->db->query($sql);
+		$row = $query->result_array();
+		for($i = 0; $i < count($row); $i++){
+			if(!in_array($row[$i]['Study'], $resultingArray)){
+					$resultingArray[] = $row[$i]['Study'];
+			}
+		}
+		return $resultingArray;
+	}
+
+	/*
+		Calculation function performing
 		ANOVA INITIALISATION VALUES
 		Please review the folling PDF for more
 		information on ANOVA calculations
@@ -384,9 +429,9 @@ class Sample_model extends pValueStatistics {
 		return $result;
 	}
 
-	/*  
-		Calculation function performing 
-		TOTAL NUMBEOF SAMPLE 
+	/*
+		Calculation function performing
+		TOTAL NUMBEOF SAMPLE
 	*/
 
 	function getTotalSampleCount($singleGroupArray){
@@ -394,8 +439,8 @@ class Sample_model extends pValueStatistics {
 		return $count;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		GRAND MEAN
 	*/
 
@@ -416,8 +461,8 @@ class Sample_model extends pValueStatistics {
 		return $value;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		SIMPLE MEAN
 	*/
 
@@ -439,8 +484,8 @@ class Sample_model extends pValueStatistics {
 		return $square;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		TOTAL SUM OF SQUARES
 	*/
 
@@ -456,7 +501,7 @@ class Sample_model extends pValueStatistics {
 	}
 
 	/*  .
-		Calculation function performing 
+		Calculation function performing
 		TREATMENT SUM OF SQUARES
 	*/
 
@@ -474,8 +519,8 @@ class Sample_model extends pValueStatistics {
 		return $sstr;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		ERROR SUM OF SQUARES
 	*/
 
@@ -483,8 +528,8 @@ class Sample_model extends pValueStatistics {
 		return $sst - $sstr;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		TOTAL MEAN OF SQUARES
 	*/
 
@@ -498,8 +543,8 @@ class Sample_model extends pValueStatistics {
 		return $mst;
 	}
 
-	/*  
-		Calculation function performing 
+	/*
+		Calculation function performing
 		MEAN SQAURE TEATMENT
 	*/
 
@@ -520,8 +565,8 @@ class Sample_model extends pValueStatistics {
 		return $mstr;
 	}
 
-	/* 
-		Calculation function performing 
+	/*
+		Calculation function performing
 	   	TOTAL SQUARE ERROR
 	*/
 
@@ -550,7 +595,7 @@ class Sample_model extends pValueStatistics {
 		return $mse;
 	}
 
-	/* 
+	/*
 		Calculation function performing F
 	*/
 
@@ -595,43 +640,6 @@ class Sample_model extends pValueStatistics {
 		$result = $query->result_array();
 
 		return $result[0];
-	}
-
-	function search_samples($columnNames, $keyword){
-		$allColumns = $this->get_columns("qc");
-		$selectedColumns = array();
-		$isNumber = is_numeric($keyword);
-
-		foreach($allColumns as $column){
-			if(isset($columnNames[$column['Field']])){
-				if(!$isNumber && (strpos($column['Type'], "int") === false && strpos($column['Type'], "decimal") === false  && strpos($column['Type'], "float") === false)){
-					$selectedColumns[$column['Field']] = array($column['Field'], $column['Type']);
-				}
-				elseif($isNumber){
-					$selectedColumns[$column['Field']] = array($column['Field'], $column['Type']);
-				}
-			}
-		}
-		$where = "";
-		foreach($selectedColumns as $column){
-			# The type the column is a number
-			if(strpos($column[1], "int") !== false || strpos($column[1], "decimal") !== false  || strpos($column[1], "float") !== false ){
-				$where .= "`".$column[0]."`" . " = " . $keyword. " OR ";
-			}
-
-
-			# The type the column is not a number
-			else{
-				$where .= "`".$column[0]."`" . " LIKE '%" . $keyword. "%' OR ";
-			}
-		}
-		$where = rtrim($where, "OR ");
-		#echo $where;
-		$this->db->where($where);
-		$query = $this->db->get("qc");
-		$result = $query->result_array();
-
-		return $result;
 	}
 
 	function get_agg_plot_info($viewName, $samplesArr){
@@ -688,12 +696,22 @@ class Sample_model extends pValueStatistics {
 		return $result;
 	}
 
-	function produceSearchResultsJSON($keyword, $viewNames){
+	/*
+		The Following two functions
+
+		produceSearchResultsJSON()
+		unWrapQuery()
+
+		Handle searching single terms in the search field.
+	*/
+
+	function produceSearchResultsJSON($keyword){ // This function should be used to specify kind of column to search
 		$results = array();
 		$finalResultingQCIDArray = array();
 		$queryString = "";
+		$viewNames = array("alignment_stats","general");
 		foreach ($viewNames as $viewname) {
-			if($viewname == 'alignment_Stats' || $viewname == 'General'){
+			if($viewname == 'alignment_stats' || $viewname == 'general'){
 				$columns = $this->get_columns($viewname);
 				foreach ($columns as $column) {
 					if($column['Field'] != "qcID"){
@@ -725,6 +743,157 @@ class Sample_model extends pValueStatistics {
         $result = $query->result_array();
 		for($i = 0; $i < count($result); $i++){
 			$resultingQCIDArray[] = $result[$i]["qcID"];
+		}
+		return $resultingQCIDArray;
+	}
+
+	function produceSearchResultJSONOnSingleQCTable($keyword) { // This function should be used to search the complere qc table
+		$allColumns = $this->get_columns("qc");
+		$conditionString = "";
+
+		foreach($allColumns as $column){
+			$conditionString .= "`".$column['Field']."`" . " LIKE " ."'%".$keyword."%'" . " OR ";
+		}
+		$conditionString = rtrim($conditionString, " ");
+		$conditionString = ltrim($conditionString, " ");
+		$conditionString = rtrim($conditionString, "OR");
+
+		return $this->queryString($conditionString);
+	}
+
+	/*
+		The Following two functions
+
+		produceSearchResultJSONOnStudyQCTable()
+
+		Handle searching queries for specific study
+
+	*/
+
+	function produceSearchResultJSONOnStudyQCTable($keyword){
+		$resultingArray = array();
+		$sql = "SELECT * FROM $this->PRIMARY_TABLE WHERE Study = '$keyword'";
+		$query = $this->db->query($sql);
+		$row = $query->result_array();
+		for($i = 0; $i < count($row); $i++){
+				$resultingArray[] = $row[$i]['qcID'];
+		}
+		return $resultingArray;
+	}
+
+	/*
+
+		The Following two functions
+
+		produceSearchResultJSONOnSpecificStudyQCTable()
+
+		Searches only for study.
+
+	*/
+
+	function produceSearchResultJSONOnSpecificStudyQCTable($keyword, $condition){
+		$allColumns = $this->get_columns("qc");
+		$conditionString = "";
+
+		foreach($allColumns as $column){
+			if($column['Field'] != "Study"){
+				$conditionString .= "`".$column['Field']."`" . " LIKE " ."'%".$keyword."%'" . " OR ";
+			}
+		}
+		$conditionString = rtrim($conditionString, " ");
+		$conditionString = ltrim($conditionString, " ");
+		$conditionString = rtrim($conditionString, "OR");
+
+		$conditionString .= "AND Study = '$condition'";
+
+		return $this->queryString($conditionString);
+	}
+
+	function produceSearchResultJSONOnSpecificStudy($keywordArray, $condition){
+		$conditionString = "";
+		$i = 0;
+		$openColon = false;
+		while( $i < count($keywordArray)){
+			if(!empty($keywordArray[$i])){
+				if($keywordArray[$i] === "<" || $keywordArray[$i] === ">" || $keywordArray[$i] === "=" || $keywordArray[$i] === ":" || $keywordArray[$i] === ">=" || $keywordArray[$i] === "<="){
+					if($keywordArray[$i] === ":"){
+						$conditionString .= "=" . ' "';
+						$openColon = true;
+					}else{
+						$conditionString .= $keywordArray[$i] . ' "';
+						$openColon = true;
+					}
+
+				}else{
+					$conditionString .= $keywordArray[$i];
+					if($openColon){
+						$conditionString .= '" AND';
+						$openColon = false;
+					}
+					$conditionString .= ' ';
+				}
+			}
+			$i++;
+		}
+		$conditionString = rtrim($conditionString, " ");
+		$conditionString = ltrim($conditionString, " ");
+		$conditionString = rtrim($conditionString, " AND ");
+
+		$conditionString .= " AND Study = '$condition'";
+		
+		$results = $this->queryString($conditionString);
+		return $results;
+	}
+
+	/*
+		The Following two functions
+
+		produceSearchResultJSONOnQCTable()
+		queryString()
+
+		Handle searching queried searches in the search field.
+	*/
+
+	function produceSearchResultJSONOnQCTable($keywordArray){
+		$conditionString = "";
+		$i = 0;
+		$openColon = false;
+		while( $i < count($keywordArray)){
+			if(!empty($keywordArray[$i])){
+				if($keywordArray[$i] === "<" || $keywordArray[$i] === ">" || $keywordArray[$i] === "=" || $keywordArray[$i] === ":" || $keywordArray[$i] === ">=" || $keywordArray[$i] === "<="){
+					if($keywordArray[$i] === ":"){
+						$conditionString .= "=" . ' "';
+						$openColon = true;
+					}else{
+						$conditionString .= $keywordArray[$i] . ' "';
+						$openColon = true;
+					}
+
+				}else{
+					$conditionString .= $keywordArray[$i];
+					if($openColon){
+						$conditionString .= '" AND';
+						$openColon = false;
+					}
+					$conditionString .= ' ';
+				}
+			}
+			$i++;
+		}
+		$conditionString = rtrim($conditionString, " ");
+		$conditionString = ltrim($conditionString, " ");
+		$conditionString = rtrim($conditionString, " AND ");
+		$results = $this->queryString($conditionString);
+		return $results;
+	}
+
+	function queryString($conditionString){
+		$resultingQCIDArray = array();
+		$sql = "SELECT * FROM $this->PRIMARY_TABLE WHERE $conditionString";
+		$query = $this->db->query($sql);
+		$row = $query->result_array();
+		for($i = 0; $i < count($row); $i++){
+			$resultingQCIDArray[] = $row[$i]["qcID"];
 		}
 		return $resultingQCIDArray;
 	}

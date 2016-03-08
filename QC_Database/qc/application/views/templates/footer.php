@@ -31,10 +31,9 @@
             <button class="button-rounded" onclick="scrollupPrimary()"><span class="fa fa-chevron-up"></span></button>
         </div>
         <div id="footer">
-    	    <div class="container">
-                <p class="text-muted">OSUCCC | Illumina Sequencing Core</p>
-    	    </div>
-	   </div>
+            <p>OSUCCC | Illumina Sequencing Core</p>
+        </div>
+        <div class="mask-modal" id="mask-modal-panel" onclick="removePanel()"></div> <!-- Mask Panel Only For Sample View Page-->
         <script src="<?php echo $resources;?>plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="<?php echo $resources;?>plugins/bootstrap/js/holder.js"></script>
         <script src="<?php echo $resources;?>plugins/dragtable/js/dragtable.js"></script>
@@ -45,5 +44,6 @@
         <script src="<?php echo $resources;?>plugins/fancybox/jquery.fancybox.pack.js"></script>
         <script src="<?php echo $resources;?>plugins/jquery_cookie/jquery.cookie.js"></script>
         <script src="<?php echo $resources;?>js/script.js"></script>
+        <script src = "<?=$resources?>js/navbarAnimation.js"></script>
     </body>
 </html>

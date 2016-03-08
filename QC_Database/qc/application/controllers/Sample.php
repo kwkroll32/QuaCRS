@@ -1,12 +1,16 @@
 <?php
+/*
+ * @author Taha Mazher Topiwala
+ */
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Sample extends CI_Controller{
     public function __construct(){
-		parent::__construct();
+        parent::__construct();
 
-	   $this->load->helper('utility');
-    	$this->load->model("Sample_model");
-    	$this->load->helper('form');
+        $this->load->helper('utility');
+        $this->load->model("Sample_model");
+        $this->load->helper('form');
     }
 
 
@@ -42,10 +46,25 @@ class Sample extends CI_Controller{
                     }
             }
 
+            $cumulativeColumnArray = array();
+
+            foreach ($viewNames as $viewName) {
+              $cumulativeColumnArray[$viewName] = $this->Sample_model->get_columnsNames($viewName);
+            }
+
+            // Get All Studies
+
+            $study = $this->Sample_model->getOnlyStudy();
+
+            $data['study'] = $study;
+
+            $data['searchColumns'] = $cumulativeColumnArray;
+
             $head['title'] = "Sample List";
             $navbar['selected']="home";
             $data['samples'] = $samples;
             $data['columns'] = $columns;
+            $data['searchColumns'] = $cumulativeColumnArray;
             $data['flags'] = get_percent_flags();
             $data['defaultColumns'] = get_column_order();//array("Unique_ID", "Sample", "Study");
 
@@ -116,14 +135,13 @@ class Sample extends CI_Controller{
 
     public function CompareView(){
         $data = array();
+
         if($this->session->userdata('logged_in'))
         {
             $session_data = $this->session->userdata('logged_in');
             $sdata['username'] = $session_data['username'];
             $sdata['userID'] = $session_data['id'];
-        }
-        else
-        {
+        }else{
             //If no session, redirect to login page
             redirect('login', 'refresh');
         }
@@ -185,6 +203,13 @@ class Sample extends CI_Controller{
             $groupvaluesFormString = $groupvaluesFormString.";";
         }
 
+        // Local Storage Array
+
+        $SampleID = array();
+        $SampleID = $groupArray;
+
+        $data['MasterGroupWithID'] = $SampleID;
+
         $data['groupnamesFormString'] = rtrim($groupnamesFormString,";");
         $data['groupvaluesFormString'] = rtrim($groupvaluesFormString,";");
         $data['groupcolorsFormString'] = rtrim($groupcolorsFormString,";");
@@ -228,14 +253,14 @@ class Sample extends CI_Controller{
         */
 
         foreach ($viewNames as $viewName) {
-            if($viewName != "General"){
-                $magicalVanishMetric[$viewName] = $this->Sample_model->initiateForMagicalVanishMetric($viewName,$singleGroupArray);   
+            if($viewName != "general"){
+                $magicalVanishMetric[$viewName] = $this->Sample_model->initiateForMagicalVanishMetric($viewName,$singleGroupArray);
             }
         }
 
         $data['magicalVanishMetric'] = $magicalVanishMetric;
 
-        /* 
+        /*
             Get Value of each column related to Qc ID for ANOVA Test
         */
 
@@ -245,9 +270,9 @@ class Sample extends CI_Controller{
                 foreach ($viewNames as $viewName) {
                     $relatedValue[$viewName] = $this->Sample_model->getViewNameTableAndGroupCalculation($viewName,  $groupArray,  $singleGroupArray);
                 }
-                $data['ANOVA'] = $relatedValue;  
+                $data['ANOVA'] = $relatedValue;
             }else{
-                $data['ANOVAPresence'] = false;   
+                $data['ANOVAPresence'] = false;
             }
         }else{
             $data['ANOVAPresence'] = false;
@@ -258,12 +283,12 @@ class Sample extends CI_Controller{
         */
 
         foreach ($viewNames as $viewName) {
-            $graphValue[$viewName] = $this->Sample_model->getViewNameTableAndGroupGraphingValues($viewName,  $groupArray);    
+            $graphValue[$viewName] = $this->Sample_model->getViewNameTableAndGroupGraphingValues($viewName,  $groupArray);
         }
 
         $data['singleGraphValue'] = $graphValue;
 
-        for ($i=0; $i < count($singleGroupArray); $i++) { 
+        for ($i=0; $i < count($singleGroupArray); $i++) {
             $singleGraphSampleNames[] = $this->Sample_model->getSampleNamesForGraphs($singleGroupArray[$i]);
         }
         $data['singleGraphSampleNames'] = $singleGraphSampleNames;
@@ -274,9 +299,9 @@ class Sample extends CI_Controller{
             $cumulativeColumns[$viewName] = $this->Sample_model->get_columnsNames($viewName);
         }
 
-        $data['allColumns'] = $cumulativeColumns;  
+        $data['allColumns'] = $cumulativeColumns;
 
-        /* Get All Columns */         
+        /* Get All Columns */
 
         $data['flags'] = get_percent_flags();
 
@@ -301,7 +326,7 @@ class Sample extends CI_Controller{
         //Column names for viewnames
         $data['viewNameAndColumnName'] = $viewNameAndColumnName;
 
-        $head['title'] = "Comparing Result's";
+        $head['title'] = "Compared Results";
         $navbar['selected']= "home";
 
         $this->load->view('templates/head', $head);
@@ -312,23 +337,20 @@ class Sample extends CI_Controller{
     }
 
     public function singleView(){
+        $base_url = $this->config->item('base_url');
+        $resources = $this->config->item('resources');
         $precision = $this->config->item('precision');
         $sampleID = $this->input->post('sampleid', TRUE);
         $sampleName= $this->Sample_model->get_sample_name($sampleID);
-        $sampleStudy = $this->Sample_model->get_sample_specific_table_info($sampleID,"General");
-        echo <<<EOF
-            <div class="header">
-                <p>$sampleName</p>
-            </div>
-EOF;
+        $sampleStudy = $this->Sample_model->get_sample_specific_table_info($sampleID,"general");
         $viewNames = $this->Sample_model->get_table_names("sample_detail_view");
-        
+
         foreach ($viewNames as $viewName){
-            $view[$viewName] = $this->Sample_model->get_sample_view($viewName,$sampleID);
+            $view[$viewName] = $this->Sample_model->get_sample_view($viewName, $sampleID);
         }
 
         function reformat_number($output, $precision){
-            
+
             $this_exploded = explode('.',$output);
             $this_length = strlen($this_exploded[1]);
 
@@ -346,16 +368,7 @@ EOF;
             }
         }
 
-        echo <<<EOF
-            <div class="menu" id="menu" overlay>
-                <div class="topBanner"><p>Tables Included</p></div>
-EOF;
-                foreach($viewNames as $viewName){
-                    echo '<div class="linkHold">';
-                        echo '<a onclick="scrollDivSmoothly(\''.$viewName.'\')">'.ucfirst(str_replace("_"," ",$viewName)).'</a>';
-                    echo "</div>";
-                }
-        echo "</div>";
+        $imageLinks = $this->Sample_model->getLinkForImages($sampleID);
 
         $study =  $sampleStudy[0]['Study'];
         $run_description =  $sampleStudy[0]['Run_Description'];
@@ -367,42 +380,83 @@ EOF;
                 <p><strong>Sample ID</strong> : $sampleID</p>
                 <p><strong>Study</strong> : $study</p>
                 <p><strong>Run Description</strong> : $run_description</p>
+                <form action="{$base_url}index.php/ajax/generate_report" method="POST" accept-charset="utf-8">
+                    <input class="hidden" name = "id" value = "$sampleID" />
+                    <button class="btn btn-success" name="submit" title="Download Report">Download Sample Report</button>
+                </form>
             </div>
 EOF;
 
-        echo "<div class='info'>";
-            foreach ($viewNames as $viewName){
-                echo "<div class='viewHold' id='$viewName'>";
-                    echo "<div class='topBanner'>";
-                         echo "<p style='float:left'>".ucfirst(str_replace("_"," ",$viewName))."</p>";
-                    echo "</div>";
-                    echo "<div class='tableData'>";
-                        echo "<div class='table'>";
-                            echo "<div class='tableHeader border-bottom-light'>";
-                                echo <<<EOF
-                                    <div class="tableColumn" metric-half><p>Metric</p></div>
-                                    <div class="tableColumn" metric-half><p>Value</p></div>
+        echo <<<EOF
+            <div class="menu" id="menu" overlay>
+                <div class="topBanner"><p>Tables Included</p></div>
 EOF;
-                            echo "</div>";
-                            echo "<div class='tableColumnWrap' open>";
-                                foreach($view[$viewName] as $key => $value){
-                                    if($key !== 'qcID'){
-                                        echo "<div class='tableRow border-bottom-light'>";
-                                            echo "<div class='tableColumn border-right design-font' metric-half>";
-                                                echo "<p>".str_replace("_"," ",$key)."</p>";
-                                            echo "</div>";
-                                            echo "<div class='tableColumn' metric-half>";
-                                                echo "<p>".number_format($value, $precision)."</p>";
-                                            echo "</div>";
-                                        echo "</div>";
-                                    }
-                                }
-                            echo "</div>";
-                        echo "</div>";
+                foreach($viewNames as $viewName){
+                    echo '<div class="linkHold">';
+                        echo '<p>'.ucfirst(str_replace("_"," ",$viewName)).'</p>';
+                    echo "</div>";
+                }
+        echo "</div>";
+
+        echo "<div class='tabBar' id='tabBar'>";
+            echo <<<EOF
+                <button class="buttonTab" id="left" data-toggle="1" onclick="switchViewsBackDrop(this)">
+                    Table Data
+                </button>
+                <button class="buttonTab" id="right" data-toggle="2" onclick="switchViewsBackDrop(this)">
+                    Plot Pictures
+                </button>
+EOF;
+        echo "</div>";
+
+        echo "<div class='toggleInfoHold' id='toggleInfoHold'>";
+            echo"<div class='info' id='info'>";
+                foreach ($viewNames as $viewName){
+                  if($viewName != 'fastqc_stats'){
+                      echo "<div class='viewHold' id='$viewName'>";
+                          echo "<div class='topBanner'>";
+                               echo "<p style='float:left'>".ucfirst(str_replace("_"," ",$viewName))."</p>";
+                          echo "</div>";
+                          echo "<div class='tableData'>";
+                              echo "<div class='table'>";
+                                  echo "<div class='tableHeader border-bottom-light'>";
+                                      echo <<<EOF
+                                          <div class="tableColumn" metric-half><p>Metric</p></div>
+                                          <div class="tableColumn" metric-half><p>Value</p></div>
+EOF;
+                                  echo "</div>";
+                                  echo "<div class='tableColumnWrap' open>";
+                                      foreach($view[$viewName] as $key => $value){
+                                          if($key !== 'qcID'){
+                                              echo "<div class='tableRow border-bottom-light'>";
+                                                  echo "<div class='tableColumn border-right design-font' metric-half>";
+                                                      echo "<p>".str_replace("_"," ",$key)."</p>";
+                                                  echo "</div>";
+                                                  echo "<div class='tableColumn' metric-half>";
+                                                      echo "<p>".number_format($value, $precision)."</p>";
+                                                  echo "</div>";
+                                              echo "</div>";
+                                          }
+                                      }
+                                  echo "</div>";
+                              echo "</div>";
+                          echo "</div>";
+                      echo "</div>";
+                    }
+                }
+            echo "</div>";
+            // Plot Information Hold
+            echo "<div class='info hideContent' id ='info'>";
+                echo "<div class='imageWell'>";
+                    echo "<div class='imagehead'><p>Sample Images</p></div>";
+                    echo "<div class='imageContent'>";
+                      for ($i = 0; $i < count($imageLinks); $i++){
+                        echo "<img src = '".$resources."img/".$imageLinks[$i]."'>";
+                      }
                     echo "</div>";
                 echo "</div>";
-            }
-        echo "</div>";
+            echo "<div>";
+        echo"</div>";
     }
 }
 ?>

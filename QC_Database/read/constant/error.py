@@ -10,7 +10,7 @@ ERR_DIRECTORY_PROBLEM="Something went wrong while trying to read the content in 
 ERR_SERVER_NOT_SETUP="The `WEB_APP_PATH` is not set to point at where your server is. Please set the `WEB_APP_PATH` to a folder in the server where you coppied all the files for the fornt end."
 
 #DB_ERRORS
-ERR_DB_CREATE_TABLE="While creating the table, something went wrong! Check the fileds variable format"
+ERR_DB_CREATE_TABLE="While creating the table, something went wrong! Check the field's variable format"
 ERR_DB_INSERT="Insertion failed! Make sure that you are using the correnct fields and values."
 ERR_DB_TABLE_DOES_NOT_EXIST="The table you are using does NOT exist in the database"
 ERR_DB_UPDATE_COLUMNS_MISMATCH="In the update, the number of elements in the columns variable should match the number of element in the values variable."

@@ -1,0 +1,111 @@
+/*
+  @author Taha Mazher Topwiala
+*/
+
+.navigationBar{
+  position: fixed;
+  top: 0;
+  height: 90px;
+  width: 100%;
+  z-index: 10000;
+  padding:5px;
+  background-color: #00bcd4;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+
+.navigationBarExtended{
+  height: 90px;
+  opacity: 1;
+}
+
+.navigationBarShrunk{
+  height: 60px;
+  opacity: 0.9;
+}
+
+.projectName {
+  position: relative;
+  width: 150px;
+  height: 100%;
+  font-size: 25px;
+  color: black;
+  text-align: center;
+  font-family: 'Raleway' sans-serif;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: flex-center;
+  justify-content: center;
+  align-items: center;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+
+.projectName a{
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menuOptions{
+  float: right;
+  width: 60%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.option{
+  position: relative;
+  width: 20%;
+  height: 40px;
+  border: 2px solid #EDEDED;
+  border-radius: 5px;
+  margin-right: 10px;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.option a{
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-transition: all 0.5s ease-in-out;
+	-moz-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+
+.option a:hover{
+  color: black;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #00bcd4;
+  opacity: 0.8;
+  text-align: center;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer p{
+  margin: 0px;
+}
