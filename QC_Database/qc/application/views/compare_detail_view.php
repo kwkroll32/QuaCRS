@@ -249,6 +249,8 @@ EOF;
         <div class="allStats">
           <?php
           foreach($allTables as $viewName => $shown){
+		        if( strpos(strtolower($viewName), "fastqc") !== false )
+              continue;
             echo "<div class='viewHold' id='".$viewName."'>";
             echo "<div class='topBanner'>";
             echo '<button class="viewNameButtonTable" style='.($shown ? '"border-color:green"' : '""').' data-toggle = '.($shown ?'close':'open').' target = "table_'.$viewName.'" id= "btn_'.$viewName.'" onclick="collapseViewIndividual(this)">'.($shown ?'Collapse Table':'Open Table').'</button>';
@@ -269,7 +271,6 @@ EOF;
             echo "<div class='tableBody'>";
             // Will now print the table data in accordance to group
             $plot_data = array();
-            if ($viewName != "fastQC_Stats"){
               for ($j=0;$j< count($plot_info_cumulative[$viewName]);$j++){
                 foreach($plot_info_cumulative[$viewName][$j] as $key=>$value){
                   if(isset($plot_data[$key])){
@@ -280,7 +281,6 @@ EOF;
                   }
                 }
               }
-            }
             $keyPrinted = false;
             $printGroupNumber = false;
             $printMin = false;
@@ -498,7 +498,6 @@ EOF;
                 /* PLOT DISPLAY USING SPARKLINES */
 
                 $plot_data_group = array();
-                if ($viewName != "fastQC_Stats"){
                   for ($j=0;$j< count($plot_info[$i][$viewName]);$j++){
                     foreach($plot_info[$i][$viewName][$j] as $key=>$value){
                       if(isset($plot_data_group[$key])){
@@ -508,7 +507,6 @@ EOF;
                       }
                     }
                   }
-                }
 
                 echo "<div class='tableColumn'>";
                 $trim_key = substr($carrier[3], 4);
@@ -572,7 +570,6 @@ EOF;
                 <option title="y" value="0">Y - Value</option>
                 <?php
                 foreach ($viewNameAndColumnName as $viewName => $columns) {
-                  if($viewName != "fastQC_Stats"){
                     echo "<optgroup label='".ucfirst(str_replace("_"," ",$viewName))."'>";
                     foreach ($columns as $column) {
                       if($column['Field'] != "qcID"){
@@ -581,7 +578,6 @@ EOF;
                     }
                     echo "</optgroup>";
                   }
-                }
                 ?>
               </select>
             </div>
