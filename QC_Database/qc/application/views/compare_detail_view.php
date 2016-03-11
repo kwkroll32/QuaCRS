@@ -210,10 +210,11 @@ EOF;
                                         $warn = $calculate['warn'];
                                         $pass = $calculate['pass'];
                                         $total = $fail + $warn + $pass;
-                                        if ($total == 0){
-                                            $ratio = 0;
-                                        }else{
-                                            $ratio = ($val['pass']/$total*100);
+					$ratio = 0.0;
+                                        if ($total != 0){
+						$ratio += $pass;
+						$ratio /= $total;
+                                        	$ratio *= 100;
                                         }
                                         echo "<div class='tableColumn'>Cumulative</div>";
                                         echo "<div class='tableColumn ".(($fail==$total)?"danger":"")."'>".$fail."</div>";
