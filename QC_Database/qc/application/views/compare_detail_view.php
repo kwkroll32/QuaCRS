@@ -27,29 +27,29 @@ $(function() {
 <?php
 echo "<style>";
 for($i = 0; $i < count($groupArrayColor); $i++){
-  echo <<<EOF
-  .color-ball-$i{
+  echo "
+  .color-ball-",$i,"{
     display:inline-block;
     width:20px;
     height:20px;
     text-align:center;
     border-radius:50%;
-    border:3px solid $groupArrayColor[$i];
-    background-color:$groupArrayColor[$i];
+    border:3px solid ",$groupArrayColor[$i],";
+    background-color:",$groupArrayColor[$i],";
   }
-  .color-$i{
-    border:2px solid $groupArrayColor[$i];
+  .color-",$i,"{
+    border:2px solid ",$groupArrayColor[$i],";
   }
 
-  .color-thin-$i{
+  .color-thin-",$i,"{
     height:50px;
-    border-bottom:2px solid $groupArrayColor[$i];
+    border-bottom:2px solid ",$groupArrayColor[$i],";
   }
 
-  .font-color-$i{
-    color: $groupArrayColor[$i];
+  .font-color-",$i,"{
+    color: ",$groupArrayColor[$i],";
   }
-  EOF;
+  ";
 }
 echo "</style>";
 ?>
@@ -87,22 +87,22 @@ foreach($viewNames as $view){
         $sampleCount = sizeof($sampleNames[$i]);
         $groupname = $groupArrayName[$i];
         echo <<<EOF
-        <div class="groupblock color-$i">
-        <div class = "nameGroup font-color-$i">
-        <p>$groupname</p>
-        </div>
-        <div class ="groupSummary">
-        <p>Sample Count : $sampleCount</p>
-        </div>
-        <div class= "groupInfo">
-        EOF;
-        for($j = 0; $j < $sampleCount; $j++){
-          echo "<p onClick = 'showSampleInfo(this)' sample-id='".$sampleIdArray[$i][$j]."'>".$sampleNames[$i][$j]."</p>";
-        }
-        echo <<<EOF
-        </div>
-        </div>
-        EOF;
+		<div class="groupblock color-$i">
+		<div class = "nameGroup font-color-$i">
+		<p>$groupname</p>
+		</div>
+		<div class ="groupSummary">
+		<p>Sample Count : $sampleCount</p>
+		</div>
+		<div class= "groupInfo">
+EOF;
+	for($j = 0; $j < $sampleCount; $j++){
+		  echo "<p onClick = 'showSampleInfo(this)' sample-id='".$sampleIdArray[$i][$j]."'>".$sampleNames[$i][$j]."</p>";
+		}
+		echo <<<EOF
+		</div>
+		</div>
+EOF;
       }
       ?>
       <div>
@@ -264,7 +264,7 @@ foreach($viewNames as $view){
             <div class="tableColumn"><p>Avg</p></div>
             <div class="tableColumn"><p>Max</p></div>
             <div class="tableColumn"><p>Plot</p></div>
-            EOF;
+EOF;
             echo "</div>";
             echo "<div class='tableBody'>";
             // Will now print the table data in accordance to group
@@ -538,7 +538,7 @@ foreach($viewNames as $view){
                 <script>
                 fireUpGraph("$indentifyMetric");
                 </script>
-                EOS;
+EOS;
               }else{
                 echo "<div class='information'>";
                 echo "<p>Due to presence of Missing or 0's values the Graph could not be plotted for $carrier[0].</p>";
@@ -553,7 +553,7 @@ foreach($viewNames as $view){
               <script>
               addMagicalTableAttribute("$viewName");
               </script>
-              EOF;
+EOF;
             }
             $vanishStyleTable = true;
             echo "</div> <!-- Close of Table Body -->";
