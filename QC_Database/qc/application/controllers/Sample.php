@@ -392,6 +392,7 @@ EOF;
                 <div class="topBanner"><p>Tables Included</p></div>
 EOF;
                 foreach($viewNames as $viewName){
+                    if( strpos(strtolower($viewName), "fastqc") !== false ) continue;
                     echo '<div class="linkHold">';
                         echo '<p>'.ucfirst(str_replace("_"," ",$viewName)).'</p>';
                     echo "</div>";

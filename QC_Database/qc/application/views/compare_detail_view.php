@@ -155,6 +155,7 @@ EOF;
             </div>
             <?php
             foreach($allTables as $viewName => $shown){
+              if( strpos(strtolower($viewName), "fastqc") !== false ) continue;
               echo '<div class="linkHold">';
               echo '<a href="#'.$viewName.'" id="jumpToViewName_'.$viewName.'">'.ucfirst(str_replace("_"," ",$viewName)).'</a>';
               echo "</div>";
@@ -249,8 +250,7 @@ EOF;
         <div class="allStats">
           <?php
           foreach($allTables as $viewName => $shown){
-		        if( strpos(strtolower($viewName), "fastqc") !== false )
-              continue;
+		        if( strpos(strtolower($viewName), "fastqc") !== false ) continue;
             echo "<div class='viewHold' id='".$viewName."'>";
             echo "<div class='topBanner'>";
             echo '<button class="viewNameButtonTable" style='.($shown ? '"border-color:green"' : '""').' data-toggle = '.($shown ?'close':'open').' target = "table_'.$viewName.'" id= "btn_'.$viewName.'" onclick="collapseViewIndividual(this)">'.($shown ?'Collapse Table':'Open Table').'</button>';
