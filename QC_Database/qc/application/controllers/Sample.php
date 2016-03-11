@@ -293,7 +293,7 @@ class Sample extends CI_Controller{
         }
         $data['singleGraphSampleNames'] = $singleGraphSampleNames;
 
-        /* Get All Coloumns In Single Array */
+        /* Get All Columns In Single Array */
 
         foreach ($viewNames as $viewName) {
             $cumulativeColumns[$viewName] = $this->Sample_model->get_columnsNames($viewName);
