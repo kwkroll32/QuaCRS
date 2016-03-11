@@ -9,14 +9,8 @@ class pValueStatistics extends CI_Model{
 		parent::__construct();
 	}
 
-	public function getDegreeOfFreedom($totalSampleCount, $groupArray){
-		$groupCount = count($groupArray);
-		$nd1 = $groupCount - 1;
-		$nd2 = $totalSampleCount - $groupCount;
-		return array($nd1, $nd2);
-	}
 	/*
-	 * @author Ralph
+	 * @author Ralf
  	*/
 
 	public function Fstatistic($x, $nd1, $nd2)
@@ -171,7 +165,7 @@ class Sample_model extends pValueStatistics {
             $notTableList[3] = "General";
         }else if ($viewPage == "aggregate_detail_view"){
             $notTableList[3] = "General";
-            $notTableList[4] = "fastqc_stats";
+            $notTableList[4] = "FastQC_Stats";
         }
 
         $query = $this->db->query("SHOW TABLES");
@@ -408,7 +402,9 @@ class Sample_model extends pValueStatistics {
 	function getViewNameTableAndGroupCalculation($viewName,  $groupArray,  $singleGroupArray){
 		$result = array();
 		$columns = $this->get_columns($viewName);
-		$totalSampleCount = $this->getTotalSampleCount($singleGroupArray);
+
+		$DBG = True;
+
 		foreach ($columns as $column) {
 			if($column['Field'] !== "qcID"){
 				$groupValueArray = $this->getSampleValuesForGroups($groupArray, $viewName, $column['Field']);
@@ -417,26 +413,40 @@ class Sample_model extends pValueStatistics {
 				$sst = $this->calculateSST($grandMean,$groupValueArray);
 				$sstr = $this->calculateSSTR($grandMean,$simpleMean,$groupArray);
 				$sse = $this->calculateSSE($sstr, $sst);
-				$mst = $this->calculateMST($sst, $groupArray);
+				//$mst = $this->calculateMST($sst, $groupArray);
 				$mstr = $this->calculateMSTR($sstr, $groupArray);
 				$mse = $this->calculateMSE($sse, $groupArray);
-				$f = $this->calculateF($mstr, $mse);
-				list($nd1,$nd2) = $this->getDegreeOfFreedom($totalSampleCount, $groupArray);
+				$f = $this->calculateF($mstr, $mse, $column['Field']);
+
+				//Set the degrees of freedom
+				$N = 0;
+				for($i = 0; $i < count($groupArray); $i++) $N += count($groupArray[$i]);
+				$nd1 = count($groupArray) - 1;
+				$nd2 =  $N - count($groupArray);
+
 				$p = $this->Fstatistic($f, $nd1, $nd2);
-				$result[$column['Field']] = number_format($p, 2);
+				$result[$column['Field']] = number_format($p, 3);
+
+
+				if($DBG) {
+					echo "<!-- ", $column['Field'], "\n";
+					echo "\tGrand Mean: ", $grandMean, "\n";
+					echo "\tSimple Mean: ";
+					print_r($simpleMean);
+					echo "\n";
+					echo "\tSST: ", $sst, "\n";
+					echo "\tSSTR: ", $sstr, "\n";
+					echo "\tSSE: ", $sse, "\n";
+					echo "\tMSTR: ", $mstr, "\n";
+					echo "\tMSE: ", $mse, "\n";
+					echo "\tF: ", $f, "\n";
+					echo "\tP: ", $p, "\n";
+					echo "\tdFreedom: ", $nd1, " - ", $nd2, "\n";
+					echo "\n-->\n";
+				}
 			}
 		}
 		return $result;
-	}
-
-	/*
-		Calculation function performing
-		TOTAL NUMBEOF SAMPLE
-	*/
-
-	function getTotalSampleCount($singleGroupArray){
-		$count = count($singleGroupArray);
-		return $count;
 	}
 
 	/*
@@ -445,7 +455,7 @@ class Sample_model extends pValueStatistics {
 	*/
 
 	function calculateGrandMean($singleGroupArray, $column, $viewName){
-		$value = 0;
+		$value = 0.0;
 		$idString = "";
 		for($i = 0; $i< count($singleGroupArray); $i++){
 			$idString = $idString.",".$singleGroupArray[$i];
@@ -455,9 +465,9 @@ class Sample_model extends pValueStatistics {
 		$query = $this->db->query($sql);
 		$row = $query->result_array();
 		for($i = 0; $i < count($row); $i++){
-			$value = $value + $row[$i][$column];
+			$value += $row[$i][$column];
 		}
-		$value = $value / count($singleGroupArray);
+		$value /= count($singleGroupArray);
 		return $value;
 	}
 
@@ -471,17 +481,11 @@ class Sample_model extends pValueStatistics {
 		for($i = 0; $i < count($groupValueArray); $i++){
 			$value = 0;
 			for($j = 0; $j < count($groupValueArray[$i]); $j++){
-				$value = $value + $groupValueArray[$i][$j];
+				$value += $groupValueArray[$i][$j];
 			}
 			$mean[] = $value / count($groupValueArray[$i]);
 		}
 		return $mean;
-	}
-
-	function performSquareCaluculation($grandMean, $metricValue){
-		$subtractValue = $metricValue - $grandMean;
-		$square = $subtractValue * $subtractValue;
-		return $square;
 	}
 
 	/*
@@ -493,8 +497,7 @@ class Sample_model extends pValueStatistics {
 		$sst = 0;
 		for($i = 0; $i < count($groupValueArray); $i++){
 			for($j = 0; $j < count($groupValueArray[$i]); $j++){
-				$value = $groupValueArray[$i][$j];
-				$sst = $sst + $this->performSquareCaluculation($grandMean, $value);
+				$sst += pow($groupValueArray[$i][$j] - $grandMean, 2);
 			}
 		}
 		return $sst;
@@ -507,14 +510,8 @@ class Sample_model extends pValueStatistics {
 
 	function calculateSSTR($grandMean, $simpleMean, $groupArray){
 		$sstr = 0;
-		$numberOfObservations = array();
-
-		for($i = 0; $i < count($groupArray); $i++){
-			$numberOfObservations[] = count($groupArray[$i]);
-		}
-
 		for($i = 0; $i < count($simpleMean); $i++){
-			$sstr = $sstr + ($numberOfObservations[$i] * $this->performSquareCaluculation($grandMean,$simpleMean[$i]));
+			$sstr += count($groupArray[$i]) * pow($grandMean - $simpleMean[$i], 2);
 		}
 		return $sstr;
 	}
@@ -534,35 +531,20 @@ class Sample_model extends pValueStatistics {
 	*/
 
 	function calculateMST($sst, $groupArray){
-		$numberOfObservations = 0;
+		$N = 0;
 		for($i = 0; $i < count($groupArray); $i++){
-			$numberOfObservations = $numberOfObservations + count($groupArray[$i]);
+			$N += count($groupArray[$i]);
 		}
-		$mst = ($sst)/($numberOfObservations-1);
-
-		return $mst;
+		return ($sst)/($N-1);
 	}
 
 	/*
 		Calculation function performing
-		MEAN SQAURE TEATMENT
+		MEAN SQUARE TEATMENT
 	*/
 
 	function calculateMSTR($sstr, $groupArray){
-		$mstr = 0;
-		$numberOfColumns = 0;
-		$max = 0;
-		$min = 10;
-		for($i = 0; $i < count($groupArray); $i++){
-			$numberOfColumns = count($groupArray[$i]);
-			if($numberOfColumns < $min){
-				$min = $numberOfColumns;
-			}else if($numberOfColumns > $max){
-				$max = $numberOfColumns;
-			}
-		}
-		$mstr = ($sstr) / ($max-1);
-		return $mstr;
+		return $sstr / (count($groupArray) - 1);
 	}
 
 	/*
@@ -571,28 +553,11 @@ class Sample_model extends pValueStatistics {
 	*/
 
 	function calculateMSE($sse, $groupArray){
-		$mse = 0;
-		$numberOfObservations = 0;
-
+		$N = 0;
 		for($i = 0; $i < count($groupArray); $i++){
-			$numberOfObservations = $numberOfObservations + count($groupArray[$i]);
+			$N += count($groupArray[$i]);
 		}
-
-		$numberOfColumns = 0;
-		$max = 0;
-		$min = 10;
-		for($i = 0; $i < count($groupArray); $i++){
-			$numberOfColumns = count($groupArray[$i]);
-			if($numberOfColumns < $min){
-				$min = $numberOfColumns;
-			}else if($numberOfColumns > $max){
-				$max = $numberOfColumns;
-			}
-		}
-
-		$mse = $sse / ($numberOfObservations - $max);
-
-		return $mse;
+		return $sse / ($N - count($groupArray));
 	}
 
 	/*
@@ -600,11 +565,8 @@ class Sample_model extends pValueStatistics {
 	*/
 
 	function calculateF($mstr, $mse){
-		if($mse != 0 || $mstr != 0){
-			return ($mstr / $mse);
-		}else{
-			return 0;
-		}
+		if($mse == 0 || $mstr == 0) return 0;
+		return ($mstr / $mse);
 	}
 
 	function getSampleValuesForGroups($groupArray, $viewName, $column){
@@ -840,7 +802,7 @@ class Sample_model extends pValueStatistics {
 		$conditionString = rtrim($conditionString, " AND ");
 
 		$conditionString .= " AND Study = '$condition'";
-		
+
 		$results = $this->queryString($conditionString);
 		return $results;
 	}

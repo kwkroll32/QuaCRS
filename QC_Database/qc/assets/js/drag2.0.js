@@ -233,7 +233,7 @@ function passon(callback){
         var kid = _('wrapperGroup').children;
         var lengthCount = kid.length;
         if(lengthCount == 1){
-                var r = confirm("Would you wish to continue wih just one group ?");
+                var r = confirm("Would you wish to continue with just one group ?");
                 if(r){
                         var formLength = _('compareAppend').children;
                         if(formLength.length > 0){
