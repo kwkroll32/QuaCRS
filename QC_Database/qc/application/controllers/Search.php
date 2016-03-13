@@ -91,14 +91,14 @@ class Search extends CI_Controller{
     }
 
     public function demandsearch(){
-        $keyword = $this->input->post('searchterm', TRUE);
+        $keyword = $_POST['searchterm'];
         $decodedArray = json_decode($keyword, true);
         $searchResults = $this->Sample_model->produceSearchResultJSONOnQCTable($decodedArray);
         print_r(json_encode($searchResults));
     }
 
 		public function demandSearchWithCondition(){
-        $keyword = $this->input->post('searchterm', TRUE);
+        $keyword = $_POST['searchterm'];
 				$condition = $this->input->post('study', TRUE);
         $decodedArray = json_decode($keyword, true);
         $searchResults = $this->Sample_model->produceSearchResultJSONOnSpecificStudy($decodedArray, $condition);
@@ -106,19 +106,19 @@ class Search extends CI_Controller{
     }
 
     public function singleSearch(){
-        $keyword = $this->input->post('searchterm', TRUE);
+      	$keyword = $_POST['searchterm'];
         $searchResults = $this->Sample_model->produceSearchResultJSONOnSingleQCTable($keyword);
         print_r(json_encode($searchResults));
     }
 
 		public function studySearch(){
-			  $keyword = $this->input->post('searchterm', TRUE);
+				$keyword = $_POST['searchterm'];
 				$searchResults = $this->Sample_model->produceSearchResultJSONOnStudyQCTable($keyword);
         print_r(json_encode($searchResults));
 		}
 
 		public function singleSearchWithCondition(){
-			  $keyword = $this->input->post('searchterm', TRUE);
+				$keyword = $_POST['searchterm'];
 			  $condition = $this->input->post('study', TRUE);
 				$searchResults = $this->Sample_model->produceSearchResultJSONOnSpecificStudyQCTable($keyword, $condition);
 				print_r(json_encode($searchResults));
