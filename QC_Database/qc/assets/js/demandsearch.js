@@ -4,9 +4,7 @@
 var SelectAllToggle = _("selectAllToggle");
 var search_box = document.getElementById('search-bar-direct'); // Search box
 
-var headerTimer = setInterval(function(){
-	updateTitle();
-},1500);
+var headerTimer = setInterval(function(){	updateTitle(); }, 1500);
 
 function updateTitle(){
 	if(Object.keys(Master_Search_Resulting_array).length > 0){
@@ -24,7 +22,6 @@ function displaySampleSearchColumn(data){
 		var sampleTable = _("sample_table_hold").children;
 		for (var i = sampleTable.length - 1; i >= 0; i--) {
 			var child = sampleTable[i];
-			// Split array to get value sample id
 			var idOfSample = child.id.split("-");
 			if(data.indexOf(idOfSample[2]) == -1){
 				child.style.display = "none";
@@ -35,9 +32,7 @@ function displaySampleSearchColumn(data){
 	}else{
 		var sampleTable = _("sample_table_hold").children;
 		for (var i = sampleTable.length - 1; i >= 0; i--) {
-			var child = sampleTable[i];
-			var idOfSample = child.id.split("-");
-			child.style.display = "none";
+			sampleTable[i].style.display = "none";
 		}
 		Master_Search_Resulting_array = {};
 	}
@@ -46,8 +41,7 @@ function displaySampleSearchColumn(data){
 function resetSearchResultsToDefault(){
 	var sampleTable = _("sample_table_hold").children;
 	for (var i = sampleTable.length - 1; i >= 0; i--) {
-		var child = sampleTable[i];
-		child.style.display = null;
+		sampleTable[i].style.display = null;
 	}
 	Master_Search_Resulting_array = {};
 	SelectAllToggle.innerHTML = "Select";
@@ -97,9 +91,7 @@ function detailedSearch(value) {
 	    xmlhttp.onreadystatechange = function(){
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
 	            var data = JSON.parse(xmlhttp.responseText);
-							if(search_box.getAttribute("data-condition") === null){
-								resetSearchResultsToDefault();
-							}
+							resetSearchResultsToDefault();
 		        	displaySampleSearchColumn(data);
 	        }
 	    };
@@ -153,7 +145,6 @@ function demandsearchSingleTerm(){
 		}
 	}
 }
-
 
 // Search Timer
 

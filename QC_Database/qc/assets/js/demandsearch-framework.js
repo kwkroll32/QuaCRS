@@ -203,6 +203,7 @@ function performDetailedSearch() {
 
 		columnSelectedValue = _("column_selection_"+data_identifier);
 		columnSelectedValue = columnSelectedValue.options[columnSelectedValue.selectedIndex].value;
+		columnSelectedValue = "`" + columnSelectedValue.replace(/%/, "%25", 1) + "`";
 
 		if (columnSelectedValue == 0){
 
