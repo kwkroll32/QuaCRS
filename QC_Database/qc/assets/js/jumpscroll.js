@@ -6,7 +6,7 @@
 
 $(window).ready(function(){
 
-var jump_style = "width:200px; background-color: white; \
+var jump_style = "min-width:200px; background-color: white; \
 padding:10px; font-size:17px; \
 position:fixed; left:30px; bottom:-2px; \
 border: 2px solid #CCC; \
@@ -29,29 +29,23 @@ $(".linkHold").each( function( i, e ){
 	toAdd += "<div style='padding-top:1px;'>" + $(this).html() + "</div>";
 });
 
+var jump_hidden = false;
+
 $(jp).append( toAdd + "</center>" );
+$(jp).click(function(event){
+  var hide_height = $("#floating_jump").height() - 20;
 
-var scrolled = true;
-$(window).scroll(function(event){ scrolled = true; });
-
-function toggleJump() {
-	if( !scrolled ) return;
-	var hide_height = $("#floating_jump").height() + 50;
-
-	if($("#menu")[0].getBoundingClientRect().top * -1  < $("#menu").height()) {
+	if(!jump_hidden) {
 		$("#floating_jump").animate({
 			bottom: "-" + hide_height + "px"
-		}, 400, function() {});
+		}, 400, function() { jump_hidden = true; });
 	} else {
 		$("#floating_jump").animate({
 			bottom: "-2px"
-		}, 400, function() {});
+		}, 400, function() { jump_hidden = false; });
 	}
+});
 
-	scrolled = false;
-}
-
-toggleJump();
-setInterval( toggleJump, 150);
+$(jp).click();
 
 });
