@@ -139,7 +139,7 @@ EOF;
       <p style='float:left;cursor: pointer'>Comparison Results</p>
     </div>
     <div class="tabBarToggle" id="togglebar">
-      <div class="toggleButton"  onClick="toggleDataView(this)" data-toggle = "1" style="border-color:#00bcd4">
+      <div class="toggleButton"  onClick="toggleDataView(this)" data-toggle = "1" style="border-color:#689699">
         <p>Table Data</p>
       </div>
       <div class="toggleButton" onClick="toggleDataView(this)" data-toggle = "2">

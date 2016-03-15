@@ -9,7 +9,17 @@ function _(el){
 
 var array_group = ["0"];
 var array_sample  = new Array ();
-var array_color = ["#FD6E01","#DC01FD","#E4FD01","#0145FD","#FD014D","#FD0101","#01FDFD","#FF9800","#01FD55"];
+var array_color = [
+  "#FD6E01",
+  "#DC01FD",
+  "#E4FD01",
+  "#0145FD",
+  "#FD014D",
+  "#FD0101",
+  "#01FDFD",
+  "#FF9800",
+  "#01FD55"
+];
 var i = 0;
 var approve = false;
 var count = 0;
