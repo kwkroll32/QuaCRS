@@ -246,14 +246,6 @@
       </div>
     </div>
 
-    <div class="studySummary">
-      <div class="header">
-          <p>Saved Compare Result's</p>
-      </div>
-      <div class="content">
-          <p>Comming Soon</p>
-      </div>
-    </div>
   </div>
 </div>
 <div class="full-scale-side-panel" data-view = "closed" id="left-side-panel">
