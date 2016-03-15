@@ -9,16 +9,18 @@ function _(el){
 
 var array_group = ["0"];
 var array_sample  = new Array ();
+// See http://brand.osu.edu/color/extended-colors.html
+// for information on color selection
 var array_color = [
-  "#FD6E01",
-  "#DC01FD",
-  "#E4FD01",
-  "#0145FD",
-  "#FD014D",
-  "#FD0101",
-  "#01FDFD",
-  "#FF9800",
-  "#01FD55"
+  "#8f7ba5",
+  "#92b0d7",
+  "#e7c474",
+  "#dde56d",
+  "#8f8883",
+  "#bcc188",
+  "#e69b7e",
+  "#a8d6cd",
+  "#b6789e"
 ];
 var i = 0;
 var approve = false;
