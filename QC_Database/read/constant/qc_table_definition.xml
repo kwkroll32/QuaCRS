@@ -332,6 +332,29 @@
 			<comment></comment>
 		</column>
 		<column>
+			<field>Splice_Junctions_Plot_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Splice_Events_Plot_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+
+		<column>
 			<field>NVC_Plot_Location</field>
 			<type>VARCHAR(255)</type>
 			<null></null>
