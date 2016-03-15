@@ -110,7 +110,7 @@ function detailedSearch(value) {
 
 function demandsearchSingleTerm(){
 	var el = search_box.value;
-	if(el.length > 3){
+	if(el.length > 0){
 		var searchterm = "searchterm=" + el.trim();
 		var xlmhttp;
 		if(window.XMLHttpRequest){
