@@ -1060,8 +1060,8 @@
 			<extra></extra>
 			<precision></precision>
 			<percentage>false</percentage>
-			</column>
 			<comment></comment>
+		</column>
 		<column>	
 			<field>Spliced_Reads_%</field>
 			<type>DECIMAL(14,10)</type>
@@ -1274,7 +1274,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="housekeeping Genes">
+	<view name="housekeeping_Genes">
 		<column>
 			<field>C1orf43</field>
 			<type>DECIMAL(14,10)</type>
