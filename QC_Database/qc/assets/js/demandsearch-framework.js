@@ -173,20 +173,13 @@ function clearConditionBar(el) {
 }
 
 function deleteConditionalBlock(el) {
-
 	var identifier = el.getAttribute("data-conditional-identifier");
 	$("#conditional_bar_"+identifier).remove();
 	var content_bar = _("content_bar");
 
-	if(content_bar.children.length < 1){
-		content_bar.setAttribute("data-conditional-count",0);
+	if(content_bar.children.length < 1) clearConditionBar(window);
 
-		var barTarget = "conditional_bar_0";
-
-		var frame = new Framework(0, content_bar, barTarget);
-		frame.masterFrame();
-	}
-
+	performDetailedSearch();
 }
 
 function performDetailedSearch() {
