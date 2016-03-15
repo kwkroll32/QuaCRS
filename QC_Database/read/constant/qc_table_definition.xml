@@ -446,7 +446,7 @@
 	<view name="library_Stats">
 		<column>
 			<field>RIN</field>
-			<type>DECIMAL(3,2)</type>
+			<type>DECIMAL(4,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -457,7 +457,7 @@
 		</column>
 		<column>
 			<field>rRNA_and_mitoRNA</field>
-			<type>DECIMAL(8,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -760,7 +760,7 @@
 	<view name="genomic_Stats">		
 		<column>
 			<field>Intragenic_Rate</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -771,7 +771,7 @@
 		</column>
 		<column>
 			<field>Exonic_Rate</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -782,7 +782,7 @@
 		</column>
 		<column>
 			<field>Intronic_Rate</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -793,7 +793,7 @@
 		</column>
 		<column>
 			<field>Intergenic_Rate</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -804,7 +804,7 @@
 		</column>
 		<column>
 			<field>Expression_Profiling_Efficiency</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -839,7 +839,7 @@
 	<view name="strand_Stats">
 		<column>
 			<field>End_1_%_Sense</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -850,7 +850,7 @@
 		</column>
 		<column>
 			<field>End_2_%_Sense</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -863,7 +863,7 @@
 	<view name="duplication">
 		<column>
 			<field>Low_Sequence_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -874,7 +874,7 @@
 		</column>
 		<column>
 			<field>Medium_Sequence_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -885,7 +885,7 @@
 		</column>
 		<column>
 			<field>High_Sequence_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -896,7 +896,7 @@
 		</column>
 		<column>
 			<field>Ultra-High_Sequence_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -907,7 +907,7 @@
 		</column>
 		<column>
 			<field>Low_Mapping_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -918,7 +918,7 @@
 		</column>
 		<column>
 			<field>Medium_Mapping_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -929,7 +929,7 @@
 		</column>
 		<column>
 			<field>High_Mapping_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -940,7 +940,7 @@
 		</column>
 		<column>
 			<field>Ultra-High_Mapping_Dup_Reads_%</field>
-			<type>INT(11)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1041,7 +1041,7 @@
 	<view name="gC_Content">
 		<column>
 			<field>GC_Avg</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,4)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1052,7 +1052,7 @@
 		</column>
 		<column>
 			<field>GC_Std_Dev</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,4)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1063,7 +1063,7 @@
 		</column>
 		<column>
 			<field>GC_Skew</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,4)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1423,7 +1423,7 @@
 	<view name="variants">
 		<column>
 			<field>VAF_0.00-0.09</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1434,7 +1434,7 @@
 		</column>
 		<column>
 			<field>VAF_0.10-0.39</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1445,7 +1445,7 @@
 		</column>
 		<column>
 			<field>VAF_0.40-0.59</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1456,7 +1456,7 @@
 		</column>
 		<column>
 			<field>VAF_0.60-0.89</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1467,7 +1467,7 @@
 		</column>
 		<column>
 			<field>VAF_0.90-1.00</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,3)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
