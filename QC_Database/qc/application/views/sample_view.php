@@ -136,7 +136,7 @@
                                                                                 }
 
                                                                                 if ($column['Field'] != 'Sample'){
-                                                                                        echo "<td data-col-ind='".($i++)."' class='".$style."'>";
+                                                                                        echo "<td style='background-color:white;' data-col-ind='".($i++)."' class='".$style."'>";
                                                                                                 if(is_numeric($sample[$column['Field']])){
                                                                                                         if (array_key_exists("percent_".sha1($column['Field']),$flags )){
                                                                                                                 if($flags["percent_".sha1($column['Field'])] === "true"){
@@ -156,7 +156,7 @@
                                                                                                 }
                                                                                         echo "</td>";
                                                                                 }else{
-                                                                                        echo "<td data-col-ind='".($i++)."' class='".$style."'>";
+                                                                                        echo "<td style='background-color:white;' data-col-ind='".($i++)."' class='".$style."'>";
                                                                                                 echo "<a onClick = 'showSampleInfo(this)' id ='moveable".($index)."' sampleId = '".$sample['qcID']."' sampleField = '".((isset($keyword))?highlight_phrase($sample[$column['Field']],$keyword,"<span style='background-color:'>", "</span>"):$sample[$column['Field']])."'>" .((isset($keyword))?highlight_phrase($sample[$column['Field']],$keyword,"<span style='background-color:'>", "</span>"):$sample[$column['Field']]) ."</a>";
                                                                                         echo "</td>";
                                                                                 }
