@@ -820,8 +820,9 @@ class Sample_model extends pValueStatistics {
 		$conditionString = "";
 		$i = 0;
 		$openColon = false;
-		while( $i < count($keywordArray)){
-			if(!empty($keywordArray[$i])){
+		while( $i < count($keywordArray) ){
+			//if( !empty( $keywordArray[$i] ) ){
+			if( True ) {
 				if($keywordArray[$i] === "<" || $keywordArray[$i] === ">" || $keywordArray[$i] === "=" || $keywordArray[$i] === ":" || $keywordArray[$i] === ">=" || $keywordArray[$i] === "<="){
 					if($keywordArray[$i] === ":"){
 						$conditionString .= "=" . ' "';
@@ -842,16 +843,18 @@ class Sample_model extends pValueStatistics {
 			}
 			$i++;
 		}
+
 		$conditionString = rtrim($conditionString, " ");
 		$conditionString = ltrim($conditionString, " ");
 		$conditionString = rtrim($conditionString, " AND ");
+
 		$results = $this->queryString($conditionString);
 		return $results;
 	}
 
 	function queryString($conditionString){
 		$resultingQCIDArray = array();
-		$sql = "SELECT * FROM $this->PRIMARY_TABLE WHERE $conditionString";
+		$sql = "SELECT * FROM $this->PRIMARY_TABLE WHERE ".$conditionString;
 		$query = $this->db->query($sql);
 		$row = $query->result_array();
 		for($i = 0; $i < count($row); $i++){
