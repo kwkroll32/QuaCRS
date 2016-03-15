@@ -32,27 +32,27 @@ header_FastQC_R2_images = ["R2 Duplication Levels Graph Location", "R2 Kmer Prof
 header_FastQC = header_FastQC_R1 + header_FastQC_R2 + header_FastQC_R1_images + header_FastQC_R2_images
 
 #RNASeQC
-header_RNASeQC_PE = ["Aligned", "Unique", "Duplicates", "Duplication Rate", "Estimated Library Size", "Intragenic Rate", "Exonic Rate", "Intronic Rate", "Intergenic Rate", "Expression Profiling Efficiency", "Expressed Transcripts", "End 1 Sense", "End 1 Antisense", "End 2 Sense", "End 2 Antisense", "End 1 % Sense", "End 2 % Sense"]
-header_RNASeQC_SE = ["Aligned", "Unique", "Duplicates", "Duplication Rate", "Estimated Library Size", "Intragenic Rate", "Exonic Rate", "Intronic Rate", "Intergenic Rate", "Expression Profiling Efficiency", "Expressed Transcripts"]
+header_RNASeQC_PE = ["Aligned Reads", "Unique Reads", "Duplication Rate", "Estimated Library Size", "Intragenic Rate", "Exonic Rate", "Intronic Rate", "Intergenic Rate", "Expression Profiling Efficiency", "Expressed Transcripts", "Expressed Genes", "Fragment Length Mean", "Fragment Length StdDev", "End 1 % Sense", "End 2 % Sense"]
+header_RNASeQC_SE = ["Aligned Reads", "Unique Reads", "Duplication Rate", "Estimated Library Size", "Intragenic Rate", "Exonic Rate", "Intronic Rate", "Intergenic Rate", "Expression Profiling Efficiency", "Expressed Transcripts", "Expressed Genes"]
 
 #RSeQC
-header_RSeQC_dup_rate_sequence = ["1-10 sequence dups", "11-100 sequence dups", "100-1000 sequence dups", "> 1000 sequence dups", "%1-10 sequence dups", "%11-100 sequence dups", "%100-1000 sequence dups", "%>1000 sequence dups"]
-header_RSeQC_dup_rate_mapping = ["1-10 mapping dups", "11-100 mapping dups", "100-1000 mapping dups", "> 1000 mapping dups", "%1-10 mapping dups", "%11-100 mapping dups", "%100-1000 mapping dups", "%>1000 mapping dups"]
+header_RSeQC_dup_rate_sequence = ["Low Sequence Dup Reads", "Medium Sequence Dup Reads", "High Sequence Dup Reads", "Ultra-High Sequence Dup Reads", "Low Sequence Dup Reads %", "Medium Sequence Dup Reads %", "High Sequence Dup Reads %", "Ultra-High Sequence Dup Reads %"]
+header_RSeQC_dup_rate_mapping = ["Low Mapping Dup Reads", "Medium Mapping Dup Reads", "High Mapping Dup Reads", "Ultra-High Mapping Dup Reads", "Low Mapping Dup Reads %", "Medium Mapping Dup Reads %", "High Mapping Dup Reads %", "Ultra-High Mapping Dup Reads %"]
 header_RSeQC_GC = ["GC Avg", "GC Std Dev", "GC Skew"]
-header_RSeQC_Junctions = ["Spliced Reads", "% Spliced Reads", "Reads with Known Splices", "Reads with Novel Splices", "% Known Spliced Reads", "% Novel Spliced Reads", "Total Splice Sites", "Known Splice Sites", "Novel Splice Sites", "% Known Splice Sites", "% Novel Splice Sites"]
+header_RSeQC_Junctions = ["Spliced Reads", "Spliced Reads %", "Reads With Known Splices", "Reads With Novel Splices", "Known Spliced Reads %", "Novel Spliced Reads %", "Total Splice Sites", "Known Splice Sites", "Novel Splice Sites", "Known Splice Sites %", "Novel Splice Sites %"]
 header_RSeQC_images = ["Duplication Rate Plot Location", "GC Plot Location", "Gene Body Coverage Plot Location", "NVC Plot Location", "Quality Boxplot Location", "Quality Heatmap Location", "Splice Junctions Loction", "Splice Events Location"]
 header_RSeQC = header_RSeQC_dup_rate_sequence + header_RSeQC_dup_rate_mapping + header_RSeQC_GC + header_RSeQC_Junctions + header_RSeQC_images
 
 #Expression QC
-header_global = ["Global Genes >1 FPKM", "Global Genes >10 FPKM", "Global Genes >100 FPKM"]
+header_global = ["All Genes >1 FPKM", "All Genes >10 FPKM", "All Genes >100 FPKM"]
 header_coding = ["Coding Genes >1 FPKM", "Coding Genes >10 FPKM", "Coding Genes >100 FPKM"]
 header_lincRNA = ["lincRNA Genes >1 FPKM", "lincRNA Genes >10 FPKM", "lincRNA Genes >100 FPKM"]
 header_housekeeping = ["C1orf43", "CHMP2A", "EMC7", "GPI", "PSMB2", "PSMB4", "RAB7A", "REEP5", "SNRPD3", "VCP", "VPS29"]
-header_expression_images = ["Global FPKM Graph Location", "Coding FPKM Graph Location", "lincRNA FPKM Graph Location"]
+header_expression_images = ["All FPKM Graph Location", "Coding FPKM Graph Location", "lincRNA FPKM Graph Location"]
 header_ExpressionQC = header_global + header_coding + header_lincRNA + header_housekeeping + header_expression_images
 
 #Variant QC
-header_bins = ["VAF from 0.00 to 0.09", "VAF from 0.10 to 0.39", "VAF from 0.40 to 0.59", "VAF from 0.60 to 0.89", "VAF from 0.90 to 1.00"]
+header_bins = ["VAF 0.00-0.09", "VAF 0.10-0.39", "VAF 0.40-0.59", "VAF 0.60-0.89", "VAF 0.90-1.00"]
 header_VAF_image = ["Variant Frequency Histogram Location"]
 header_VariantQC = header_bins + header_VAF_image
 

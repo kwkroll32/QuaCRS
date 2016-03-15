@@ -46,7 +46,7 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>Sequencing_type</field>
+			<field>Sequencing_Type</field>
 			<type>VARCHAR(45)</type>
 			<null></null>
 			<key></key>
@@ -57,7 +57,7 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>Sequencing_date</field>
+			<field>Sequencing_Date</field>
 			<type>VARCHAR(45)</type>
 			<null></null>
 			<key></key>
@@ -365,6 +365,50 @@
 			<comment></comment>
 		</column>
 		<column>
+			<field>All_FPKM_Graph_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Coding_FPKM_Graph_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>lincRNA_FPKM_Graph_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Variant_Frequency_Histogram_Location</field>
+			<type>VARCHAR(255)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
 			<field>cur_timestamp</field>
 			<type>TIMESTAMP</type>
 			<null>NOT NULL</null>
@@ -633,9 +677,9 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="Alignment_Stats">
+	<view name="alignment_Stats">
 		<column>
-			<field>Aligned</field>
+			<field>Aligned_Reads</field>
 			<type>INT(11)</type>
 			<null></null>
 			<key></key>
@@ -646,18 +690,7 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>Unique</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>Duplicates</field>
+			<field>Unique_Reads</field>
 			<type>INT(11)</type>
 			<null></null>
 			<key></key>
@@ -678,8 +711,30 @@
 			<percentage>true</percentage>
 			<comment></comment>
 		</column>
+		<column>
+			<field>Fragment_Length_Mean</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Fragment_Length_StdDev</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
 	</view>
-	<view name="Genomic_Stats">		
+	<view name="genomic_Stats">		
 		<column>
 			<field>Intragenic_Rate</field>
 			<type>DECIMAL(10,8)</type>
@@ -746,53 +801,19 @@
 			<percentage></percentage>
 			<comment></comment>
 		</column>
+		<column>
+			<field>Expressed_Genes</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
 	</view>
-	<view name="Strand_Stats">
-		<column>
-			<field>End_1_Sense</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>End_1_Antisense</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>End_2_Sense</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>End_2_Antisense</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
+	<view name="strand_Stats">
 			<field>End_1_%_Sense</field>
 			<type>DECIMAL(10,8)</type>
 			<null></null>
@@ -815,9 +836,9 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="Something">
+	<view name="duplication">
 		<column>
-			<field>new_metric</field>
+			<field>Low_Sequence_Dup_Reads_%</field>
 			<type>INT(11)</type>
 			<null></null>
 			<key></key>
@@ -828,7 +849,161 @@
 			<comment></comment>
 		</column>
 		<column>
-			<field>interesting_metric</field>
+			<field>Medium_Sequence_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>High_Sequence_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Ultra-High_Sequence_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Low_Mapping_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Medium_Mapping_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>High_Mapping_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Ultra-High_Mapping_Dup_Reads_%</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Low_Sequence_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Medium_Sequence_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>High_Sequence_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Ultra-High_Sequence_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Low_Mapping_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Medium_Mapping_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>High_Mapping_Dup_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage></percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Ultra-High_Mapping_Dup_Reads</field>
 			<type>INT(11)</type>
 			<null></null>
 			<key></key>
@@ -839,97 +1014,7 @@
 			<comment></comment>
 		</column>
 	</view>
-	<view name="Duplication">
-		<column>
-			<field>1-10_sequence_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>11-100_sequence_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>100-1000_sequence_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>>_1000_sequence_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>1-10_mapping_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>11-100_mapping_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>100-1000_mapping_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-		<column>
-			<field>>_1000_mapping_dups</field>
-			<type>INT(11)</type>
-			<null></null>
-			<key></key>
-			<default>DEFAULT NULL</default>
-			<extra></extra>
-			<precision></precision>
-			<percentage></percentage>
-			<comment></comment>
-		</column>
-	</view>
-	<view name="GC_Content">
+	<view name="gC_Content">
 		<column>
 			<field>GC_Avg</field>
 			<type>DECIMAL(14,10)</type>
@@ -964,4 +1049,407 @@
 			<comment></comment>
 		</column>
 	</view>
+	<view name="splicing">
+		<column>
+			<field>Spliced_Reads</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			</column>
+			<comment></comment>
+		<column>	
+			<field>Spliced_Reads_%</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Reads_With_Known_Splices</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Reads_With_Novel_Splices</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Known_Spliced_Reads_%</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Novel_Spliced_Reads_%</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Total_Splice_Sites</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Known_Splice_Sites</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Novel_Splice_Sites</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Known_Splice_Sites_%</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>	
+			<field>Novel_Splice_Sites_%</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="expression">
+		<column>
+			<field>All_Genes_>1_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>All_Genes_>10_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>All_Genes_>100_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Coding_Genes_>1_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Coding_Genes_>10_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>Coding_Genes_>100_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>lincRNA_Genes_>1_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>lincRNA_Genes_>10_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>lincRNA_Genes_>100_FPKM</field>
+			<type>INT(11)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="housekeeping Genes">
+		<column>
+			<field>C1orf43</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>CHMP2A</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>EMC7</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>GPI</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>PSMB2</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>PSMB4</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>RAB7A</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>REEP5</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>SNRPD3</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VCP</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VPS29</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+	</view>
+	<view name="variants">
+		<column>
+			<field>VAF_0.00-0.09</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VAF_0.10-0.39</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VAF_0.40-0.59</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VAF_0.60-0.89</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
+		<column>
+			<field>VAF_0.90-1.00</field>
+			<type>DECIMAL(14,10)</type>
+			<null></null>
+			<key></key>
+			<default>DEFAULT NULL</default>
+			<extra></extra>
+			<precision></precision>
+			<percentage>false</percentage>
+			<comment></comment>
+		</column>
 </table>

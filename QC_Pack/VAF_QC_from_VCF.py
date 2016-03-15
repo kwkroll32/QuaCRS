@@ -7,7 +7,9 @@ from collections import defaultdict
 import argparse
 import pysam
 from time import gmtime, strftime
-from pylab import *
+import matplotlib as mp 
+mp.use('Agg')
+from matplotlib.pyplot import hist, title, xlabel, ylabel, savefig
 import pandas as pd
 import os
 import pdb

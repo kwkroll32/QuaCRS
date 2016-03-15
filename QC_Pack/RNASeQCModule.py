@@ -37,7 +37,7 @@ def Parse(unique_ID, sample_name,  PE):
     filename = "RNASeQC/" + unique_ID + "/" + sample_name + "/" + sample_name + ".metrics.txt"
     
     if PE:
-        out_cols = [""] * 17
+        out_cols = [""] * 15
     else:
         out_cols = [""] * 11
     
@@ -61,38 +61,35 @@ def Parse(unique_ID, sample_name,  PE):
     
     #Find desired values
     for name, val in zip(col_names, col_vals):
-        if name == "Total Purity Filtered Reads Sequenced" or name == "Total":
+        if name == "Mapped":
             out_cols[0] = val
         elif name == "Mapped Unique":
             out_cols[1] = val
-        elif name == "Duplication Rate" or name == "Duplication Rate of Mapped":
-            out_cols[3] = val
+        elif name == "Duplication Rate of Mapped":
+            out_cols[2] = val
         elif name == "Estimated Library Size":
-            out_cols[4] = val
+            out_cols[3] = val
         elif name == "Intragenic Rate":
-            out_cols[5] = val
+            out_cols[4] = val
         elif name == "Exonic Rate":
-            out_cols[6] = val
+            out_cols[5] = val
         elif name == "Intronic Rate":
-            out_cols[7] = val
+            out_cols[6] = val
         elif name == "Intergenic Rate":
-            out_cols[8] = val
+            out_cols[7] = val
         elif name == "Expression Profiling Efficiency":
+            out_cols[8] = val
+        elif name == "Transcripts Detected":
             out_cols[9] = val
-        elif name == "Expressed Transcripts" or name == "Transcripts Detected":
+        elif name == "Genes Detected":
             out_cols[10] = val
-        elif name == "End 1 Sense":
+        elif name == "Fragment Length Mean":
             out_cols[11] = val
-        elif name == "End 1 Antisense":
+        elif name == "Fragment Length StdDev":
             out_cols[12] = val
-        elif name == "End 2 Sense":
-            out_cols[13] = val
-        elif name == "End 2 Antisense":
-            out_cols[14] = val
         elif name == "End 1 % Sense":
-            out_cols[15] = val
+            out_cols[13] = val
         elif name == "End 2 % Sense":
-            out_cols[16] = val
-    out_cols[2] = str(int(out_cols[0]) - int(out_cols[1]))
+            out_cols[14] = val
     
     return "\t".join(out_cols)
