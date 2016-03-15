@@ -58,7 +58,8 @@ echo "</style>";
 // Hidden Tables.
 $viewHiddens=array("duplication","expression","General","gC_Content","splicing","variants");
 function reformat_number($output, $precision){
-  $this_length = strlen( explode('.',$output)[0] );
+  $var=explode('.',$output);
+  $this_length = strlen( $var[0] );
   if($this_length>=3){
     echo number_format($output);
   }elseif($this_length==2){
