@@ -814,6 +814,7 @@
 		</column>
 	</view>
 	<view name="strand_Stats">
+		<column>
 			<field>End_1_%_Sense</field>
 			<type>DECIMAL(10,8)</type>
 			<null></null>
