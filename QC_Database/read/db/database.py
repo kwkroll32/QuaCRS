@@ -585,7 +585,9 @@ class Database:
 		This function will return a list of columns currently in the database
 		'''
 		sql = "SELECT column_name FROM information_schema.columns WHERE table_name='"
-		sql += QC_TABLE_NAME + "';"
+		sql += QC_TABLE_NAME 
+		sql += "' AND table_schema='"
+		sql += DB_NAME + "';"
 		self.cur.execute(sql)
 		results = self.cur.fetchall()
 		return [x[0] for x in results]
