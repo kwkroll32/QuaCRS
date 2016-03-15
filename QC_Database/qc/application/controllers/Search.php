@@ -5,27 +5,17 @@ class Search extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
     	$this->load->model("Sample_model");
-
     	$this->load->helper('url');
     	$this->load->helper('text');
-
     	$this->load->helper('utility');
-
-        $this->load->helper('form');
-
-    	//$this->output->enable_profiler(TRUE);
+      $this->load->helper('form');
     }
 
     public function index($keyword){
-        if($this->session->userdata('logged_in'))
-        {
+        if($this->session->userdata('logged_in')) {
           $session_data = $this->session->userdata('logged_in');
           $sdata['username'] = $session_data['username'];
-          //echo $sdata['username'];
-        }
-        else
-        {
-            //If no session, redirect to login page
+        } else {
             redirect('login', 'refresh');
         }
 
@@ -37,13 +27,11 @@ class Search extends CI_Controller{
         $data = array();
         $columnNames = array();
 
-
         $viewNames = array("general","genomic_stats","alignment_stats","fastqc_stats", "GC_content", "library_stats", "mapping_duplicates", "sequence_duplicates", "strand_stats");
         foreach ($viewNames as $viewName){
                 $data['view'][$viewName] = $this->Sample_model->get_columns($viewName);
                 foreach($data['view'][$viewName] as $column){
-                        if($column['Field']=="qcID")
-                                continue;
+                        if($column['Field']=="qcID") continue;
                         $columns[] = $column;
                 }
         }
@@ -53,14 +41,13 @@ class Search extends CI_Controller{
                 $columnNames[$columns[$ind]['Field']] = $columns[$ind]['Field'] ;
         }
 
-        #Check for column specification
+        //Check for column specification
         $keyword_exploded = explode(":", $keyword);
-        if(sizeof($keyword_exploded) >= 2){
+        if(sizeof($keyword_exploded) >= 2) {
                 $newKeyword = trim($keyword_exploded[1]);
                 $searchColumn = str_replace(" ", "_", trim($keyword_exploded[0]));
                 $samples = $this->Sample_model->search_column($columnNames, $newKeyword, $searchColumn);
-        }
-        else{
+        } else{
                 $samples = $this->Sample_model->search_samples($columnNames, $keyword);
         }
 
@@ -70,8 +57,6 @@ class Search extends CI_Controller{
         $data['samples'] = $samples;
         $data['columns'] = $columns;
         $data['flags'] = get_percent_flags();
-
-
 
         $this->load->view('templates/head', $head);
         $this->load->view('templates/header', $navbar);
