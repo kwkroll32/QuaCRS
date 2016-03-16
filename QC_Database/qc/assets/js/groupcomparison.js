@@ -154,5 +154,5 @@ function toggleDataView(el){
             containerChildren[0].classList.add("showContent");
         break;
     }
-    el.style.borderColor = "#0Cf";
+    el.style.borderColor = "#689699";
 }
