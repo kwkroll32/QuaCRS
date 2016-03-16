@@ -93,7 +93,7 @@
                 </div> -->
 
                 <div class="col-md-12" id='staticView'>
-                        <table id="samples" class="table table-hover table-bordered draggable sortable">
+                        <table id="samples" class="table table-bordered draggable sortable">
                                 <thead>
                                         <tr>
                                                 <th class="text-center" style="width:100px"><a onclick="selectAll(this)" id="selectAllToggle" style="cursor:pointer">Select</a></th>
