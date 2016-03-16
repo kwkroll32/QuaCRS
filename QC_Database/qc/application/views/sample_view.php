@@ -15,7 +15,7 @@
         var Master_Search_Resulting_array = {};
         var Master_All_Columns = <?=json_encode($searchColumns)?>;
 </script>
-<div class="container">
+<div class="container" style="font-weight:bold;">
         <div class="row">
           <div class="compareRowHeader">
               <div class="utility-search">
