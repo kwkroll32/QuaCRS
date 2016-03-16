@@ -105,8 +105,7 @@ function hidden_block($views, $viewName){
 							echo "<table class='table table-hover table-bordered'><thead>";
 								echo "<tr><th>Metric</th><th>Value</th></tr></thead><tbody>";
 								foreach($views[$viewName] as $key=>$value){
-									if ($key == "qcID")
-										continue;
+									if ($key == "qcID") continue;
 									echo "<tr><td>". str_replace("_"," ",$key) ."</td><td>".number_format($value)."</td></tr>";
 								}
 							echo "</tbody></table>";
@@ -152,17 +151,14 @@ function hidden_block($views, $viewName){
 									<div class='row'>
 										<?php
 										foreach($img as $image){
-											if ($image == "")
-												continue;
+											if ($image == "") continue;
 											echo "<div class='col-xs-6 col-md-3'>";
 												echo "<a href='".$resources."img/".$image."' class='thumbnail fancybox' rel='plots'>";
 													if (strpos($image, ".pdf") !== false)
 														echo "<embed src='".$resources."img/".$image."' width='244' height='183' >";
 													else
 														echo "<img src='".$resources."img/".$image."' alt=''>";
-
-												echo "</a>";
-											echo "</div>";
+												echo "</a></div>";
 										}
 										?>
 									</div>

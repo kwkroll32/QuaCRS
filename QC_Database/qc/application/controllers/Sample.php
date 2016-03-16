@@ -434,7 +434,7 @@ EOF;
                                                       echo "<p>".str_replace("_"," ",$key)."</p>";
                                                   echo "</div>";
                                                   echo "<div class='tableColumn' metric-half>";
-                                                      echo "<p>".number_format($value, $precision)."</p>";
+                                                      echo "<p>".$value."</p>";
                                                   echo "</div>";
                                               echo "</div>";
                                           }
