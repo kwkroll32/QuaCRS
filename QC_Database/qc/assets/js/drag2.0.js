@@ -390,7 +390,7 @@ function recolor(callback){
         var lengthCount = kid.length;
         setTimeout(function(){
             for(i = 0; i < lengthCount ; i++){
-                kid[i].style.border = "2px solid #CCC";
+                kid[i].style.border = "4.5px solid #CCC";
             }
             if(typeof callback !== 'undefined'){
               callback();
@@ -584,8 +584,7 @@ function clusterGroup(){
                             var samplePoint = document.createElement("div");
                             samplePoint.setAttribute("class","samplePoint");
                                     var para = document.createElement("p");
-                                            var lineOne = "Sample Name : "+ sampleField;
-                                    var nodeSample = document.createTextNode(lineOne);
+                                    var nodeSample = document.createTextNode(sampleField);
                                             para.appendChild(nodeSample);
                                     samplePoint.appendChild(para);
                             divSampleHold.appendChild(samplePoint);

@@ -127,6 +127,8 @@ function switchViewsBackDrop(el){
 
 
 function toggleDataView(el){
+    $("#floating_jump").toggle(500);
+
     var container = _("bottomHalfContent");
     var containerChildren = container.children;
     var togglebar = _("togglebar");
@@ -152,5 +154,5 @@ function toggleDataView(el){
             containerChildren[0].classList.add("showContent");
         break;
     }
-    el.style.borderColor = "#0Cf";
+    el.style.borderColor = "#689699";
 }

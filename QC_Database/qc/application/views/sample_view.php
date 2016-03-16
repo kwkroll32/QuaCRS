@@ -93,7 +93,7 @@
                 </div> -->
 
                 <div class="col-md-12" id='staticView'>
-                        <table id="samples" class="table table-hover table-bordered draggable sortable">
+                        <table id="samples" class="table table-bordered draggable sortable">
                                 <thead>
                                         <tr>
                                                 <th class="text-center" style="width:100px"><a onclick="selectAll(this)" id="selectAllToggle" style="cursor:pointer">Select</a></th>
@@ -193,16 +193,14 @@
                                                                 <input id="groupNameEditable_0" class='form-switch groupNameEditable' value = "Group 1" placeholder="Group Name"/>
                                                         </div>
                                                 </div>
-                                                <div class="dropPort" id="dropPort_0">
-
-                                                </div>
+                                                <div class="dropPort" id="dropPort_0"></div>
                                         </div>
                                 </div>
                         </div>
                         <div class="boxRightControl">
                             <div class="horizontal">
                                 <div class="hold">
-                                        <p onclick="clusterGroup()" title="Cluster Group"><span class="fa fa-clone"></span></p>
+                                        <p onclick="clusterGroup()" title="Group Overview"><span class="fa fa-clone"></span></p>
                                 </div>
                                 <div class="hold">
                                         <p onclick="submitCompareForm()" class="simpleButton" id="approveGroupButton" title="Appove For Comparing"><span class="fa fa-chevron-right"></span></p>

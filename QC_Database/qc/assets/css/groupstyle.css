@@ -231,7 +231,7 @@ p[disabled]{
     vertical-align: top;
     width: 250px;
     height: 270px;
-    border: 2px solid #CCC;
+    border: 4.5px solid #CCC;
     margin:10px;
     margin-top:0px;
     font-size: 25px;
@@ -422,10 +422,9 @@ p[disabled]{
 }
 
 .samplePoint{
-    padding-top: 10px;
+    padding-top: 1px;
     width: 95%;
     min-height: 0px;
-    border:1px solid #EDEDED;
     margin:0px auto;
     margin-top: 10px;
     color:#000;
