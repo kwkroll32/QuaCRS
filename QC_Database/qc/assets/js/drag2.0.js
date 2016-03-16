@@ -584,8 +584,7 @@ function clusterGroup(){
                             var samplePoint = document.createElement("div");
                             samplePoint.setAttribute("class","samplePoint");
                                     var para = document.createElement("p");
-                                            var lineOne = "Sample Name : "+ sampleField;
-                                    var nodeSample = document.createTextNode(lineOne);
+                                    var nodeSample = document.createTextNode(sampleField);
                                             para.appendChild(nodeSample);
                                     samplePoint.appendChild(para);
                             divSampleHold.appendChild(samplePoint);
