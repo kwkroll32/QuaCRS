@@ -25,7 +25,7 @@
 
                       </div> <!-- Content Bar -->
                       <div class="control_bar">
-                          <button class="detail_control_bar_button" onclick="clearConditionBar(this)">Clear</button>
+                          <button class="detail_control_bar_button" onclick="clearConditionBar(this)">Reset</button>
                           <button class="detail_control_bar_button" onclick="addConditionBar(this)">+</button>
                           <button class="detail_control_bar_button" onclick="performDetailedSearch(this)">Search</button>
                       </div>

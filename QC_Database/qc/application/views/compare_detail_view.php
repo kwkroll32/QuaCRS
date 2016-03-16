@@ -16,6 +16,7 @@ $precision = $this->config->item('precision');
 <script type="text/javascript" src="<?=$resources?>js/magicalVanish.js"></script>
 <script type="text/javascript" src="<?=$resources?>js/saveCompare.js"></script>
 <script type="text/javascript" src="<?=$resources?>js/jumpscroll.js"></script>
+<script type="text/javascript" src="<?=$resources?>js/showsig.js"></script>
 <link href="<?php echo $resources;?>css/saveCompare.css" rel="stylesheet">
 <script type="text/javascript">
 $(function() {
