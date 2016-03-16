@@ -390,7 +390,7 @@ function recolor(callback){
         var lengthCount = kid.length;
         setTimeout(function(){
             for(i = 0; i < lengthCount ; i++){
-                kid[i].style.border = "2px solid #CCC";
+                kid[i].style.border = "4.5px solid #CCC";
             }
             if(typeof callback !== 'undefined'){
               callback();
