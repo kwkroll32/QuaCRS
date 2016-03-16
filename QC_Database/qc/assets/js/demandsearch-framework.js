@@ -31,7 +31,7 @@ SelectionOptions.prototype.StringBuildColumn = function(){
 
 SelectionOptions.prototype.StringBuildEquality = function () {
 
-	this.selectionStringEquality += "<option value='0'>Equality</option>";
+	this.selectionStringEquality += "<option value='0'>Operation</option>";
 	this.selectionStringEquality += "<option value='='>=</option>";
 	this.selectionStringEquality += "<option value='>'>></option>";
 	this.selectionStringEquality += "<option value='<'><</option>";
