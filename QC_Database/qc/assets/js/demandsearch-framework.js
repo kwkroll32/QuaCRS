@@ -126,7 +126,7 @@ Framework.prototype.conditionFrame = function () {
 
 Framework.prototype.deleteConditionFrame = function () {
 
-	var frame  = "<button class = 'detail_control_bar_button_delete' data-conditional-identifier = '"+this.count+"' onclick='deleteConditionalBlock(this)'>x</button>";
+	var frame  = "<button class = 'detail_control_bar_button_delete' data-conditional-identifier = '"+this.count+"' onclick='deleteConditionalBlock(this)'>Clear</button>";
 
 	$(this.conditionalBarTarget).append(frame);
 }
