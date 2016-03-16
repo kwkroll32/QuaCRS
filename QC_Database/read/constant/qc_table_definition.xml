@@ -725,7 +725,7 @@
 		</column>
 		<column>
 			<field>Duplication_Rate</field>
-			<type>DECIMAL(10,8)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1087,7 +1087,7 @@
 		</column>
 		<column>	
 			<field>Spliced_Reads_%</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1120,7 +1120,7 @@
 		</column>
 		<column>	
 			<field>Known_Spliced_Reads_%</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1131,7 +1131,7 @@
 		</column>
 		<column>	
 			<field>Novel_Spliced_Reads_%</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1175,7 +1175,7 @@
 		</column>
 		<column>	
 			<field>Known_Splice_Sites_%</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1186,7 +1186,7 @@
 		</column>
 		<column>	
 			<field>Novel_Splice_Sites_%</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(5,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1300,7 +1300,7 @@
 	<view name="housekeeping_Genes">
 		<column>
 			<field>C1orf43</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1311,7 +1311,7 @@
 		</column>
 		<column>
 			<field>CHMP2A</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1322,7 +1322,7 @@
 		</column>
 		<column>
 			<field>EMC7</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1333,7 +1333,7 @@
 		</column>
 		<column>
 			<field>GPI</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1344,7 +1344,7 @@
 		</column>
 		<column>
 			<field>PSMB2</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1355,7 +1355,7 @@
 		</column>
 		<column>
 			<field>PSMB4</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1366,7 +1366,7 @@
 		</column>
 		<column>
 			<field>RAB7A</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1377,7 +1377,7 @@
 		</column>
 		<column>
 			<field>REEP5</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1388,7 +1388,7 @@
 		</column>
 		<column>
 			<field>SNRPD3</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1399,7 +1399,7 @@
 		</column>
 		<column>
 			<field>VCP</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
@@ -1410,7 +1410,7 @@
 		</column>
 		<column>
 			<field>VPS29</field>
-			<type>DECIMAL(14,10)</type>
+			<type>DECIMAL(10,2)</type>
 			<null></null>
 			<key></key>
 			<default>DEFAULT NULL</default>
