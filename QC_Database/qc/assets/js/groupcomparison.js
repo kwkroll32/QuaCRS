@@ -127,6 +127,8 @@ function switchViewsBackDrop(el){
 
 
 function toggleDataView(el){
+    $("#floating_jump").toggle(500);
+
     var container = _("bottomHalfContent");
     var containerChildren = container.children;
     var togglebar = _("togglebar");
