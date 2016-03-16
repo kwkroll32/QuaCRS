@@ -176,12 +176,21 @@
                                 <div class="horizontal">
                                         <div class="hold">
                                                 <p onclick="addfinale()" id = "addtogroup" class="simpleButton" addtogroup title="Add Samples To Group"><span class="fa fa-upload fa-rotate-180"></span></p>
+                                                <div class="caption">
+                                                    <p>Add Samples</p>
+                                                </div>
                                         </div>
                                         <div class="hold" data-count="1" id="addSign">
                                                 <p onclick="addGroup()" title="Add A Group"><span class="fa fa-plus"></span></p>
+                                                <div class="caption">
+                                                    <p>Add Group</p>
+                                                </div>
                                         </div>
                                         <div class="hold">
                                                 <p onclick="deleteGroup()" title="Delete Active Group"><span class="fa fa-trash"></span></p>
+                                                <div class="caption">
+                                                    <p>Delete Group</p>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
@@ -201,9 +210,15 @@
                             <div class="horizontal">
                                 <div class="hold">
                                         <p onclick="clusterGroup()" title="Group Overview"><span class="fa fa-clone"></span></p>
+                                        <div class="caption">
+                                            <p>Overview</p>
+                                        </div>
                                 </div>
                                 <div class="hold">
                                         <p onclick="submitCompareForm()" class="simpleButton" id="approveGroupButton" title="Appove For Comparing"><span class="fa fa-chevron-right"></span></p>
+                                        <div class="caption">
+                                            <p>Compare</p>
+                                        </div>
                                 </div>
                             </div>
                         </div>

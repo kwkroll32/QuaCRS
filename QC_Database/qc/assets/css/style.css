@@ -6,7 +6,7 @@ body {
   /* Margin bottom for footer height */
   margin-bottom: 60px;
   padding-top: 100px;
-  min-width: 786px;
+  min-width: 1000px;
 }
 
 .text-muted {
