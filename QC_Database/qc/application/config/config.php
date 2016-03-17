@@ -70,7 +70,7 @@ $config['xhr_root'] = '/QuaCRS/';
 $config['precision'] = 2;
 $config['report_path'] = $config['root']. "assets/reports/";
 $config['resources'] = $config['base_url'] . 'assets/';
-$config['project_name'] = "QuaCRS";
+$config['project_name'] = "QuaCRS II";
 
 
 
