@@ -414,7 +414,7 @@ EOF;
             echo"<div class='info' id='info'>";
                 foreach ($viewNames as $viewName){
                   if($viewName != 'fastQC_Stats'){
-                      echo "<div class='viewHold' id='$viewName'>";
+                      echo "<div class='viewHold' id='detail_table_$viewName'>";
                           echo "<div class='topBanner'>";
                                echo "<p style='float:left'>".ucfirst(str_replace("_"," ",$viewName))."</p>";
                           echo "</div>";
