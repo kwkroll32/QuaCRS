@@ -31,9 +31,9 @@ function performSingleMetricGraph(graphingRowElement){
     var viewName = graphingRowElement.getAttribute("data-view");
     var subtitle = graphingRowElement.getAttribute("data-title");
     var xAxis = JSON.parse(graphingRowElement.getAttribute("data-x"));
-    
+
     var xAxisInt = [];
-    
+
     for (var i = 0; i < xAxis.length; i++) {
     	var eachGroupArray = [];
     	for(var j = 0; j < xAxis[i].length; j++){
@@ -76,7 +76,7 @@ function performSingleMetricGraph(graphingRowElement){
             }
         }
     }
-   
+
     var legend = {
         align: 'right',
         x: -30,
@@ -113,9 +113,9 @@ function performSingleMetricGraph(graphingRowElement){
    	var filledFirstGroup = false;
    	var updatedPoistionCounter = false;
    	var updatedArrayToPosition = false;
-   	
+
    	for (var i = 0 ; i < xAxisInt.length; i++){
-   		
+
    		var arrayForEachGroup = {};
 
    		var manupilativeArray = xAxisInt[i];
@@ -124,18 +124,18 @@ function performSingleMetricGraph(graphingRowElement){
    		for(var j = 0; j < manupilativeArray.length; j++){
    			var value = manupilativeArray[j];
    			if(!filledFirstGroup){
-   			
+
    				finalFillArray[positionFillCounter] = value;
-   			
+
    			}else if(!updatedArrayToPosition && filledFirstGroup){
-   				
+
    				for(var k = 0; k < masterXIndexCount; k++){
    					finalFillArray[k] = 0;
    				}
    				positionFillCounter = k;
    				finalFillArray[positionFillCounter] = value;
    				updatedArrayToPosition = true;
-   			
+
    			}else if(updatedArrayToPosition){
    				finalFillArray[positionFillCounter] = value;
    			}
@@ -151,7 +151,7 @@ function performSingleMetricGraph(graphingRowElement){
    		arrayForEachGroup["data"] = finalFillArray;
 
       // Push Into Primary Array
-   		
+
    		series.push(arrayForEachGroup);
   	}
 
@@ -195,7 +195,7 @@ function xAxis(value){
       axis["xAxis"]  = metric;
       var data = value.options[value.selectedIndex].getAttribute("data-hold");
       axisValue['xAxis'] = JSON.parse(data);
-      plotCustomGraphs(); 
+      plotCustomGraphs();
     }else{
       axis["xAxis"]  = null;
       axisValue["xAxis"]  = null;
@@ -214,7 +214,7 @@ function yAxis(value){
       axisValue['yAxis'] = JSON.parse(data);
       plotCustomGraphs();
     }else{
-      axis["yAxis"]  = null; 
+      axis["yAxis"]  = null;
       axisValue["yAxis"]  = null;
       _("yAxisOptionDropDown").style.borderColor = "red";
       setTimeout(function(){
@@ -231,9 +231,9 @@ function plotCustomGraphs(){
   if((xAxisName && yAxisName) !== null && (xAxisValue && yAxisValue) !== null ){
     xAxisValue = checkForArrayWithNullValuesAndRepair(xAxisValue);
     yAxisValue = checkForArrayWithNullValuesAndRepair(yAxisValue);
-    
+
     presentGraphWithValues(xAxisValue,yAxisValue, xAxisName, yAxisName);
-  
+
   }else{
     if((xAxisValue && xAxisName) == null){
       _("xAxisOptionDropDown").style.borderColor = "red";
@@ -251,7 +251,7 @@ function plotCustomGraphs(){
 }
 
 function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
-  
+
   // Chart Type
   var chart = {
     type : 'scatter',
@@ -290,7 +290,7 @@ function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
             lineColor: 'rgb(100,100,100)'
           }
         }
-      },  
+      },
       states: {
         hover: {
           marker: {
@@ -299,7 +299,7 @@ function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
         }
       }
     }
-  } 
+  }
 
   var masterSeries = [];
 
@@ -336,10 +336,18 @@ function presentGraphWithValues(xAxisValue, yAxisValue, xAxisName, yAxisName){
 
   var chartBuild = {};
 
+  var tooltip = {
+      headerFormat: '<span style="font-weight:bold; color:{series.color}">'+
+                    '{series.name}</span><br/>' + 
+                    '<b>'+xAxisName+'</b> {point.x}<br/>',
+      pointFormat: '<b>'+yAxisName+'</b> {point.y}<br/>'
+  }
+
   chartBuild.chart = chart;
   chartBuild.title = title;
   chartBuild.xAxis = xAxis;
   chartBuild.yAxis = yAxis;
+  chartBuild.tooltip = tooltip;
   chartBuild.plotOptions = plotOptions;
   chartBuild.series = masterSeries;
 
