@@ -33,8 +33,10 @@ class pValueStatistics extends CI_Model{
 	      	$nn=$nd1;
 			$f=$nd2/($nd2+$nd1*$x);
 			$t=1.0-2.0*$f;
+			$fixtmp = sqrt(1.0 - $t*$t);
+			if( $fixtmp == 0.0) $t = 0.00001;
 			$q=array(
-			   1 => 0.5+atan($t/sqrt(1.0-$t*$t))/3.1415927,
+			   1 => 0.5+atan($t/$fixtmp)/3.1415927,
 			   2 => 1.0-sqrt($f)
 			   );
 			$gb=sqrt(3.1415927);
