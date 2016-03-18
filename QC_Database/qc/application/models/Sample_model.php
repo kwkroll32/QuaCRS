@@ -405,8 +405,6 @@ class Sample_model extends pValueStatistics {
 		$result = array();
 		$columns = $this->get_columns($viewName);
 
-		$DBG = True;
-
 		foreach ($columns as $column) {
 			if($column['Field'] !== "qcID"){
 				$groupValueArray = $this->getSampleValuesForGroups($groupArray, $viewName, $column['Field']);
@@ -428,24 +426,6 @@ class Sample_model extends pValueStatistics {
 
 				$p = $this->Fstatistic($f, $nd1, $nd2);
 				$result[$column['Field']] = number_format($p, 3);
-
-
-				if($DBG) {
-					echo "<!-- ", $column['Field'], "\n";
-					echo "\tGrand Mean: ", $grandMean, "\n";
-					echo "\tSimple Mean: ";
-					print_r($simpleMean);
-					echo "\n";
-					echo "\tSST: ", $sst, "\n";
-					echo "\tSSTR: ", $sstr, "\n";
-					echo "\tSSE: ", $sse, "\n";
-					echo "\tMSTR: ", $mstr, "\n";
-					echo "\tMSE: ", $mse, "\n";
-					echo "\tF: ", $f, "\n";
-					echo "\tP: ", $p, "\n";
-					echo "\tdFreedom: ", $nd1, " - ", $nd2, "\n";
-					echo "\n-->\n";
-				}
 			}
 		}
 		return $result;
