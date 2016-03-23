@@ -490,7 +490,7 @@ function showSampleInfo(el){
 
         xmlhttp.onreadystatechange=function(){
                 if(xmlhttp.readyState==4 && xmlhttp.status==200){
-                        _("backdropSingleContent").innerHTML = xmlhttp.responseText;
+                        $("#backdropSingleContent").html( xmlhttp.responseText );
                 }
         };
 

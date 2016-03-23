@@ -100,15 +100,11 @@
                                         <?php
                                                 $i=0;
                                                 foreach($columns as $column){
-
-                                                        if (in_array($i, $defaultColumns,true)){
-                                                                $style = "";
-                                                        }else{
-                                                                $style = "hidden";
-                                                        }
+                                                        $style = "hidden";
+                                                        if (in_array($i, $defaultColumns,true)) $style = "";
 
                                                         echo "<th data-col-ind='".($i++)."' class='".$style."'>";
-                                                                        echo str_replace("_"," ",$column['Field']);
+                                                        echo str_replace("_"," ",$column['Field']);
                                                         echo "</th>";
                                                 }
                                         ?>

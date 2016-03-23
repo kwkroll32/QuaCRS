@@ -382,7 +382,7 @@ class Sample extends CI_Controller{
                 <p><strong>Run Description</strong> : $run_description</p>
                 <form action="{$base_url}index.php/ajax/generate_report" method="POST" accept-charset="utf-8">
                     <input class="hidden" name = "id" value = "$sampleID" />
-                    <button class="btn btn-success" name="submit" title="Download Report">Download Sample Report</button>
+                    <button class="btn btn-success" name="submit" title="Download Report" style="border: none; background-image: none; background-color: rgb(104, 150, 153);">Download Sample Report</button>
                 </form>
             </div>
 EOF;
@@ -414,7 +414,7 @@ EOF;
             echo"<div class='info' id='info'>";
                 foreach ($viewNames as $viewName){
                   if($viewName != 'fastQC_Stats'){
-                      echo "<div class='viewHold' id='$viewName'>";
+                      echo "<div class='viewHold' id='detail_table_$viewName'>";
                           echo "<div class='topBanner'>";
                                echo "<p style='float:left'>".ucfirst(str_replace("_"," ",$viewName))."</p>";
                           echo "</div>";

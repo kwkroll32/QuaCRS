@@ -133,7 +133,7 @@ EOF;
       $hiddenString = array('id' => $idString);
       echo form_open('ajax/generate_report', "", $hiddenString);
       ?>
-      <button class="btn btn-success" name="submit" style='float:right' title="Download Compare Results"><span class='fa fa-download'></span></button>
+      <button class="btn btn-success" name="submit" style="float:right; border: none; background-image: none; background-color: rgb(104, 150, 153);" title="Download Compare Results"><span class='fa fa-download'></span></button>
       <?php
       echo form_close();
       ?>
