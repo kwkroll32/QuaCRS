@@ -10,18 +10,6 @@ class Pages extends CI_Controller {
 			show_404();
 		}
 
-		/*if($this->session->userdata('logged_in'))
-    		{
-    		  $session_data = $this->session->userdata('logged_in');
-    		  $sdata['username'] = $session_data['username'];
-    		  //echo $sdata['username'];
-    		}
-    		else
-    		{
-    		  //If no session, redirect to login page
-    		  redirect('login', 'refresh');
-		}*/
-
 		$head['title'] = ucwords($page);
 		$navbar['selected']=$page;
 		$this->load->view('templates/head', $head);
