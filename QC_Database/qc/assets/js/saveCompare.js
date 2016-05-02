@@ -32,18 +32,25 @@ function saveCompare(el, callback){
       saveOnDisk(data, function(success){
         if(success){
           callback(true);
+          alert("Saved");
+          $('.saveCompareBackDrop').fadeOut();
         }else{
           callback(false);
+          alert("Could not save");
         }
       });
     });
   }
 }
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 function buildDataString(name, callback){
   var data = {};
   data["name"] = name;
-  data["group-names"] = MasterArrayedGroupSampleNames;
+  data["group-names"] = MasterGroupNames;
   data["group-id"] = MasterGroupWithID;
   data["group-color"] = MasterColor;
   callback(data);
@@ -51,11 +58,9 @@ function buildDataString(name, callback){
 
 function saveOnDisk(data, callback){
   if (typeof(Storage) !== "undefined") {
-    if(localStorage.previousCompare){
-      localStorage.previousCompare = localStorage.previousCompare + JSON.stringify(data);
-    }else{
-        localStorage.previousCompare = JSON.stringify(data);
-    }
+    var name = "_#compare-" + getRandomArbitrary(10,1000000);
+    localStorage.setItem(name, JSON.stringify(data));
+    callback(true);
   } else {
     callback(false);
   }

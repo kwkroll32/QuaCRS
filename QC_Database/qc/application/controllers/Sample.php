@@ -169,38 +169,33 @@ class Sample extends CI_Controller{
         $singleGroupArray = array();
         $idString = "";
 
-        $nameEditableString = ltrim($this->input->post('groupnames', TRUE),",");
+        $nameEditableString = rtrim(ltrim($this->input->post('groupnames', TRUE),","), ",");
 
         $nameEditable = explode(",",$nameEditableString);
 
-        $groupcolor = ltrim($this->input->post('groupcolor', TRUE),",");
+        $groupcolor = rtrim( ltrim($this->input->post('groupcolor', TRUE),","), ",");
 
         $groupcolor = explode(",",$groupcolor);
 
-        // Setting up Variables for saving compareResults to be sent to view
-
-        $groupnamesFormString = "";
-        $groupcolorsFormString = "";
-        $groupvaluesFormString = "";
-
         for($i = 0; $i < $groupCount; $i++){
             $groupName = 'group-'.$i;
+
             $groupArrayName[$i] = $nameEditable[$i];
             $groupArrayColor[$i] = $groupcolor[$i];
-            $groupnamesFormString .= $nameEditable[$i].";";
-            $groupcolorsFormString .= $groupcolor[$i].";";
+
             $groupValue = $this->input->post($groupName,True);
+
+            // Cleaning String
+            $groupValue = ltrim($groupValue, ",");
+            $groupValue = rtrim($groupValue, ",");
+
             $value = explode(",", $groupValue);
             for($j = 0; $j< count($value); $j++){
                 $groupArray[$i][$j] = $value[$j];
                 $groupSampleName[$i][$j] = $this->Sample_model->get_sample_name($value[$j]);
                 $groupSampleId[$i][$j] = $value[$j];
                 $idString .= $value[$j].",";
-
-                $groupvaluesFormString .= $value[$j].",";
             }
-            $groupvaluesFormString = rtrim($groupvaluesFormString, ",");
-            $groupvaluesFormString = $groupvaluesFormString.";";
         }
 
         // Local Storage Array
@@ -209,10 +204,6 @@ class Sample extends CI_Controller{
         $SampleID = $groupArray;
 
         $data['MasterGroupWithID'] = $SampleID;
-
-        $data['groupnamesFormString'] = rtrim($groupnamesFormString,";");
-        $data['groupvaluesFormString'] = rtrim($groupvaluesFormString,";");
-        $data['groupcolorsFormString'] = rtrim($groupcolorsFormString,";");
 
         $idString = rtrim($idString, ", ");
         $data['idString'] = $idString;

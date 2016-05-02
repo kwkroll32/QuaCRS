@@ -145,3 +145,44 @@
 	-moz-transition-delay: 0;
 	transition-delay: 0
 }
+
+
+.studySummary .content .wrappedSaveCompare{
+	margin-bottom: 5px;
+	padding: 5px;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.wrappedSaveCompare .deleteSaveCompare{
+	width: auto;
+	height: auto;
+}
+
+.comapreinnerDelete{
+    display: inline-block;
+    vertical-align: top;
+    width: 30px;
+    height: 30px;
+    padding-top: 0px;
+    color: black;
+    border:2px solid #c63939;
+    border-radius: 50%;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    background: none;
+
+}
+
+.comapreinnerDelete:hover{
+    color: #c63939;
+    border-color: #c63939;
+    -webkit-transition: all 0.5s ease-in-out; /* For Safari 3.1 to 6.0 */
+    -moz-webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}

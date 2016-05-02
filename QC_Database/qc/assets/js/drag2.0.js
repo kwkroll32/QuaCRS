@@ -628,3 +628,70 @@ function removePanel(){
     _("staticView").style.paddingRight = "0px";
     _("staticView").style.paddingLeft = "0px";
 }
+
+/* Script for Save Compares */
+
+(function(){
+
+  var SAVED_COMPARES = [];
+  var SAVED_COMPARES_KEYS = [];
+  for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+    if (localStorage.key( i ).indexOf("_#compare-") > -1){
+      SAVED_COMPARES_KEYS.push(localStorage.key(i));
+      var item = JSON.parse(localStorage.getItem( localStorage.key( i ) ));
+      SAVED_COMPARES.push(item);
+    }
+  }
+  var saveContentResults = $("#compareSavedResults");
+  for(var i = 0 ; i < SAVED_COMPARES.length; i++){
+    var compareKey = SAVED_COMPARES_KEYS[i];
+    var compare = SAVED_COMPARES[i];
+    var name = compare["name"];
+    var groupName = compare["group-names"];
+    var groupId = compare["group-id"];
+    var groupColor = compare["group-color"];
+
+    var groupNameString = "";
+    var groupColorString = "";
+
+    // Group Color and Group Names
+    for(var j = 0; j < groupColor.length; j++){
+      groupColorString = groupColorString + "," + groupColor[j];
+      groupNameString = groupNameString + "," + groupName[j];
+    }
+
+    var formGroupCount = "<input type = 'hidden' name = 'groupnumber' value = '"+ groupColor.length +"' />";
+    var formGroupName = "<input type = 'hidden' name = 'groupnames' value = '" + groupNameString + "' />";
+    var formGroupColor = "<input type = 'hidden' name = 'groupcolor' value = '" + groupColorString + "' />";
+    var formButton = "<button class='btn btn-default'>"+name+"</button>";
+    var formGroupValues = "";
+    var formStringForGroupID = "";
+
+    for (var j = 0; j < groupId.length; j++){
+      var eachGroup = groupId[j];
+      var idString = "";
+      for (var k = 0; k < eachGroup.length; k++){
+        idString = idString + eachGroup[k] + ",";
+      }
+      formStringForGroupID = formStringForGroupID + "<input type = 'hidden' name = 'group-"+j+"' value = '"+idString+"' />";
+    }
+
+    var form = "<form action = '" + base_url + "index.php/sample/CompareView' method = 'post' >" + formGroupCount + formGroupName + formGroupColor + formStringForGroupID + formButton + "</form>";
+    var deleteSave = "<div class='deleteSaveCompare'> <button onclick = 'deleteSaveCompare(this)' class='comapreinnerDelete' data-savename = '"+compareKey+"'><span class='fa fa-times'></span></button></div>";
+    var wrapper = "<div class='wrappedSaveCompare' id = '"+compareKey+"'>" + form + deleteSave + "</div>";
+    saveContentResults.append(wrapper);
+
+    // Reset String
+    formStringForGroupID = "";
+  }
+
+})();
+
+function deleteSaveCompare(el){
+    var key = el.getAttribute("data-savename");
+    localStorage.removeItem(key);
+    var row = _(key).children;
+    while(row.length){
+      row[0].parentNode.removeChild(row[0]);
+    }
+}

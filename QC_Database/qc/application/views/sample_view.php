@@ -11,6 +11,7 @@
 <link href="<?php echo $resources;?>css/groupstyle.css" rel="stylesheet">
 <link href="<?php echo $resources;?>css/demandsearch2.css" rel="stylesheet">
 <script type="text/javascript">
+        var base_url = "<?=$base_url?>";
         var xhr_root = "<?=$xhr_root?>";
         var Master_Search_Resulting_array = {};
         var Master_All_Columns = <?=json_encode($searchColumns)?>;
@@ -254,7 +255,13 @@
         ?>
       </div>
     </div>
-
+    <div class="studySummary">
+     <div class="header">
+         <p>Saved Compare Results</p>
+     </div>
+     <div class="content" id="compareSavedResults"></div>
+   </div>
+ </div>
   </div>
 </div>
 <div class="full-scale-side-panel" data-view = "closed" id="left-side-panel">

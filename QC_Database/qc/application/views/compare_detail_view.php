@@ -168,7 +168,7 @@ EOF;
           <div class="viewSettings">
             <div class="topBanner"><p>View Settings</p></div>
             <div class="viewSetting-content">
-              <div class="viewSettingsRow" onclick="openSaveCompareBackDrop(this)">
+              <div class="viewSettingsRow" onclick="openSaveCompareBackDrop()">
                 <p id="magicalVanishTableText">Save Compare</p>
               </div>
               <div class="viewSettingsRow" onclick="vanishTables(this)" data-magictoggle="vanish">
