@@ -63,6 +63,7 @@
 .option{
   position: relative;
   width: 20%;
+  min-width: 80px;
   height: 40px;
   border: 2px solid #EDEDED;
   border-radius: 5px;
