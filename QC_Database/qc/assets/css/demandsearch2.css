@@ -71,7 +71,7 @@
 .detail_control_bar_button_delete{
 	display: inline-block;
 	vertical-align: top;
-	width: 10%;
+	/*width: 10%;*/
 	height: 42px;
 	border: 1px solid #ededed;
 	border-radius: 5px;
