@@ -35,8 +35,8 @@ SelectionOptions.prototype.StringBuildEquality = function () {
 	this.selectionStringEquality += "<option value='='>=</option>";
 	this.selectionStringEquality += "<option value='>'>></option>";
 	this.selectionStringEquality += "<option value='<'><</option>";
-	this.selectionStringEquality += "<option value='>'>>=</option>";
-	this.selectionStringEquality += "<option value='<'><=</option>";
+	this.selectionStringEquality += "<option value='>='>>=</option>";
+	this.selectionStringEquality += "<option value='<='><=</option>";
 
 	return this.selectionStringEquality;
 }
