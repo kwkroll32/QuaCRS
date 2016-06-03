@@ -68,13 +68,14 @@ Other dependencies
 * ncurses
 * ImageMagic convert (http://www.imagemagick.org/script/convert.php)
 * X11 with appropriate window forwarding (optional)
-* Java version 1.7.x (OpenJDK Preferred)
 * Java version 1.8.x (Oracle Java Preferred)
 
 INSTALLATION
 ----------------
 1. Unzip the tar archive
 2. Edit the QC tools configurations file (tools.cfg) to reflect the installation locations of samtools, picard tools, RNA-SeQC, RSeQC, FastQC, and the reference FASTA, GTF, and BED files. These can be downloaded and installed anywhere, as long as the full path is supplied here. This file must remain in the same directory as qcpack.sh.
+  * The GTF, Fasta, and BED files must be fully encompassing of the reference that
+  was aligned to in order to prevent errors later in the qcpack process.
 3. Copy the 'qc' folder to the server location (usually /var/www/html/)
 
 DATABASE SETUP
@@ -244,7 +245,7 @@ Example:
 TROUBLESHOOTING
 ----------------
 1. What are the MySQL warnings for?
-    * These warnings indicate that the QC tables contain more significant digits than what is defined in the database.
+  * These warnings indicate that the QC tables contain more significant digits than what is defined in the database.
 2. Why does RSeQC return so many errors regarding my reference file?
 	* Using the Galaxy Convert Format tool to convert the Gencode GTF file to BED format will loosely translate many GTF lines into incomplete BED entries. This doesn't prevent RSeQC from running successfully, but may result in large amounts of warning messages. Removing the truncated lines from the BED file should fix this problem.
 
