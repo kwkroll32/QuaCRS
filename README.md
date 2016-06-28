@@ -77,8 +77,7 @@ INSTALLATION (QC Generation Pipeline)
 3. Edit the QC tools configurations file (tools.cfg) to reflect the installation locations of samtools, picard tools, RNA-SeQC, RSeQC, FastQC, and the reference FASTA, GTF, and BED files.
   * These can be downloaded and installed anywhere, as long as the full path is supplied here. If tools were installed using a package manager, the `which` command can be used to find the locations of the binary.
   * This file must remain in the same directory as qcpack.sh.
-  * The GTF, Fasta, and BED files must be fully encompassing of the reference that
-  was aligned to in order to prevent errors later in the qcpack process.
+  * The GTF, Fasta, and BED files must be fully encompassing of the reference that was aligned to in order to prevent errors later; additionally, the fasta file must be indexed with an associated `.fai` file.
 
 INSTALLATION (Web Server)
 ----------------
