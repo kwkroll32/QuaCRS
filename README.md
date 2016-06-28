@@ -70,13 +70,21 @@ Other dependencies
 * X11 with appropriate window forwarding (optional)
 * Java version 1.8.x (Oracle Java Preferred)
 
-INSTALLATION
+INSTALLATION (QC Generation Pipeline)
 ----------------
-1. Unzip the tar archive
-2. Edit the QC tools configurations file (tools.cfg) to reflect the installation locations of samtools, picard tools, RNA-SeQC, RSeQC, FastQC, and the reference FASTA, GTF, and BED files. These can be downloaded and installed anywhere, as long as the full path is supplied here. This file must remain in the same directory as qcpack.sh.
+1. Unzip the tar archive.
+2. Move the `QC_Pack` folder into your working directory.
+3. Edit the QC tools configurations file (tools.cfg) to reflect the installation locations of samtools, picard tools, RNA-SeQC, RSeQC, FastQC, and the reference FASTA, GTF, and BED files.
+  * These can be downloaded and installed anywhere, as long as the full path is supplied here. If tools were installed using a package manager, the `which` command can be used to find the locations of the binary.
+  * This file must remain in the same directory as qcpack.sh.
   * The GTF, Fasta, and BED files must be fully encompassing of the reference that
   was aligned to in order to prevent errors later in the qcpack process.
-3. Copy the 'qc' folder to the server location (usually /var/www/html/)
+
+INSTALLATION (Web Server)
+----------------
+1. Unzip the tar archive.
+2. Copy the `qc` folder from `QC_Database` to the server html resources page (typically inside /var/www/ for an apache server).
+3. Copy the `read` folder from `QC_Database` to an easily-accessible (but not publicly-viewable) working folder for later data uploading.
 
 DATABASE SETUP
 ----------------
