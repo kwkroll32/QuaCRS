@@ -176,35 +176,6 @@ else
 		BAM=$out_BAM
 	fi
 
-	#Creates an index for the bam file given as an argument
-	# in the form of 'indexbam.job.sh bamfile.bam'.
-	#Passes the bam file straight to the samtools index function.
-	#NOTE: may not be needed when markDupes makes an index
-#	if ([ -f "$BAM".bai ] || [ -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]) && [ $keep_temp == "yes" ]; then
-#		echo "Found BAM Index "
-#		echo "    Skipping this step ... "
-#	elif ([ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]) || [ $keep_temp == "no" ]; then
-#		echo " starting samtools index"
-#
-#		${SAMTOOLS_EXEC} index ${BAM}
-#		echo " finished samtools index"
-#	fi
-#	if [ ! -f "$BAM".bai ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM".bai ]; then
-#		echo "Samtools index may have failed"
-#		echo "    exiting  "
-#		exit 1
-#	fi
-
-	#----------------------
-	#QC_StudyFiles.job.sh
-	#This is the RNA-SeQc function. The executable creates a QC directory in 
-	#  the working directory, makes a text file for input to the RNA-SeQc, 
-	#  and performs the QC. 
-	#It takes in a properly formatted, reordered bam file with an appropriate index 
-	#  as an argument in the form of 'QC_StudyFiles.job.sh bamfile.bam'.
-	#Note, the bam file is the input. The appropriate index must simply be in the 
-	#  same directory as the input bam file. 
-
 	if [ -f $out_dir/${SID}/${SID}.metrics.txt ] && [ $keep_temp == "yes" ]; then
 		echo "Found RNASeQC output"
 		echo "    Skipping this step ... "
@@ -265,14 +236,6 @@ else
 	[ ! -f "${BAM_FILE}.bai" ] && ${SAMTOOLS_EXEC} index $BAM_FILE
 	$PYEXE $RSEQC_DIR/geneBody_coverage.py -r $ANNOT_BED -i $BAM_FILE -o $output/${SID}
 fi
-
-#i(f [ -f $output/${SID}.read.distribution.txt ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/ ]) && [ $keep_temp == "yes" ]; then
-#	echo "Read distribution already present for "$UNIQUE_ID
-#	echo "    Skipping this step ... "
-#else
-#	echo "Running read distribution for "$UNIQUE_ID
-#	$PYEXE $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
-#fi
 
 if ([ -f "$output/${SID}.DupRate_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.DupRate_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read duplication already present for "$UNIQUE_ID
