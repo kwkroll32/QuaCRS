@@ -138,7 +138,7 @@ else
 		echo "    Skipping this step ... "
 	elif ([ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ]) || [ $keep_temp == "no" ]; then
 		echo "running samtools sort" 
-		${SAMTOOLS_EXEC} sort $BAM $out_BAM
+		${SAMTOOLS_EXEC} sort -o $out_BAM $BAM
 		echo "finished samtools sort"
 	fi
 	if [ ! -f "$out_BAM".bam ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/${out_BAM}.bam ]; then
