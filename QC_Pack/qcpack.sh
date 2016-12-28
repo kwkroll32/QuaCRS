@@ -112,7 +112,7 @@ else
 		echo " running Picard.AddOrReplaceReadGroups.jar" 
 
 		echo " arguments= $args"
-		java   -Xmx6g  -jar ${PICARD_JAR} AddOrReplaceReadGroups $args
+		$JAVAEXE   -Xmx6g  -jar ${PICARD_JAR} AddOrReplaceReadGroups $args
 		echo " finished Picard.AddOrReplaceReadGroups.jar"
 	fi
 	if [ ! -f $out_BAM ] && [ ! -f temp/$UNIQUE_ID/RNASeQC/$out_BAM ]; then
@@ -163,7 +163,7 @@ else
 	elif ([ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ]) || [ $keep_temp == "no" ]; then
 		echo " running Picard.MarkDuplicates"
 		echo " arguments= $args"
-		java -Xmx6g -jar ${PICARD_JAR} MarkDuplicates $args
+		$JAVAEXE -Xmx6g -jar ${PICARD_JAR} MarkDuplicates $args
 		echo " finished Picard.MarkDuplicates"
 	fi
 	if [ ! -f "$out_BAM" ] && [ ! -f "temp/$UNIQUE_ID/RNASeQC/$out_BAM" ]; then
@@ -217,7 +217,7 @@ else
 
 		echo " Running	RNA-SeQC" 
 		echo " arguments: $args"
-		java -Xmx6g -jar ${RNASEQC_JAR} $args
+		$JAVAEXE -Xmx6g -jar ${RNASEQC_JAR} $args
 		if [ -f rnaSeQC_samples_list.txt ]; then
 			\rm rnaSeQC_samples_list.txt
 		fi
@@ -255,7 +255,7 @@ if ([ -f "$output/${SID}.bam.stat.txt" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/$
 	echo "    Skipping this step ... "
 else
 	echo "Running BAM stats for "$UNIQUE_ID
-	python $RSEQC_DIR/bam_stat.py -i $BAM_FILE &> $output/${SID}.bam.stat.txt
+	$PYEXE $RSEQC_DIR/bam_stat.py -i $BAM_FILE &> $output/${SID}.bam.stat.txt
 fi
 if ([ -f "$output/${SID}.geneBodyCoverage.curves.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.geneBodyCoverage.curves.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Gene body coverage already present for "$UNIQUE_ID
@@ -263,7 +263,7 @@ if ([ -f "$output/${SID}.geneBodyCoverage.curves.pdf" ] || [ -f "${CWD}/temp/$UN
 else
 	echo "Running gene body coverage for "$UNIQUE_ID
 	[ ! -f "${BAM_FILE}.bai" ] && ${SAMTOOLS_EXEC} index $BAM_FILE
-	python $RSEQC_DIR/geneBody_coverage.py -r $ANNOT_BED -i $BAM_FILE -o $output/${SID}
+	$PYEXE $RSEQC_DIR/geneBody_coverage.py -r $ANNOT_BED -i $BAM_FILE -o $output/${SID}
 fi
 
 #i(f [ -f $output/${SID}.read.distribution.txt ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/ ]) && [ $keep_temp == "yes" ]; then
@@ -271,7 +271,7 @@ fi
 #	echo "    Skipping this step ... "
 #else
 #	echo "Running read distribution for "$UNIQUE_ID
-#	python $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
+#	$PYEXE $RSEQC_DIR/read_distribution.py -r $ANNOT_BED -i $BAM_FILE &> $output/${SID}.read.distribution.txt
 #fi
 
 if ([ -f "$output/${SID}.DupRate_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.DupRate_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
@@ -279,35 +279,35 @@ if ([ -f "$output/${SID}.DupRate_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSe
 	echo "    Skipping this step ... "
 else
 	echo "Running read duplication for "$UNIQUE_ID
-	python $RSEQC_DIR/read_duplication.py -i $BAM_FILE -o $output/${SID}
+	$PYEXE $RSEQC_DIR/read_duplication.py -i $BAM_FILE -o $output/${SID}
 fi
 if ([ -f "$output/${SID}.GC_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.GC_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read GC already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read GC for "$UNIQUE_ID
-	python $RSEQC_DIR/read_GC.py -i $BAM_FILE -o $output/${SID}
+	$PYEXE $RSEQC_DIR/read_GC.py -i $BAM_FILE -o $output/${SID}
 fi
 if ([ -f "$output/${SID}.NVC_plot.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.NVC_plot.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Read NVC already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read NVC for "$UNIQUE_ID
-	python $RSEQC_DIR/read_NVC.py -i $BAM_FILE -o $output/${SID}
+	$PYEXE $RSEQC_DIR/read_NVC.py -i $BAM_FILE -o $output/${SID}
 fi
 if (([ -f "$output/${SID}.qual.boxplot.pdf" ] && [ -f "$output/${SID}.qual.heatmap.pdf" ]) || ([ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.qual.boxplot.pdf" ] && [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.qual.heatmap.pdf" ] )) && [ $keep_temp == "yes" ]; then
 	echo "Read quality already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running read quality for "$UNIQUE_ID
-	python $RSEQC_DIR/read_quality.py -i $BAM_FILE -o $output/${SID}
+	$PYEXE $RSEQC_DIR/read_quality.py -i $BAM_FILE -o $output/${SID}
 fi
 if ([ -f "$output/${SID}.splice_events.pdf" ] || [ -f "${CWD}/temp/$UNIQUE_ID/RSeQC/${SID}.splice_events.pdf" ]) && [ $keep_temp == "yes" ]; then
 	echo "Junction annotation already present for "$UNIQUE_ID
 	echo "    Skipping this step ... "
 else
 	echo "Running junction annotation for "$UNIQUE_ID
-	python $RSEQC_DIR/junction_annotation.py -i $BAM_FILE -r $ANNOT_BED -o $output/${SID} &> $output/${SID}.junction_annotation.txt
+	$PYEXE $RSEQC_DIR/junction_annotation.py -i $BAM_FILE -r $ANNOT_BED -o $output/${SID} &> $output/${SID}.junction_annotation.txt
 fi
 
 for samp_dir in ${CWD}/RSeQC/${UNIQUE_ID}/ ${CWD}/temp/${UNIQUE_ID}/RSeQC/
@@ -352,7 +352,7 @@ else
 		#[ -f ${BAM_FILE}.featureCounts ] && mv ${BAM_FILE}.featureCounts 
 	fi
 	if [ -f $UNIQUE_ID.subCounts.txt ] && [ ! -f expression_qc.txt ]; then
-		python $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw $UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#housekeeping_genes} -gt 0 ] && echo " -hk "$housekeeping_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
+		$PYEXE $SCRIPTS/RawCounts_to_FPKM.py -name $UNIQUE_ID -raw $UNIQUE_ID.subCounts.txt $( [ ${#lncRNA_genes} -gt 0 ] && echo " -lnc "$lncRNA_genes ) $( [ ${#housekeeping_genes} -gt 0 ] && echo " -hk "$housekeeping_genes ) $( [ ${#lincRNA_genes} -gt 0 ] && echo " -linc "$lincRNA_genes ) $( [ ${#coding_genes} -gt 0 ] && echo " -coding "$coding_genes ) $( [ ${#other_genes} -gt 0 ] && echo " -other "$other_genes )
 	fi
 fi
 if [ ! -f $UNIQUE_ID.subCounts.txt ]; then
@@ -373,7 +373,7 @@ else
 		echo "Variant QC already present for "$UNIQUE_ID
 		echo "    Skipping this step ... "
 	else
-		python $SCRIPTS/VAF_QC_from_VCF.py -vcf $VCF -bam $BAM_FILE -name $UNIQUE_ID
+		$PYEXE $SCRIPTS/VAF_QC_from_VCF.py -vcf $VCF -bam $BAM_FILE -name $UNIQUE_ID
 	fi
 	if [ ! -f VariantQC/$UNIQUE_ID/${UNIQUE_ID}_AF_dist.png ] || [ ! -f VariantQC/$UNIQUE_ID/variant_qc.txt ]; then
 		echo "Variant QC may have failed"
@@ -430,7 +430,4 @@ args=$UNIQUE_ID' '$STUDY' '$SID' '$PE
 [ ${#CONTAMINATION} -gt 0 ] && args+=' -cr '${CONTAMINATION}
 [ ${#DATE} -gt 0 ] && args+=' -sd '${DATE}
 
-python $SCRIPTS/QC_table.py $args
-
-
-
+$PYEXE $SCRIPTS/QC_table.py $args
