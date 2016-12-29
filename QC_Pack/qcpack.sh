@@ -188,7 +188,7 @@ else
 
 		echo " Running	RNA-SeQC" 
 		echo " arguments: $args"
-		$JAVAEXE -Xmx6g -jar ${RNASEQC_JAR} $args
+		$JAVA7EXE -Xmx6g -jar ${RNASEQC_JAR} $args
 		if [ -f rnaSeQC_samples_list.txt ]; then
 			\rm rnaSeQC_samples_list.txt
 		fi
