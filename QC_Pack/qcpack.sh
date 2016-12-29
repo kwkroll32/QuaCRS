@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPTS=$(dirname $0)
+SCRIPTS=$( readlink -f $(dirname $0) )
 CWD=`pwd`
 while read line; do if [ "$line" != "" ]; then export $line; fi ; done < ${SCRIPTS}/tools.cfg
 [ ! -e "$FASTQC_EXEC" ] && echo "FastQC directory $FASTQC_EXEC not found" && exit 1
